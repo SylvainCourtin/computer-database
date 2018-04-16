@@ -7,5 +7,7 @@ public class MyConstants {
 
 	public static final String SQL_QUERY_COMPUTER_SELECT = "SELECT * FROM computer ";
 	public static final String SQL_QUERY_COMPUTER_INSERT = "INSERT INTO computer (id,name,introduced,discontinued,company_id) values ";
+	public static final String SQL_QUERY_COMPUTER_DELETE = "DELETE FROM computer WHERE ";
+	public static final String SQL_QUERY_COMPUTER_UPDATE = "UPDATE computer SET ";
 
 }

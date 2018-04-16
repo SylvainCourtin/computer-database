@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.models.Company;
+import com.excilys.computerdatabase.utils.MyConstants;
 
 public class CompanyDaoImpl implements CompanyDao {
 	
@@ -19,7 +20,19 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	@Override
 	public void add(Company company) {
-		// TODO Auto-generated method stub
+		try {
+			Connection connection = daoFactory.getConnection();
+			Statement statement = connection.createStatement();
+			statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
+					company.getId()+','+
+					company.getName()+','+
+					");");
+			
+			connection.close();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -30,7 +43,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery("SELECT * FROM company;");
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_SELECT+";");
 			
 			while(result.next())
 			{
@@ -39,6 +52,8 @@ public class CompanyDaoImpl implements CompanyDao {
 						result.getLong("id"),
 						result.getString("name")));
 			}
+			
+			connection.close();
 			
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -55,10 +70,12 @@ public class CompanyDaoImpl implements CompanyDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery("SELECT * FROM company WHERE id="+id+";");
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_SELECT+"WHERE id="+id+";");
 			company = new Company(
 					result.getLong("id"),
 					result.getString("name"));
+			
+			connection.close();
 		
 		}catch (SQLException e) {
 			e.printStackTrace();

@@ -22,15 +22,20 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void add(Computer computer) {
 		
+		//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
+		if(daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
+			daoFactory.getCompanyDao().add(computer.getManufacturerCompany());
+		
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
+			
+			statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
 					computer.getId()+','+
 					computer.getName()+','+
 					computer.getDateIntroduced()+','+
 					computer.getDateDiscontinued()+','+
-					computer.getManufacturerCompany().getIdCompany()+','+
+					computer.getManufacturerCompany().getId()+','+
 					");");
 			
 		}catch (SQLException e) {

@@ -6,7 +6,7 @@ import java.util.List;
 public class Company {
 	
 	
-	private long idCompany;
+	private long id;
 	private String name;
 	
 	private List<Computer> computersMade;
@@ -22,7 +22,7 @@ public class Company {
 
 	public Company(long idCompany, String name) {
 		super();
-		this.idCompany = idCompany;
+		this.id = idCompany;
 		this.name = name;
 	}
 
@@ -42,12 +42,12 @@ public class Company {
 		return computersMade;
 	}
 
-	public long getIdCompany() {
-		return idCompany;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdCompany(long idCompany) {
-		this.idCompany = idCompany;
+	public void setId(long idCompany) {
+		this.id = idCompany;
 	}
 
 	@Override

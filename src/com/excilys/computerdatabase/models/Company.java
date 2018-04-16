@@ -19,7 +19,13 @@ public class Company {
 		super();
 		this.name = name;
 	}
-	
+
+	public Company(long idCompany, String name) {
+		super();
+		this.idCompany = idCompany;
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -34,6 +40,14 @@ public class Company {
 	
 	public List<Computer> getComputersMade() {
 		return computersMade;
+	}
+
+	public long getIdCompany() {
+		return idCompany;
+	}
+
+	public void setIdCompany(long idCompany) {
+		this.idCompany = idCompany;
 	}
 
 	@Override

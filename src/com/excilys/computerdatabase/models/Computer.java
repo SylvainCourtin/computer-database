@@ -27,6 +27,17 @@ public class Computer {
 		this.dateDiscontinued = dateDiscontinued;
 		this.manufacturerCompany = manufacturerCompany;
 	}
+	
+	
+
+	public Computer(long id, String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.dateIntroduced = dateIntroduced;
+		this.dateDiscontinued = dateDiscontinued;
+		this.manufacturerCompany = manufacturerCompany;
+	}
 
 	public Date getDateDiscontinued() {
 		return dateDiscontinued;

@@ -5,9 +5,11 @@ import java.util.List;
 
 public class Company {
 	
-	public String name;
 	
-	public List<Computer> computersMade;
+	private long idCompany;
+	private String name;
+	
+	private List<Computer> computersMade;
 	
 	public Company() {
 		computersMade = new ArrayList<>();

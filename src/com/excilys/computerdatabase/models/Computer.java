@@ -6,6 +6,7 @@ import com.excilys.computerdatabase.utils.DateDiscontinuedIntroducedException;
 
 public class Computer {
 
+	private long id;
 	private String name;
 	private Date dateIntroduced;
 	private Date dateDiscontinued;
@@ -37,10 +38,12 @@ public class Computer {
 		return dateIntroduced;
 	}
 	
-	public void setDateDiscontinued(Date dateDiscontinued) {
+	public void setDateDiscontinued(Date dateDiscontinued) throws DateDiscontinuedIntroducedException {
+		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateDiscontinued = dateDiscontinued;
 	}
-	public void setDateIntroduced(Date dateIntroduced) {
+	public void setDateIntroduced(Date dateIntroduced) throws DateDiscontinuedIntroducedException {
+		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateIntroduced = dateIntroduced;
 	}
 	public void setName(String name) {
@@ -51,10 +54,20 @@ public class Computer {
 		return manufacturerCompany;
 	}
 	
-	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
-	{
-		if(introduced.after(discontinued))
-			throw new DateDiscontinuedIntroducedException(introduced.toString() + " doit etre plus petit que " + discontinued.toString());
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Company getManufacturerCompany() {
+		return manufacturerCompany;
+	}
+
+	public void setManufacturerCompany(Company manufacturerCompany) {
+		this.manufacturerCompany = manufacturerCompany;
 	}
 
 	@Override
@@ -63,6 +76,7 @@ public class Computer {
 		int result = 1;
 		result = prime * result + ((dateDiscontinued == null) ? 0 : dateDiscontinued.hashCode());
 		result = prime * result + ((dateIntroduced == null) ? 0 : dateIntroduced.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((manufacturerCompany == null) ? 0 : manufacturerCompany.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -86,6 +100,8 @@ public class Computer {
 			if (other.dateIntroduced != null)
 				return false;
 		} else if (!dateIntroduced.equals(other.dateIntroduced))
+			return false;
+		if (id != other.id)
 			return false;
 		if (manufacturerCompany == null) {
 			if (other.manufacturerCompany != null)
@@ -121,6 +137,11 @@ public class Computer {
 	}
 	
 	
-	
+	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
+	{
+		if(introduced.after(discontinued))
+			throw new DateDiscontinuedIntroducedException(introduced.toString() + " must be before than " + discontinued.toString());
+	}
+
 	
 }

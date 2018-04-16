@@ -5,9 +5,11 @@ import java.util.List;
 import com.excilys.computerdatabase.models.Computer;
 
 public class ComputerDaoImpl implements ComputerDao {
+	
+	private DaoFactory daoFactory;
 
 	public ComputerDaoImpl(DaoFactory daoFactory) {
-		// TODO Auto-generated constructor stub
+		this.daoFactory = daoFactory;
 	}
 
 	@Override

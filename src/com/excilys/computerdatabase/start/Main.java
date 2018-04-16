@@ -3,10 +3,10 @@ package com.excilys.computerdatabase.start;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.Controller;
-import com.excilys.computerdatabase.utils.DateDiscontinuedIntroducedException;
 
 public class Main {
 	

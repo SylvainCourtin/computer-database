@@ -2,7 +2,7 @@ package com.excilys.computerdatabase.models;
 
 import java.util.Date;
 
-import com.excilys.computerdatabase.utils.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 
 public class Computer {
 
@@ -59,10 +59,6 @@ public class Computer {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public Company getManufacturer() {
-		return manufacturerCompany;
 	}
 	
 	public long getId() {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.utils.DateDiscontinuedIntroducedException;
 
 public class Controller implements ControllerInterface {
 	

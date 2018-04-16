@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.utils;
+package com.excilys.computerdatabase.exception;
 
 public class DateDiscontinuedIntroducedException extends Exception {
 

@@ -54,7 +54,10 @@ public class ComputerDaoImpl implements ComputerDao {
 			
 			while(result.next())
 			{
-				Company company = daoFactory.getCompanyDao().getCompany(result.getLong("company_id"));
+				
+				Company company = null;
+				if(result.getString("company_id") != null)
+					company = daoFactory.getCompanyDao().getCompany(result.getLong("company_id"));
 				
 				computers.add(new Computer(
 						result.getLong("id"),
@@ -69,6 +72,43 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 		
 		return computers;
+	}
+
+	@Override
+	public Computer getComputer(long id) {
+		Computer computer = null;
+		try {
+			Connection connection = daoFactory.getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT+"WHERE id="+ id +";");
+			
+			Company company = null;
+			if(result.getString("company_id") != null)
+				company = daoFactory.getCompanyDao().getCompany(result.getLong("company_id"));
+			
+			computer = new Computer(
+					result.getLong("id"),
+					result.getString("name"),
+					result.getDate("introduced"),
+					result.getDate("discontinued"),
+					company);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return computer;
+	}
+
+	@Override
+	public void delete(Computer computer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Computer computer) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -2,11 +2,11 @@ package com.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
 
-public abstract class DAO<T> {
+public abstract class Dao<T> {
 	
 	protected Connection connection;
 	
-	public DAO(Connection connection)
+	public Dao(Connection connection)
 	{
 		this.connection = connection;
 	}

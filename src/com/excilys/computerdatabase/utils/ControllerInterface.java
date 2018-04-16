@@ -1,7 +1,9 @@
 package com.excilys.computerdatabase.utils;
 
+import java.util.Date;
 import java.util.List;
 
+import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
 public interface ControllerInterface {
@@ -15,5 +17,11 @@ public interface ControllerInterface {
 	public void addComputer(Computer computer);
 	
 	public boolean updateComputer(Computer oldComputer, Computer newComputer);
+	
+	public List<Company> getCompanies();
+	
+	public String getDetailsComputer(Computer computer);
+	
+	public void createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException;
 
 }

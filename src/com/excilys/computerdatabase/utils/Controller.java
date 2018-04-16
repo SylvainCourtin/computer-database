@@ -1,13 +1,16 @@
 package com.excilys.computerdatabase.utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
 public class Controller implements ControllerInterface {
 	
 	private List<Computer> computers;
+	private List<Company> companies;
 	
 	
 
@@ -55,6 +58,23 @@ public class Controller implements ControllerInterface {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Company> getCompanies() {
+	
+		return companies;
+	}
+	
+	@Override
+	public void createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
+		computers.add(new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany));
+		
+	}
+	
+	@Override
+	public String getDetailsComputer(Computer computer) {
+		return computer.toString();
 	}
 
 }

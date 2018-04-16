@@ -43,5 +43,18 @@ public class Controller implements ControllerInterface {
 		}
 		return false;
 	}
+	
+	@Override
+	public Computer getComputer(String name)
+	{
+		for (Computer computer : computers) 
+		{
+			if(computer.getName().equals((name)))
+			{
+				return computer;
+			}
+		}
+		return null;
+	}
 
 }

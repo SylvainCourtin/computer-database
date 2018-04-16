@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.utils;
+package com.excilys.computerdatabase.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.utils.DateDiscontinuedIntroducedException;
 
 public class Controller implements ControllerInterface {
 	

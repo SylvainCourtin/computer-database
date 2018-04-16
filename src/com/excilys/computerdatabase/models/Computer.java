@@ -20,7 +20,8 @@ public class Computer {
 	public Computer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
 		super();
 		this.name = name;
-		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+		if(dateIntroduced != null && dateDiscontinued != null)
+			dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateIntroduced = dateIntroduced;
 		this.dateDiscontinued = dateDiscontinued;
 		this.manufacturerCompany = manufacturerCompany;
@@ -101,8 +102,22 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [name=" + name + ", dateIntroduced=" + dateIntroduced.toString() + ", dateDiscontinued="
-				+ dateDiscontinued.toString() + ", manufacturerCompany=" + manufacturerCompany.getName() + "]";
+		
+		String dateIntro = "empty";
+		String dateDisc = "empty";
+		String company = "empty";
+		
+		if(dateDiscontinued != null)
+			dateDisc = dateDiscontinued.toString();
+		
+		if(dateIntroduced != null)
+			dateIntro = dateIntroduced.toString();
+		
+		if(manufacturerCompany != null)
+			company =  manufacturerCompany.getName();
+		
+		return "Computer [name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
+				+ dateDisc + ", manufacturerCompany=" + company + "]";
 	}
 	
 	

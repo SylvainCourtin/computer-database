@@ -5,13 +5,14 @@ import java.util.Date;
 
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.utils.Controller;
 import com.excilys.computerdatabase.utils.DateDiscontinuedIntroducedException;
 
 public class Main {
 	
 	public static void myTest()
 	{
-		
+		Controller myController = new Controller();
 		
 		Company comp1 = new Company("Asus");
 		Company comp2 = new Company("Acer");
@@ -46,14 +47,41 @@ public class Main {
 			Computer c4 = new Computer("c4", cal7.getTime(), cal8.getTime(), comp3);
 			Computer c5 = new Computer("c5", cal9.getTime(), cal10.getTime(), comp3);
 			
+			myController.addComputer(c1);
+			myController.addComputer(c2);
+			myController.addComputer(c3);
+			myController.addComputer(c4);
+			myController.addComputer(c5);
+			
+			//Partie test
+			
+			for (Computer c : myController.getComputers()) {
+				System.out.println(c.toString());
+				
+			}
+			System.out.println("-------------------------------------");
+			myController.deleteComputer(c1);
+			
+			for (Computer c : myController.getComputers()) {
+				System.out.println(c.toString());
+				
+			}
+			
+			System.out.println("\n"+myController.getComputer(c2.getName()).equals(c2));
+			
+			
+			
 		} catch (DateDiscontinuedIntroducedException e) {
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		myTest();
 		
 
 	}

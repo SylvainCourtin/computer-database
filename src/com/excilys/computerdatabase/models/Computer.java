@@ -52,8 +52,60 @@ public class Computer {
 	
 	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
 	{
-		if(! introduced.before(discontinued));
-			throw new DateDiscontinuedIntroducedException();
+		if(introduced.after(discontinued))
+			throw new DateDiscontinuedIntroducedException(introduced.toString() + " doit etre plus petit que " + discontinued.toString());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dateDiscontinued == null) ? 0 : dateDiscontinued.hashCode());
+		result = prime * result + ((dateIntroduced == null) ? 0 : dateIntroduced.hashCode());
+		result = prime * result + ((manufacturerCompany == null) ? 0 : manufacturerCompany.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Computer other = (Computer) obj;
+		if (dateDiscontinued == null) {
+			if (other.dateDiscontinued != null)
+				return false;
+		} else if (!dateDiscontinued.equals(other.dateDiscontinued))
+			return false;
+		if (dateIntroduced == null) {
+			if (other.dateIntroduced != null)
+				return false;
+		} else if (!dateIntroduced.equals(other.dateIntroduced))
+			return false;
+		if (manufacturerCompany == null) {
+			if (other.manufacturerCompany != null)
+				return false;
+		} else if (!manufacturerCompany.equals(other.manufacturerCompany))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Computer [name=" + name + ", dateIntroduced=" + dateIntroduced.toString() + ", dateDiscontinued="
+				+ dateDiscontinued.toString() + ", manufacturerCompany=" + manufacturerCompany.getName() + "]";
+	}
+	
+	
+	
 	
 }

@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.ui;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
@@ -32,8 +33,14 @@ public final class Cli {
 		System.out.println("-6 Delete a computer -");
 		System.out.println("-7 Exit -");
 		System.out.println("----------------------------");
+		int i = 0;
+		try {
+			 i = scanner.nextInt();
+		} catch (InputMismatchException e) {
+			System.out.println("Oops wrong value try again");
+		}
 		
-		return scanner.nextInt();
+		return i;
 	}
 	
 	public boolean doAction()
@@ -61,7 +68,6 @@ public final class Cli {
 			break;
 		case 7:
 			return false;
-		default:
 		}
 		return true;
 	}

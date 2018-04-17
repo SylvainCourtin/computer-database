@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,12 +23,9 @@ public class CompanyDaoImpl implements CompanyDao {
 	public void add(Company company) {
 		try {
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
-					company.getId()+','+
-					company.getName()+','+
-					");");
-			result.close();
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPANY_INSERT);
+			preparedStatement.setString(1, company.getName());
+			preparedStatement.executeUpdate();
 			connection.close();
 			
 		}catch (SQLException e) {

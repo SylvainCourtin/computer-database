@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,18 +33,14 @@ public class ComputerDaoImpl implements ComputerDao {
 				daoFactory.getCompanyDao().add(computer.getManufacturerCompany());
 			
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
-					computer.getId()+','+
-					computer.getName()+','+
-					MyUtils.formatDateToSQL(computer.getDateIntroduced())+','+
-					MyUtils.formatDateToSQL(computer.getDateDiscontinued())+','+
-					computer.getManufacturerCompany().getId()+','+
-					");");
-			
-			isAdd = result.rowInserted();
-			result.close();
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT);
+			preparedStatement.setString(1, computer.getName());
+			preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
+			preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
+			preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			if (preparedStatement.executeUpdate() > 0)
+				isAdd = true ;
+
 			connection.close();
 			
 		}catch (SQLException e) {
@@ -143,17 +140,14 @@ public class ComputerDaoImpl implements ComputerDao {
 				companyId.concat(" null");
 			
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE+
-					" name = "+ computer.getName() +
-					" introduced = "+ MyUtils.formatDateToSQL(computer.getDateIntroduced()) +
-					" discontinued = "+ MyUtils.formatDateToSQL(computer.getDateDiscontinued()) +
-					" company_id = "+ companyId +
-					" WHERE id= "+ computer.getId() +";");
-			
-			
-			isUpdate=result.rowUpdated();
-			result.close();
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_UPDATE);
+			preparedStatement.setString(1, computer.getName());
+			preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
+			preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
+			preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			if (preparedStatement.executeUpdate() > 0)
+				isUpdate = true;
+
 			connection.close();
 			
 			

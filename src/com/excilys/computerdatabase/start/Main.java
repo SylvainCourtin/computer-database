@@ -124,6 +124,7 @@ public class Main {
 			//testGetIDDaoComputer(computerDao,7); // -> company null
 			//testGetIDDaoComputer(computerDao,2); // -> company Thinking Machines
 			//testGetIDDaoCompany(companyDao,3);
+			testAddCompany(companyDao, comp1);
 			
 		}
 		catch (DateDiscontinuedIntroducedException e) {
@@ -153,6 +154,12 @@ public class Main {
 	{
 		System.out.println(companyDao.getCompany(id).toString());
 	}
+	
+	public static void testAddCompany(CompanyDao companyDao, Company c)
+	{
+		companyDao.add(c);
+		testGetDaoCompany(companyDao);
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -162,3 +169,4 @@ public class Main {
 	}
 
 }
+;

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
@@ -26,24 +27,28 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		boolean isAdd = false;
 		
+		
 		try {
 			
 			//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
-			if(daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
-				daoFactory.getCompanyDao().add(computer.getManufacturerCompany());
+			if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
+				throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
 			
 			Connection connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT);
 			preparedStatement.setString(1, computer.getName());
 			preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
 			preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
-			preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			if(computer.getManufacturerCompany() != null)
+				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			else 
+				preparedStatement.setString(4, null);
 			if (preparedStatement.executeUpdate() > 0)
 				isAdd = true ;
 
 			connection.close();
 			
-		}catch (SQLException e) {
+		}catch (SQLException | CompanyDoesNotExistException e) {
 			e.printStackTrace();
 		}
 		return isAdd;
@@ -133,18 +138,20 @@ public class ComputerDaoImpl implements ComputerDao {
 		boolean isUpdate = false;
 		try {
 			
-			String companyId = "  company_id =";
-			if(computer.getManufacturerCompany() != null )
-				companyId.concat(" "+computer.getManufacturerCompany().getId());
-			else
-				companyId.concat(" null");
+			//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
+			if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
+				throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
+
 			
 			Connection connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_UPDATE);
 			preparedStatement.setString(1, computer.getName());
 			preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
 			preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
-			preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			if(computer.getManufacturerCompany() != null)
+				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			else 
+				preparedStatement.setString(4, null);
 			if (preparedStatement.executeUpdate() > 0)
 				isUpdate = true;
 
@@ -153,7 +160,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			
 			
 		}
-		catch (SQLException e) {
+		catch (SQLException | CompanyDoesNotExistException e) {
 			e.printStackTrace();
 		}
 		return isUpdate;

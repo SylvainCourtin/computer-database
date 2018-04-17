@@ -11,7 +11,7 @@ public class MyUtils {
 	 * @param date
 	 * @return String "yyyy-MM-dd"
 	 */
-	public static String formatDateToSQL(Date date)
+	public static String formatDateToString(Date date)
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.format(date);
@@ -24,7 +24,10 @@ public class MyUtils {
 	 */
 	public static java.sql.Date formatDateUtilToSQLDate(Date date)
 	{
-		return java.sql.Date.valueOf(formatDateToSQL(date));
+		if(date != null)
+			return java.sql.Date.valueOf(formatDateToString(date));
+		else
+			return null;
 	}
 	
 	
@@ -35,13 +38,14 @@ public class MyUtils {
 	 */
 	public static Date stringToDate(String sDate) throws ParseException
 	{
-		if(sDate != null)
+		if(!sDate.equals("null") && sDate != null)
 		{
 			SimpleDateFormat format;
 			format = new SimpleDateFormat("yyyy-MM-dd");
 			return format.parse(sDate);
 		}
-		return null;
+		else
+			return null;
 	}
 
 }

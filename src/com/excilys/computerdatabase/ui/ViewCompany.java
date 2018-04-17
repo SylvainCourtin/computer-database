@@ -1,11 +1,14 @@
 package com.excilys.computerdatabase.ui;
 
+import java.util.Scanner;
+
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
 
 public class ViewCompany {
 	
 	private ServiceCompany serviceCompany;
+	private Scanner scanner = new Scanner(System.in);
 	public ViewCompany() {
 		serviceCompany = new ServiceCompany();
 	}
@@ -19,6 +22,33 @@ public class ViewCompany {
 	
 	public ServiceCompany getServiceCompany() {
 		return serviceCompany;
+	}
+	
+	public Company showRequestCompany()
+	{
+		Company company = null;
+		boolean isIDValid = false;
+		do {
+			System.out.println("----------------------------");
+			System.out.println("Company id ?\nCan be null");
+			String tmp = scanner.nextLine();
+			if(!tmp.equals("null"))
+			{
+				company = serviceCompany.getCompany(Long.parseLong(tmp));
+				if( company == null)
+				{
+					isIDValid = false;
+					System.out.println("\n\t This company doesn't exist try again");
+				}
+				else
+					isIDValid = true;
+			}
+			else
+			{
+				isIDValid = true;
+			}
+		}while(!isIDValid);
+		return company;
 	}
 
 }

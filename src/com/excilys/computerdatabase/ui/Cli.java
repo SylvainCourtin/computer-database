@@ -100,51 +100,13 @@ public final class Cli {
 	
 	public void requestNewComputer()
 	{
-		String name = "";
-		Date dateIntroduced= null;
-		Date dateDiscontinued = null;
-		Company company = null;
+		String name = computer.showRequestName();
+		Date dateIntroduced= computer.showRequestDateIntroduced();
+		Date dateDiscontinued = computer.showRequestDateDiscontinued();
+		Company company = this.company.showRequestCompany();
 		
-		System.out.println("\n-----------Create Computer-----------------");
-		System.out.println("Name ?");
 		
-		name = scanner.nextLine();
-		
-		System.out.println("----------------------------");
-		System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
-		dateIntroduced= RequestOkDate();
-		
-		System.out.println("----------------------------");
-		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
-		dateDiscontinued= RequestOkDate();
-		boolean isIDValid = false;
-		do {
-			System.out.println("----------------------------");
-			System.out.println("Company id ?\nCan be null");
-			String tmp = scanner.nextLine();
-			if(!tmp.equals("null"))
-			{
-				company = this.company.getServiceCompany().getCompany(Long.parseLong(tmp));
-				if( company == null)
-				{
-					isIDValid = false;
-					System.out.println("\n\t This company doesn't exist try again");
-				}
-				else
-					isIDValid = true;
-			}
-			else
-			{
-				isIDValid = true;
-			}
-		}while(!isIDValid);
-		
-		try {
-			computer.getServiceComputer().addComputer(name, dateIntroduced, dateDiscontinued, company );
-		} catch (DateDiscontinuedIntroducedException e) {
-			System.out.println(e.getMessage());
-			System.out.println("Action cancel");
-		}
+		computer.requestCreateComputer(name,dateIntroduced,dateDiscontinued,company);
 	}
 	
 	public Date RequestOkDate()

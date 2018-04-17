@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.start;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
@@ -116,9 +117,9 @@ public class Main {
 			Computer c4 = new Computer("c4", cal7.getTime(), cal8.getTime(), comp3);
 			Computer c5 = new Computer("c5", cal9.getTime(), cal10.getTime(), comp3);
 			
-			ComputerDao computerDao = DaoFactory.getInstance().getComputerDao();
+			CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
 			
-			for (Computer c : computerDao.getList()) {
+			for (Company c : companyDao.getList()) {
 				System.out.println(c.toString());
 			}
 		}

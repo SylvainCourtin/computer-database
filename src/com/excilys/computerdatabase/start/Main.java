@@ -58,9 +58,9 @@ public class Main {
 			//testGetIDDaoComputer(computerDao,7); // -> company null
 			//testGetIDDaoComputer(computerDao,2); // -> company Thinking Machines
 			//testGetIDDaoCompany(companyDao,3);
-			testAddCompany(companyDao, comp1);
+			//testAddCompany(companyDao, comp1);
 			
-			testAddComputer(computerDao,c2);
+			//testAddComputer(computerDao,c2);
 			
 		}
 		catch (DateDiscontinuedIntroducedException e) {

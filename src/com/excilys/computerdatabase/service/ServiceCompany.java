@@ -6,7 +6,7 @@ import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.models.Company;
 
-public class ServiceCompany {
+public class ServiceCompany implements Service{
 	
 	private CompanyDao companyDao;
 

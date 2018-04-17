@@ -7,7 +7,7 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
-public interface ControllerInterface {
+public interface ServiceInterface {
 	
 	public List<Computer> getComputers();
 	

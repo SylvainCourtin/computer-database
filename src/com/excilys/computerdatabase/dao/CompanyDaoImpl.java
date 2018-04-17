@@ -23,11 +23,11 @@ public class CompanyDaoImpl implements CompanyDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
 					company.getId()+','+
 					company.getName()+','+
 					");");
-			
+			result.close();
 			connection.close();
 			
 		}catch (SQLException e) {
@@ -52,7 +52,7 @@ public class CompanyDaoImpl implements CompanyDao {
 						result.getLong("id"),
 						result.getString("name")));
 			}
-			
+			result.close();
 			connection.close();
 			
 		}catch (Exception e) {
@@ -71,10 +71,14 @@ public class CompanyDaoImpl implements CompanyDao {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_SELECT+"WHERE id="+id+";");
-			company = new Company(
-					result.getLong("id"),
-					result.getString("name"));
 			
+			while(result.next())
+			{
+				company = new Company(
+						id,
+						result.getString("name"));
+			}
+			result.close();
 			connection.close();
 		
 		}catch (SQLException e) {

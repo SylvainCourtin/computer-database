@@ -9,13 +9,13 @@ import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.service.Controller;
+import com.excilys.computerdatabase.service.Service;
 
 public class Main {
 	
 	public static void myTest()
 	{
-		Controller myController = new Controller();
+		Service myController = new Service();
 		
 		Company comp1 = new Company("Asus");
 		Company comp2 = new Company("Acer");
@@ -118,14 +118,40 @@ public class Main {
 			Computer c5 = new Computer("c5", cal9.getTime(), cal10.getTime(), comp3);
 			
 			CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+			ComputerDao computerDao =DaoFactory.getInstance().getComputerDao();
+			//testGetDaoCompany(companyDao);
+			//testGetDaoComputer(computerDao);
+			//testGetIDDaoComputer(computerDao,7); // -> company null
+			//testGetIDDaoComputer(computerDao,2); // -> company Thinking Machines
+			//testGetIDDaoCompany(companyDao,3);
 			
-			for (Company c : companyDao.getList()) {
-				System.out.println(c.toString());
-			}
 		}
 		catch (DateDiscontinuedIntroducedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void testGetDaoCompany(CompanyDao companyDao)
+	{
+		for (Company c : companyDao.getList()) {
+			System.out.println(c.toString());
+		}
+	}
+	public static void testGetDaoComputer(ComputerDao computerDao)
+	{
+		for (Computer c : computerDao.getList()) {
+			System.out.println(c.toString());
+		}
+	}
+	
+	public static void testGetIDDaoComputer(ComputerDao computerDao, long id)
+	{
+		System.out.println(computerDao.getComputer(id).toString());
+	}
+	
+	public static void testGetIDDaoCompany(CompanyDao companyDao, long id)
+	{
+		System.out.println(companyDao.getCompany(id).toString());
 	}
 
 	public static void main(String[] args) {

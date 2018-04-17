@@ -9,10 +9,7 @@ public class Company {
 	private long id;
 	private String name;
 	
-	private List<Computer> computersMade;
-	
 	public Company() {
-		computersMade = new ArrayList<>();
 	}
 	
 	public Company(String name) {
@@ -34,13 +31,6 @@ public class Company {
 		this.name = name;
 	}
 	
-	public void setComputersMade(List<Computer> computersMade) {
-		this.computersMade = computersMade;
-	}
-	
-	public List<Computer> getComputersMade() {
-		return computersMade;
-	}
 
 	public long getId() {
 		return id;
@@ -54,7 +44,6 @@ public class Company {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((computersMade == null) ? 0 : computersMade.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -68,11 +57,6 @@ public class Company {
 		if (getClass() != obj.getClass())
 			return false;
 		Company other = (Company) obj;
-		if (computersMade == null) {
-			if (other.computersMade != null)
-				return false;
-		} else if (!computersMade.equals(other.computersMade))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;

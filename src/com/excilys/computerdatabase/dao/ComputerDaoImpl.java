@@ -10,6 +10,7 @@ import java.util.List;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
+import com.excilys.computerdatabase.utils.MyUtils;
 
 public class ComputerDaoImpl implements ComputerDao {
 	
@@ -36,13 +37,13 @@ public class ComputerDaoImpl implements ComputerDao {
 			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_INSERT+'('+
 					computer.getId()+','+
 					computer.getName()+','+
-					computer.getDateIntroduced()+','+
-					computer.getDateDiscontinued()+','+
+					MyUtils.formatDateToSQL(computer.getDateIntroduced())+','+
+					MyUtils.formatDateToSQL(computer.getDateDiscontinued())+','+
 					computer.getManufacturerCompany().getId()+','+
 					");");
 			
 			isAdd = result.rowInserted();
-			
+			result.close();
 			connection.close();
 			
 		}catch (SQLException e) {
@@ -58,29 +59,20 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT+";");
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT+ MyConstants.SQL_QUERY_COMPUTER_LEFT_JOIN_COMPANY +";");
 			
 			while(result.next())
 			{
-				
-				Company company = null;
-				//La bdd peut nous retourner un long primitif null pour l'id de la company. On effectue un try catch
-				try {
-					company = daoFactory.getCompanyDao().getCompany(result.getLong("company_id"));
-				}
-				catch(Exception e)
-				{
-					
-				}
-				
+				Company company = new Company(result.getLong("company.id"), result.getString("company.name"));
+
 				computers.add(new Computer(
-						result.getLong("id"),
-						result.getString("name"),
-						result.getDate("introduced"),
-						result.getDate("discontinued"),
+						result.getLong("computer.id"),
+						result.getString("computer.name"),
+						result.getDate("computer.introduced"),
+						result.getDate("computer.discontinued"),
 						company));
 			}
-			
+			result.close();
 			connection.close();
 			
 		}catch (SQLException e) {
@@ -96,25 +88,21 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT+"WHERE id="+ id +";");
-			
-			Company company = null;
-			//La bdd peut nous retourner un long primitif null pour l'id de la company. On effectue un try catch
-			try {
-				company = daoFactory.getCompanyDao().getCompany(result.getLong("company_id"));
-			}
-			catch(Exception e)
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT + MyConstants.SQL_QUERY_COMPUTER_LEFT_JOIN_COMPANY+"WHERE computer.id="+ id + ";");
+
+			while(result.next())
 			{
-				
+				Company company = new Company(result.getLong("company.id"), result.getString("company.name"));
+	
+				computer = new Computer(
+						result.getLong("computer.id"),
+						result.getString("computer.name"),
+						result.getDate("computer.introduced"),
+						result.getDate("computer.discontinued"),
+						company);
 			}
 			
-			computer = new Computer(
-					result.getLong("id"),
-					result.getString("name"),
-					result.getDate("introduced"),
-					result.getDate("discontinued"),
-					company);
-			
+			result.close();
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -133,6 +121,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			
 			isDelete = result.rowDeleted();
 			
+			result.close();
 			connection.close();
 			
 			
@@ -157,13 +146,14 @@ public class ComputerDaoImpl implements ComputerDao {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE+
 					" name = "+ computer.getName() +
-					" introduced = "+ computer.getDateIntroduced() +
-					" discontinued = "+ computer.getDateDiscontinued() +
+					" introduced = "+ MyUtils.formatDateToSQL(computer.getDateIntroduced()) +
+					" discontinued = "+ MyUtils.formatDateToSQL(computer.getDateDiscontinued()) +
 					" company_id = "+ companyId +
 					" WHERE id= "+ computer.getId() +";");
 			
 			
 			isUpdate=result.rowUpdated();
+			result.close();
 			connection.close();
 			
 			

@@ -139,7 +139,7 @@ public class Computer {
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.getName();
 		
-		return "Computer [name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
+		return "Computer [id=" + id  +", name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
 				+ dateDisc + ", manufacturerCompany=" + company + "]";
 	}
 	

@@ -25,12 +25,13 @@ public class ViewComputer {
 			System.out.println(c.toString());
 		}
 	}
-	
+	//affichage d'un pc
 	public void showOneComputer(long id)
 	{
 		System.out.println(serviceComputer.getDetailsComputer(id).toString());
 	}
 	
+	//demande un nom (pour la création d'un computer ou update)
 	public String showRequestName()
 	{
 		System.out.println("\n-----------Create Computer-----------------");
@@ -39,13 +40,14 @@ public class ViewComputer {
 		return scanner.nextLine();
 	}
 	
+	//demande d'une date ou null (format exigeant !)
 	public Date showRequestDateIntroduced()
 	{
 		System.out.println("----------------------------");
 		System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
 		return RequestOkDate();
 	}
-	
+	//demande d'une date ou null (format exigeant !)
 	public Date showRequestDateDiscontinued()
 	{
 		System.out.println("----------------------------");
@@ -53,22 +55,28 @@ public class ViewComputer {
 		return RequestOkDate();
 		
 	}
-	
-	public void requestCreateComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	//effectue la création d'un computer
+	public boolean requestCreateComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
 	{
 		try {
-			if(serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company ))
-				System.out.println("Successfully added !");
+			return serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company );
+				
 		} catch (DateDiscontinuedIntroducedException e) {
 			System.out.println(e.getMessage());
 			System.out.println("Action cancel");
 		}
+		return false;
+	}
+	
+	public boolean deleteComputer(long id)
+	{
+		return serviceComputer.deleteComputer(serviceComputer.getDetailsComputer(id));
 	}
 	
 	public ServiceComputer getServiceComputer() {
 		return serviceComputer;
 	}
-	
+	//boucle qui vérifie si la date est OK, si KO elle redemande (null fonctionne)
 	private Date RequestOkDate()
 	{
 		Date date = null;

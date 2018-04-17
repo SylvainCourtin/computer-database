@@ -23,7 +23,7 @@ public class ViewCompany {
 	public ServiceCompany getServiceCompany() {
 		return serviceCompany;
 	}
-	
+	//demande à l'utilisateur un ID d'une company, s'il ecrit null, on revoit null, sinon on regarde que l'id existe bien
 	public Company showRequestCompany()
 	{
 		Company company = null;

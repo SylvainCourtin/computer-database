@@ -20,6 +20,8 @@ public final class Cli {
 		return new Cli();
 	}
 	
+	
+	//affichage du menu principale
 	public int displayAction()
 	{
 		
@@ -42,7 +44,7 @@ public final class Cli {
 		
 		return i;
 	}
-	
+	//effectue l'affichage et le choix des options
 	public boolean doAction()
 	{
 		int option = displayAction();
@@ -64,14 +66,14 @@ public final class Cli {
 			
 			break;
 		case 6:
-			deleteComputer(requestIdComputer());
+			requestDeleteComputer(requestIdComputer());
 			break;
 		case 7:
 			return false;
 		}
 		return true;
 	}
-	
+	//demande d'un id de computer à l'utilisateur
 	public long requestIdComputer()
 	{
 		System.out.println("\n\n\n----------------------------");
@@ -80,16 +82,16 @@ public final class Cli {
 		return scanner.nextLong();
 		
 	}
-	
+	//affiche les infos pour un seul computer
 	public void displayOneComputer(long id)
 	{
 		computer.showOneComputer(id);
 		System.out.println("\n\n\n----------------------------");
 	}
-	
-	public void deleteComputer(long id)
+	//effectue l'effacement d'un computer dans la bdd 
+	public void requestDeleteComputer(long id)
 	{
-		if(computer.getServiceComputer().deleteComputer(computer.getServiceComputer().getDetailsComputer(id)))
+		if(computer.deleteComputer(id))
 		{
 			System.out.println("Success !");
 		}
@@ -98,6 +100,7 @@ public final class Cli {
 		System.out.println("\n\n\n----------------------------");
 	}
 	
+	//effectue une création un nouveau computer
 	public void requestNewComputer()
 	{
 		String name = computer.showRequestName();
@@ -106,24 +109,15 @@ public final class Cli {
 		Company company = this.company.showRequestCompany();
 		
 		
-		computer.requestCreateComputer(name,dateIntroduced,dateDiscontinued,company);
+		if(computer.requestCreateComputer(name,dateIntroduced,dateDiscontinued,company))
+			System.out.println("Successfully added !");
+		else
+			System.out.println("Echec :(");
 	}
-	
-	public Date RequestOkDate()
+	//met à jour un computer deja existant dans la base
+	public void requestUpdateComputer()
 	{
-		Date date = null;
-		boolean isValid = false;
-		while(!isValid)
-		{
-			try {
-				date = MyUtils.stringToDate(scanner.nextLine());
-				isValid = true;
-			} catch (ParseException e) {
-				System.out.println("Unvalidate format, try again or write null");
-				isValid	= false;
-			}
-		}
-		return date;
+		long id = requestIdComputer();
 	}
 
 	public static void main(String[] args) {

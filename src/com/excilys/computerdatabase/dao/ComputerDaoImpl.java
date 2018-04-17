@@ -119,11 +119,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE+"id="+ computer.getId() +";");
-			
-			isDelete = result.rowDeleted();
-			
-			result.close();
+			if(statement.executeUpdate(MyConstants.SQL_QUERY_COMPUTER_DELETE+computer.getId() +";") > 0)
+					isDelete = true;
+
 			connection.close();
 			
 			

@@ -55,7 +55,7 @@ public final class Cli {
 			company.showList();
 			break;
 		case 3:
-			requestIdComputer();
+			displayOneComputer(requestIdComputer());
 			break;
 		case 4:
 			requestNewComputer();
@@ -64,7 +64,7 @@ public final class Cli {
 			
 			break;
 		case 6:
-			
+			deleteComputer(requestIdComputer());
 			break;
 		case 7:
 			return false;
@@ -72,12 +72,29 @@ public final class Cli {
 		return true;
 	}
 	
-	public void requestIdComputer()
+	public long requestIdComputer()
 	{
 		System.out.println("\n\n\n----------------------------");
 		System.out.println("Computer id ?");
 		System.out.print("= ");
-		computer.showOneComputer(scanner.nextLong());
+		return scanner.nextLong();
+		
+	}
+	
+	public void displayOneComputer(long id)
+	{
+		computer.showOneComputer(id);
+		System.out.println("\n\n\n----------------------------");
+	}
+	
+	public void deleteComputer(long id)
+	{
+		if(computer.getServiceComputer().deleteComputer(computer.getServiceComputer().getDetailsComputer(id)))
+		{
+			System.out.println("Success !");
+		}
+		else
+			System.out.println("Echec :(");
 		System.out.println("\n\n\n----------------------------");
 	}
 	
@@ -88,24 +105,24 @@ public final class Cli {
 		Date dateDiscontinued = null;
 		Company company = null;
 		
-		System.out.println("\n\n\n-----------Create Computer-----------------");
-		System.out.println("----------------------------");
-		System.out.println("\n\t Name ?");
+		System.out.println("\n-----------Create Computer-----------------");
+		System.out.println("Name ?");
+		
 		name = scanner.nextLine();
 		
 		System.out.println("----------------------------");
-		System.out.println("\n\t DateIntroduced ?\nexample : 1975-01-01. You can also write null");
+		System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
 		dateIntroduced= RequestOkDate();
 		
 		System.out.println("----------------------------");
-		System.out.println("\n\t dateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
+		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
 		dateDiscontinued= RequestOkDate();
 		boolean isIDValid = false;
 		do {
 			System.out.println("----------------------------");
-			System.out.println("\n\t company id ?\nCan be null");
+			System.out.println("Company id ?\nCan be null");
 			String tmp = scanner.nextLine();
-			if( tmp != null)
+			if(!tmp.equals("null"))
 			{
 				company = this.company.getServiceCompany().getCompany(Long.parseLong(tmp));
 				if( company == null)

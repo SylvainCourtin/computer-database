@@ -63,7 +63,7 @@ public final class Cli {
 			requestNewComputer();
 			break;
 		case 5:
-			
+			requestUpdateComputer();
 			break;
 		case 6:
 			requestDeleteComputer(requestIdComputer());
@@ -103,13 +103,24 @@ public final class Cli {
 	//effectue une création un nouveau computer
 	public void requestNewComputer()
 	{
+		System.out.println("\n-----------Create Computer-----------------");
+		System.out.println("Name ?");
 		String name = computer.showRequestName();
+		
+		System.out.println("----------------------------");
+		System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
 		Date dateIntroduced= computer.showRequestDateIntroduced();
+		
+		System.out.println("----------------------------");
+		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
 		Date dateDiscontinued = computer.showRequestDateDiscontinued();
+		
+		System.out.println("----------------------------");
+		System.out.println("Company id ?\nCan be null");
 		Company company = this.company.showRequestCompany();
 		
 		
-		if(computer.requestCreateComputer(name,dateIntroduced,dateDiscontinued,company))
+		if(computer.createComputer(name,dateIntroduced,dateDiscontinued,company))
 			System.out.println("Successfully added !");
 		else
 			System.out.println("Echec :(");
@@ -117,7 +128,33 @@ public final class Cli {
 	//met à jour un computer deja existant dans la base
 	public void requestUpdateComputer()
 	{
-		long id = requestIdComputer();
+		/*long id = requestIdComputer();
+		if(computer.getServiceComputer().getDetailsComputer(id) != null)
+		{
+			System.out.println("\n-----------Old Computer-----------------");
+			computer.showOneComputer(id);
+			
+			System.out.println("Name ?");
+			String name = computer.showRequestName();
+			
+			System.out.println("----------------------------");
+			System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
+			Date dateIntroduced= computer.showRequestDateIntroduced();
+			
+			System.out.println("----------------------------");
+			System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
+			Date dateDiscontinued = computer.showRequestDateDiscontinued();
+			
+			System.out.println("----------------------------");
+			System.out.println("Company id ?\nCan be null");
+			Company company = this.company.showRequestCompany();
+			
+			if(computer.createComputer(name,dateIntroduced,dateDiscontinued,company))
+				System.out.println("Successfully added !");
+			else
+				System.out.println("Echec :(");
+		}*/
+		//TODO
 	}
 
 	public static void main(String[] args) {

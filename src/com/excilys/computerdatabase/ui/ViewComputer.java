@@ -34,29 +34,22 @@ public class ViewComputer {
 	//demande un nom (pour la création d'un computer ou update)
 	public String showRequestName()
 	{
-		System.out.println("\n-----------Create Computer-----------------");
-		System.out.println("Name ?");
-		
 		return scanner.nextLine();
 	}
 	
 	//demande d'une date ou null (format exigeant !)
 	public Date showRequestDateIntroduced()
 	{
-		System.out.println("----------------------------");
-		System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
 		return RequestOkDate();
 	}
 	//demande d'une date ou null (format exigeant !)
 	public Date showRequestDateDiscontinued()
 	{
-		System.out.println("----------------------------");
-		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
 		return RequestOkDate();
 		
 	}
 	//effectue la création d'un computer
-	public boolean requestCreateComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	public boolean createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
 	{
 		try {
 			return serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company );
@@ -67,6 +60,19 @@ public class ViewComputer {
 		}
 		return false;
 	}
+	
+	//effectue l'update d'un computer
+	/*	public boolean updateComputer(Computer oldComputer, String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+		{
+			try {
+				return serviceComputer.updateComputer(oldComputer, new Computer(oldComputer,name, dateIntroduced, dateDiscontinued, company ));
+					
+			} catch (DateDiscontinuedIntroducedException e) {
+				System.out.println(e.getMessage());
+				System.out.println("Action cancel");
+			}
+			return false;
+		}*/
 	
 	public boolean deleteComputer(long id)
 	{

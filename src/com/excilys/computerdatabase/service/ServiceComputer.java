@@ -9,7 +9,7 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
-public class ServiceComputer implements Service {
+public class ServiceComputer {
 	
 	private ComputerDao computerDao;
 	
@@ -33,6 +33,13 @@ public class ServiceComputer implements Service {
 		return computerDao.add(computer);
 	}
 	
+	/*
+	 * Ajoute un nouvelle ordinateur, dateIntroduced doit etre avant dateDiscontinued
+	 * @name not null
+	 * @dateIntroduced can be null
+	 * @dateDiscontinued can be null
+	 * @manufacturerCompany can be null
+	 */
 	public boolean addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
 		

@@ -6,7 +6,7 @@ import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.models.Company;
 
-public class ServiceCompany implements Service{
+public class ServiceCompany{
 	
 	private CompanyDao companyDao;
 
@@ -16,6 +16,18 @@ public class ServiceCompany implements Service{
 
 	public List<Company> getCompanies() {
 		return companyDao.getList();
+	}
+	
+	public boolean isCompanyExist(long id)
+	{
+		return (companyDao.getCompany(id)!= null);
+			
+	}
+	
+	public Company getCompany(long id)
+	{
+		return companyDao.getCompany(id);
+			
 	}
 
 }

@@ -157,6 +157,8 @@ public final class Cli {
 			else
 				System.out.println("Echec :(");
 		}
+		else
+			System.err.println("Cette ID n'existe pas !");
 	}
 
 	public static void main(String[] args) {

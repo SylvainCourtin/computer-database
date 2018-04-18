@@ -28,7 +28,10 @@ public class ViewComputer {
 	//affichage d'un pc
 	public void showOneComputer(long id)
 	{
-		System.out.println(serviceComputer.getComputer(id).toStringDetails());
+		if(serviceComputer.getComputer(id) != null)
+			System.out.println(serviceComputer.getComputer(id).toStringDetails());
+		else
+			System.err.println("Cette ID n'existe pas !");
 	}
 	
 	//demande un nom (pour la création d'un computer ou update)
@@ -56,7 +59,7 @@ public class ViewComputer {
 				
 		} catch (DateDiscontinuedIntroducedException e) {
 			System.out.println(e.getMessage());
-			System.out.println("Action cancel");
+			System.err.println("Action cancel");
 		}
 		return false;
 	}
@@ -69,14 +72,20 @@ public class ViewComputer {
 				
 		} catch (DateDiscontinuedIntroducedException e) {
 			System.out.println(e.getMessage());
-			System.out.println("Action cancel");
+			System.err.println("Action cancel");
 		}
 		return false;
 	}
 	
 	public boolean deleteComputer(long id)
 	{
-		return serviceComputer.deleteComputer(serviceComputer.getComputer(id));
+		if(serviceComputer.getComputer(id) != null)
+			return serviceComputer.deleteComputer(serviceComputer.getComputer(id));
+		else
+		{
+			System.err.println("Cette ID n'existe pas !");
+			return false;
+		}
 	}
 	
 	public ServiceComputer getServiceComputer() {

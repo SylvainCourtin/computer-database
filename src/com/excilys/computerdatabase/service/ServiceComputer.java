@@ -24,7 +24,6 @@ public class ServiceComputer {
 
 	
 	public boolean deleteComputer(Computer computer) {
-		
 		return computerDao.delete(computer);
 	}
 

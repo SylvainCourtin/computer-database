@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.utils.MyConstants;
 
@@ -46,7 +47,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			while(result.next())
 			{
 				
-				companies.add(new Company(
+				companies.add(MapperCompany.fromParameters(
 						result.getLong("id"),
 						result.getString("name")));
 			}
@@ -72,7 +73,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			
 			while(result.next())
 			{
-				company = new Company(
+				company = MapperCompany.fromParameters(
 						id,
 						result.getString("name"));
 			}

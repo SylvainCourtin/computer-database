@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
+import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
 public final class Cli {
@@ -128,13 +129,15 @@ public final class Cli {
 	//met à jour un computer deja existant dans la base
 	public void requestUpdateComputer()
 	{
-		/*long id = requestIdComputer();
-		if(computer.getServiceComputer().getDetailsComputer(id) != null)
+		long id = requestIdComputer();
+		Computer oldComputer = computer.getServiceComputer().getComputer(id);
+		if( oldComputer != null)
 		{
 			System.out.println("\n-----------Old Computer-----------------");
+			//On affiche les anciennes informations
 			computer.showOneComputer(id);
 			
-			System.out.println("Name ?");
+			System.out.println("New name ?");
 			String name = computer.showRequestName();
 			
 			System.out.println("----------------------------");
@@ -149,12 +152,11 @@ public final class Cli {
 			System.out.println("Company id ?\nCan be null");
 			Company company = this.company.showRequestCompany();
 			
-			if(computer.createComputer(name,dateIntroduced,dateDiscontinued,company))
-				System.out.println("Successfully added !");
+			if(computer.updateComputer(oldComputer,name,dateIntroduced,dateDiscontinued,company))
+				System.out.println("Successfully Updated !");
 			else
 				System.out.println("Echec :(");
-		}*/
-		//TODO
+		}
 	}
 
 	public static void main(String[] args) {

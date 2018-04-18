@@ -51,7 +51,7 @@ public class ServiceComputer {
 		return computerDao.update(newComputer);
 	}
 	
-	public Computer getDetailsComputer(long id)
+	public Computer getComputer(long id)
 	{
 		return computerDao.getComputer(id);
 	}

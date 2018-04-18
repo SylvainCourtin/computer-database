@@ -150,6 +150,12 @@ public class ComputerDaoImpl implements ComputerDao {
 				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
 			else 
 				preparedStatement.setString(4, null);
+			//Where id=?
+			preparedStatement.setLong(5, computer.getId());
+			if(computer.getManufacturerCompany() != null)
+				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+			else 
+				preparedStatement.setString(4, null);
 			if (preparedStatement.executeUpdate() > 0)
 				isUpdate = true;
 

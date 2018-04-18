@@ -143,6 +143,25 @@ public class Computer {
 				+ dateDisc + ", manufacturerCompany=" + company + "]";
 	}
 	
+	public String toStringDetails() {
+		
+		String dateIntro = "empty";
+		String dateDisc = "empty";
+		String company = "empty";
+		
+		if(dateDiscontinued != null)
+			dateDisc = dateDiscontinued.toString();
+		
+		if(dateIntroduced != null)
+			dateIntro = dateIntroduced.toString();
+		
+		if(manufacturerCompany != null)
+			company =  manufacturerCompany.toString();
+		
+		return "Computer [id=" + id  +", name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
+				+ dateDisc + ", manufacturerCompany=" + company + "]";
+	}
+	
 	
 	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
 	{

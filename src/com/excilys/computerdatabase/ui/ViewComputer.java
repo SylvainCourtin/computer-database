@@ -28,7 +28,7 @@ public class ViewComputer {
 	//affichage d'un pc
 	public void showOneComputer(long id)
 	{
-		System.out.println(serviceComputer.getDetailsComputer(id).toString());
+		System.out.println(serviceComputer.getComputer(id).toStringDetails());
 	}
 	
 	//demande un nom (pour la création d'un computer ou update)
@@ -62,21 +62,21 @@ public class ViewComputer {
 	}
 	
 	//effectue l'update d'un computer
-	/*	public boolean updateComputer(Computer oldComputer, String name, Date dateIntroduced, Date dateDiscontinued, Company company)
-		{
-			try {
-				return serviceComputer.updateComputer(oldComputer, new Computer(oldComputer,name, dateIntroduced, dateDiscontinued, company ));
-					
-			} catch (DateDiscontinuedIntroducedException e) {
-				System.out.println(e.getMessage());
-				System.out.println("Action cancel");
-			}
-			return false;
-		}*/
+	public boolean updateComputer(Computer oldComputer, String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	{
+		try {
+			return serviceComputer.updateComputer(oldComputer, new Computer(name, dateIntroduced, dateDiscontinued, company ));
+				
+		} catch (DateDiscontinuedIntroducedException e) {
+			System.out.println(e.getMessage());
+			System.out.println("Action cancel");
+		}
+		return false;
+	}
 	
 	public boolean deleteComputer(long id)
 	{
-		return serviceComputer.deleteComputer(serviceComputer.getDetailsComputer(id));
+		return serviceComputer.deleteComputer(serviceComputer.getComputer(id));
 	}
 	
 	public ServiceComputer getServiceComputer() {

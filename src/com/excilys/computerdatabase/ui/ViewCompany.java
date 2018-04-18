@@ -29,8 +29,6 @@ public class ViewCompany {
 		Company company = null;
 		boolean isIDValid = false;
 		do {
-			System.out.println("----------------------------");
-			System.out.println("Company id ?\nCan be null");
 			String tmp = scanner.nextLine();
 			if(!tmp.equals("null"))
 			{

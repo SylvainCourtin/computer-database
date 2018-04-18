@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.models;
 import java.util.Date;
 
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.utils.MyUtils;
 
 public class Computer {
 
@@ -131,10 +132,10 @@ public class Computer {
 		String company = "empty";
 		
 		if(dateDiscontinued != null)
-			dateDisc = dateDiscontinued.toString();
+			dateDisc = MyUtils.dateToString(dateDiscontinued);
 		
 		if(dateIntroduced != null)
-			dateIntro = dateIntroduced.toString();
+			dateIntro = MyUtils.dateToString(dateIntroduced);
 		
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.getName();
@@ -150,10 +151,10 @@ public class Computer {
 		String company = "empty";
 		
 		if(dateDiscontinued != null)
-			dateDisc = dateDiscontinued.toString();
+			dateDisc = MyUtils.dateToString(dateDiscontinued);
 		
 		if(dateIntroduced != null)
-			dateIntro = dateIntroduced.toString();
+			dateIntro = MyUtils.dateToString(dateIntroduced);
 		
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.toString();

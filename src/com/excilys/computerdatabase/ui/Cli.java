@@ -109,11 +109,11 @@ public final class Cli {
 		String name = computer.showRequestName();
 		
 		System.out.println("----------------------------");
-		System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
+		System.out.println("DateIntroduced ?\nexample : dd-MM-yyyy. You can also write null");
 		Date dateIntroduced= computer.showRequestDateIntroduced();
 		
 		System.out.println("----------------------------");
-		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
+		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : dd-MM-yyyy. You can also write null");
 		Date dateDiscontinued = computer.showRequestDateDiscontinued();
 		
 		System.out.println("----------------------------");
@@ -141,11 +141,11 @@ public final class Cli {
 			String name = computer.showRequestName();
 			
 			System.out.println("----------------------------");
-			System.out.println("DateIntroduced ?\nexample : 1975-01-01. You can also write null");
+			System.out.println("DateIntroduced ?\nexample : dd-MM-yyyy. You can also write null");
 			Date dateIntroduced= computer.showRequestDateIntroduced();
 			
 			System.out.println("----------------------------");
-			System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : 1975-01-01. You can also write null");
+			System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : dd-MM-yyyy. You can also write null");
 			Date dateDiscontinued = computer.showRequestDateDiscontinued();
 			
 			System.out.println("----------------------------");

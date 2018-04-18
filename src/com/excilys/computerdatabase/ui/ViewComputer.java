@@ -26,6 +26,9 @@ public class ViewComputer {
 		}
 	}
 	//affichage d'un pc
+	/*
+	 * @param id computer id
+	 */
 	public void showOneComputer(long id)
 	{
 		if(serviceComputer.getComputer(id) != null)
@@ -65,6 +68,13 @@ public class ViewComputer {
 	}
 	
 	//effectue l'update d'un computer
+	/*
+	 * @param oldComputer The old computer
+	 * @param name new name
+	 * @param dateIntroduced new date (or null)
+	 * @param dateDiscontinued new date (or null)
+	 * @param company new company (or null)
+	 */
 	public boolean updateComputer(Computer oldComputer, String name, Date dateIntroduced, Date dateDiscontinued, Company company)
 	{
 		try {
@@ -76,7 +86,9 @@ public class ViewComputer {
 		}
 		return false;
 	}
-	
+	/*
+	 * @param id computer id
+	 */
 	public boolean deleteComputer(long id)
 	{
 		if(serviceComputer.getComputer(id) != null)

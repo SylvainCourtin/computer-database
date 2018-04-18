@@ -28,8 +28,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public boolean add(Computer computer) {
 		
 		boolean isAdd = false;
-		
-		
+
 		try {
 			
 			//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company

@@ -34,10 +34,11 @@ public class ServiceComputer {
 	
 	/*
 	 * Ajoute un nouvelle ordinateur, dateIntroduced doit etre avant dateDiscontinued
-	 * @name not null
-	 * @dateIntroduced can be null
-	 * @dateDiscontinued can be null
-	 * @manufacturerCompany can be null
+	 * @param name not null
+	 * @param dateIntroduced can be null
+	 * @param dateDiscontinued can be null
+	 * @param manufacturerCompany can be null
+	 * @return if the adding is successfull
 	 */
 	public boolean addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));

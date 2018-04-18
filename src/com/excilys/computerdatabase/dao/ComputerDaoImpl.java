@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
+import com.excilys.computerdatabase.mappers.MapperCompany;
+import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
@@ -65,9 +67,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			
 			while(result.next())
 			{
-				Company company = new Company(result.getLong("company.id"), result.getString("company.name"));
+				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
 
-				computers.add(new Computer(
+				computers.add(MapperComputer.fromParameters(
 						result.getLong("computer.id"),
 						result.getString("computer.name"),
 						result.getDate("computer.introduced"),
@@ -94,9 +96,9 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			while(result.next())
 			{
-				Company company = new Company(result.getLong("company.id"), result.getString("company.name"));
+				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
 	
-				computer = new Computer(
+				computer = MapperComputer.fromParameters(
 						result.getLong("computer.id"),
 						result.getString("computer.name"),
 						result.getDate("computer.introduced"),

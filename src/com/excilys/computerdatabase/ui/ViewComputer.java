@@ -37,7 +37,7 @@ public class ViewComputer {
 	//demande un nom (pour la création d'un computer ou update)
 	public String showRequestName()
 	{
-		return scanner.nextLine();
+		return scanner.nextLine().trim();
 	}
 	
 	//demande d'une date ou null (format exigeant !)
@@ -99,7 +99,7 @@ public class ViewComputer {
 		while(!isValid)
 		{
 			try {
-				date = MyUtils.stringToDate(scanner.nextLine());
+				date = MyUtils.stringToDate(scanner.nextLine().trim());
 				isValid = true;
 			} catch (ParseException e) {
 				System.out.println("Unvalidate format, try again or write null");

@@ -68,13 +68,13 @@ public class Main {
 	
 	public static void testGetDaoCompany(CompanyDao companyDao)
 	{
-		for (Company c : companyDao.getList()) {
+		for (Company c : companyDao.getList(10,0)) {
 			System.out.println(c.toString());
 		}
 	}
 	public static void testGetDaoComputer(ComputerDao computerDao)
 	{
-		for (Computer c : computerDao.getList()) {
+		for (Computer c : computerDao.getList(10,0)) {
 			System.out.println(c.toString());
 		}
 	}

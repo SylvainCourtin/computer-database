@@ -56,13 +56,15 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public List<Computer> getList() {
+	public List<Computer> getList(int limite, int offset) {
 		List<Computer> computers = new ArrayList<>();
 		
 		try {
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT+ MyConstants.SQL_QUERY_COMPUTER_LEFT_JOIN_COMPANY +";");
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT);
+			preparedStatement.setInt(1, limite);
+			preparedStatement.setInt(2, offset);
+			ResultSet result = preparedStatement.executeQuery();
 			
 			while(result.next())
 			{
@@ -90,8 +92,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		Computer computer = null;
 		try {
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT + MyConstants.SQL_QUERY_COMPUTER_LEFT_JOIN_COMPANY+"WHERE computer.id="+ id + ";");
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY);
+			preparedStatement.setLong(1, id);
+			ResultSet result = preparedStatement.executeQuery();
 
 			while(result.next())
 			{
@@ -170,5 +173,25 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 		return isUpdate;
 		
+	}
+
+	@Override
+	public long getNumberElement() {
+		long nbElement = 0;
+		try {
+			Connection connection = daoFactory.getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT);
+			while(result.next())
+			{
+				nbElement = result.getInt("COUNT(*)");
+			}
+			
+			result.close();
+			connection.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbElement;
 	}
 }

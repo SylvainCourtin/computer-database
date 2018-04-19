@@ -7,8 +7,9 @@ import java.util.Scanner;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.page.PageComputer;
 import com.excilys.computerdatabase.service.ServiceComputer;
+import com.excilys.computerdatabase.ui.page.Page;
+import com.excilys.computerdatabase.ui.page.PageComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
 public class ViewComputer {
@@ -22,7 +23,19 @@ public class ViewComputer {
 	
 	public void showList()
 	{
-		PageComputer.getInstance(serviceComputer.getComputers()).menuPage();
+		PageComputer pageComputer = new PageComputer(serviceComputer.getComputers(Page.NUMBER_LIST_PER_PAGE,0), serviceComputer.getNumberRowComputer());
+		//On récupere tout la 1er page des 10 premiers element, et on récupere le nombre d'élements total dans la bdd
+		pageComputer.getInfoPage();
+		int tmpOldPage = 0;//evite de réafficher la meme page si elle a deja été affiché 
+		while(!pageComputer.menuPage())
+		{
+			if(pageComputer.getChoixPages() != tmpOldPage)
+			{
+				pageComputer.setComputers(serviceComputer.getComputers(Page.NUMBER_LIST_PER_PAGE, pageComputer.getChoixPages()*Page.NUMBER_LIST_PER_PAGE));
+				pageComputer.getInfoPage();
+				tmpOldPage = pageComputer.getChoixPages() ;
+			}
+		}
 	}
 	//affichage d'un pc
 	/*

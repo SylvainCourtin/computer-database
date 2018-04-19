@@ -16,10 +16,15 @@ public class ServiceComputer {
 	public ServiceComputer() {
 		computerDao = DaoFactory.getInstance().getComputerDao();
 	}
+	
+	public long getNumberRowComputer()
+	{
+		return computerDao.getNumberElement();
+	}
 
 	
-	public List<Computer> getComputers() {
-		return computerDao.getList();
+	public List<Computer> getComputers(int limit, int offset) {
+		return computerDao.getList(limit,offset);
 	}
 
 	

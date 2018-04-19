@@ -3,20 +3,34 @@ package com.excilys.computerdatabase.ui;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.models.Company;
-import com.excilys.computerdatabase.page.PageCompany;
 import com.excilys.computerdatabase.service.ServiceCompany;
+import com.excilys.computerdatabase.ui.page.Page;
+import com.excilys.computerdatabase.ui.page.PageCompany;
 
 public class ViewCompany {
 	
 	private ServiceCompany serviceCompany;
 	private Scanner scanner = new Scanner(System.in);
 	public ViewCompany() {
-		serviceCompany = new ServiceCompany();
+		serviceCompany = ServiceCompany.getInstance();
 	}
 	
 	public void showList()
 	{
-		PageCompany.getInstance(serviceCompany.getCompanies()).menuPage();
+		//On récupere tout la 1er page des 10 premiers element, et on récupere le nombre d'élements total dans la bdd
+		PageCompany pageCompany = new PageCompany(serviceCompany.getCompanies(Page.NUMBER_LIST_PER_PAGE,0), serviceCompany.getNumberRowComputer());
+		pageCompany.getInfoPage();
+		int tmpOldPage = 0;//evite de réafficher la meme page si elle a deja été affiché 
+		while(!pageCompany.menuPage())
+		{
+			if(pageCompany.getChoixPages() != tmpOldPage)
+			{
+				pageCompany.setCompanies(serviceCompany.getCompanies(Page.NUMBER_LIST_PER_PAGE, pageCompany.getChoixPages()*Page.NUMBER_LIST_PER_PAGE));
+				pageCompany.getInfoPage();
+				tmpOldPage = pageCompany.getChoixPages() ;
+			}
+			
+		}
 	}
 	
 	public ServiceCompany getServiceCompany() {

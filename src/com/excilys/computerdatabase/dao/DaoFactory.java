@@ -6,6 +6,9 @@ import java.sql.SQLException;
 
 public class DaoFactory {
 	
+	private static DaoFactory daoFactory;
+	private static CompanyDao companyDao;
+	private static ComputerDao computerDao;
 	private String url;
 	private String username;
 	private String password;
@@ -28,13 +31,16 @@ public class DaoFactory {
 
         }
 
+        if(daoFactory == null)
+        {
+        	DaoFactory instance = new DaoFactory(
 
-        DaoFactory instance = new DaoFactory(
+                    "jdbc:mysql://localhost:3306/computer-database-db", "admincdb", "qwerty1234");
 
-                "jdbc:mysql://localhost:3306/computer-database-db", "admincdb", "qwerty1234");
-
-        return instance;
-
+            return instance;
+        }
+        
+        return daoFactory;
     }
 
 
@@ -49,13 +55,19 @@ public class DaoFactory {
 
     public CompanyDao getCompanyDao() {
 
-        return new CompanyDaoImpl(this);
+    	if(companyDao == null)
+    		return new CompanyDaoImpl(this);
+    	else
+    		return companyDao;
 
     }
     
     public ComputerDao getComputerDao()
     {
-    	return new ComputerDaoImpl(this);
+    	if(computerDao == null)
+    		return new ComputerDaoImpl(this);
+    	else
+    		return computerDao;
     }
 
 }

@@ -36,13 +36,15 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 
 	@Override
-	public List<Company> getList() {
+	public List<Company> getList(int limite, int offset) {
 		List<Company> companies = new ArrayList<>();
 		
 		try {
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_SELECT+";");
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPANY_SELECT_LIMIT);
+			preparedStatement.setInt(1, limite);
+			preparedStatement.setInt(2, offset);
+			ResultSet result = preparedStatement.executeQuery();
 			
 			while(result.next())
 			{
@@ -85,5 +87,25 @@ public class CompanyDaoImpl implements CompanyDao {
 		}
 		
 		return company;
+	}
+
+	@Override
+	public long getNumberElement() {
+		long nbElement = 0;
+		try {
+			Connection connection = daoFactory.getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_COUNT);
+			while(result.next())
+			{
+				nbElement = result.getInt("COUNT(*)");
+			}
+			
+			result.close();
+			connection.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbElement;
 	}
 }

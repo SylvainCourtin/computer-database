@@ -13,13 +13,28 @@ public class ServiceComputer {
 	
 	private ComputerDao computerDao;
 	
+	private static ServiceComputer serviceComputer;
+	
+	public static ServiceComputer getInstance()
+	{
+		if(serviceComputer == null)
+			return new ServiceComputer();
+		else
+			return serviceComputer;
+	}
+	
 	public ServiceComputer() {
 		computerDao = DaoFactory.getInstance().getComputerDao();
 	}
+	
+	public long getNumberRowComputer()
+	{
+		return computerDao.getNumberElement();
+	}
 
 	
-	public List<Computer> getComputers() {
-		return computerDao.getList();
+	public List<Computer> getComputers(int limit, int offset) {
+		return computerDao.getList(limit,offset);
 	}
 
 	

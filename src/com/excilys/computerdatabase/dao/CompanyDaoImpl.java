@@ -41,7 +41,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		
 		try {
 			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPANY_SELECT);
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPANY_SELECT_LIMIT);
 			preparedStatement.setInt(1, limite);
 			preparedStatement.setInt(2, offset);
 			ResultSet result = preparedStatement.executeQuery();

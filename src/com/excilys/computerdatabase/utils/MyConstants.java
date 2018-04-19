@@ -2,7 +2,8 @@ package com.excilys.computerdatabase.utils;
 
 public class MyConstants {
 	
-	public static final String SQL_QUERY_COMPANY_SELECT = "SELECT * FROM company LIMIT ? OFFSET ? ;";
+	public static final String SQL_QUERY_COMPANY_SELECT_LIMIT = "SELECT * FROM company LIMIT ? OFFSET ? ;";
+	public static final String SQL_QUERY_COMPANY_SELECT = "SELECT * FROM company ";
 	public static final String SQL_QUERY_COMPANY_INSERT = "INSERT INTO company (name) VALUES (?);";
 	public static final String SQL_QUERY_COMPANY_COUNT = "SELECT COUNT(*) FROM company;";
 

@@ -8,7 +8,7 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
-public class Main {
+public class DirtyTest {
 	
 	@SuppressWarnings("unused")
 	public static void testDao()

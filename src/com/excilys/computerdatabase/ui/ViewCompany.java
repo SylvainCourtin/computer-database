@@ -16,7 +16,7 @@ public class ViewCompany {
 	
 	public void showList()
 	{
-		PageCompany.getInstance(serviceCompany.getCompanies()).menuPageCompany();
+		PageCompany.getInstance(serviceCompany.getCompanies()).menuPage();
 	}
 	
 	public ServiceCompany getServiceCompany() {

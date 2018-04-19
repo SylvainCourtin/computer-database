@@ -1,11 +1,6 @@
 package com.excilys.computerdatabase.page;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import com.excilys.computerdatabase.models.Company;
-import com.excilys.computerdatabase.models.Computer;
 
 /*
  * Cette méthode va effectuer des pages pour la partie CLI, il va permettre de généré des listes
@@ -18,9 +13,7 @@ import com.excilys.computerdatabase.models.Computer;
 public abstract class Page  {
 	
 	protected final int NUMBER_LIST_PER_PAGE = 10;
-	
-	protected List<Company> companies =  new ArrayList<>();
-	protected List<Computer> computers = new ArrayList<>();
+
 	protected Scanner scanner = new Scanner(System.in);
 	protected int numberOfPages;
 	
@@ -33,7 +26,7 @@ public abstract class Page  {
 		getNumberPage(1);
 	}
 	
-	public void menuPageCompany()
+	public void menuPage()
 	{
 		String action="";
 		int newPages = 1;

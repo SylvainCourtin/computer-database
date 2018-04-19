@@ -1,10 +1,13 @@
 package com.excilys.computerdatabase.page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.models.Company;
 
 public class PageCompany extends Page {
+	
+	protected List<Company> companies =  new ArrayList<>();
 	
 	public static PageCompany getInstance(List<Company> companies)
 	{
@@ -33,11 +36,6 @@ public class PageCompany extends Page {
 		System.out.println("---------------------------");
 		System.out.println("\t"+page+"/"+numberOfPages);//page actuelle sur page max
 		System.out.println("---------------------------");
-	}
-	
-	
-	public int getNumberOfPages() {
-		return numberOfPages;
 	}
 
 }

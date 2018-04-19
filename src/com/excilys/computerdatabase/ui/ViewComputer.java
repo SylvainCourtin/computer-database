@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.page.PageComputer;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
@@ -21,9 +22,7 @@ public class ViewComputer {
 	
 	public void showList()
 	{
-		for (Computer c : serviceComputer.getComputers()) {
-			System.out.println(c.toString());
-		}
+		PageComputer.getInstance(serviceComputer.getComputers()).menuPage();
 	}
 	//affichage d'un pc
 	/*

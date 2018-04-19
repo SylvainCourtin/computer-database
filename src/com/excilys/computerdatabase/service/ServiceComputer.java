@@ -13,6 +13,16 @@ public class ServiceComputer {
 	
 	private ComputerDao computerDao;
 	
+	private static ServiceComputer serviceComputer;
+	
+	public static ServiceComputer getInstance()
+	{
+		if(serviceComputer == null)
+			return new ServiceComputer();
+		else
+			return serviceComputer;
+	}
+	
 	public ServiceComputer() {
 		computerDao = DaoFactory.getInstance().getComputerDao();
 	}

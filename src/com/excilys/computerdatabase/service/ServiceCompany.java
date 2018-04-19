@@ -9,6 +9,16 @@ import com.excilys.computerdatabase.models.Company;
 public class ServiceCompany{
 	
 	private CompanyDao companyDao;
+	private static ServiceCompany serviceCompany;
+	
+	public static ServiceCompany getInstance()
+	{
+		if(serviceCompany == null)
+		{
+			return new ServiceCompany();
+		}
+		return serviceCompany;
+	}
 
 	public ServiceCompany() {
 		companyDao = DaoFactory.getInstance().getCompanyDao();

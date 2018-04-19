@@ -12,7 +12,7 @@ public class ViewCompany {
 	private ServiceCompany serviceCompany;
 	private Scanner scanner = new Scanner(System.in);
 	public ViewCompany() {
-		serviceCompany = new ServiceCompany();
+		serviceCompany = ServiceCompany.getInstance();
 	}
 	
 	public void showList()

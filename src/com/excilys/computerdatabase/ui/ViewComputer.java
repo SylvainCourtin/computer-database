@@ -18,7 +18,7 @@ public class ViewComputer {
 	private Scanner scanner = new Scanner(System.in);
 	
 	public ViewComputer() {
-		serviceComputer = new ServiceComputer();
+		serviceComputer = ServiceComputer.getInstance();
 	}
 	
 	public void showList()

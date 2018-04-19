@@ -39,7 +39,7 @@ public class DaoFactory {
 
 
     public Connection getConnection() throws SQLException {
-
+    	
         return DriverManager.getConnection(url, username, password);
 
     }

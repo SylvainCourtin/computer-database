@@ -1,14 +1,11 @@
 package com.excilys.computerdatabase.ui;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.utils.MyUtils;
 
 public final class Cli {
 	

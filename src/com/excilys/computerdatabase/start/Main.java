@@ -1,18 +1,16 @@
 package com.excilys.computerdatabase.start;
 
 import java.util.Calendar;
-import java.util.Date;
-
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.service.ServiceComputer;
 
 public class Main {
 	
+	@SuppressWarnings("unused")
 	public static void testDao()
 	{
 		Company comp1 = new Company("Asus");

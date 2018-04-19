@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.ui;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.models.Company;
+import com.excilys.computerdatabase.page.PageCompany;
 import com.excilys.computerdatabase.service.ServiceCompany;
 
 public class ViewCompany {
@@ -15,9 +16,7 @@ public class ViewCompany {
 	
 	public void showList()
 	{
-		for (Company c : serviceCompany.getCompanies()) {
-			System.out.println(c.toString());
-		}
+		PageCompany.getInstance(serviceCompany.getCompanies()).menuPageCompany();
 	}
 	
 	public ServiceCompany getServiceCompany() {

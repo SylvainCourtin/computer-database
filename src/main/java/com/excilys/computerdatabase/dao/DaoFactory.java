@@ -24,7 +24,7 @@ public class DaoFactory {
 
         try {
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
         } catch (ClassNotFoundException e) {
 
@@ -35,7 +35,10 @@ public class DaoFactory {
         {
         	DaoFactory instance = new DaoFactory(
 
-                    "jdbc:mysql://localhost:3306/computer-database-db", "admincdb", "qwerty1234");
+                    "jdbc:mysql://localhost:3306/computer-database-db"
+                    + "?serverTimezone=UTC"
+                    + "&useSSL=true", 
+                    "admincdb", "qwerty1234");
 
             return instance;
         }

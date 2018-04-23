@@ -25,34 +25,43 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public boolean add(Computer computer) {
+	public long add(Computer computer) throws CompanyDoesNotExistException {
 		
-		boolean isAdd = false;
+		long idRes = -1;
+		
+		if(computer.getName() != null && !computer.getName().equals(""))
+		{
+			try {
+				
+				//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
+				if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
+					throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
+				
+				Connection connection = daoFactory.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT, Statement.RETURN_GENERATED_KEYS);
+				preparedStatement.setString(1, computer.getName());
+				preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
+				preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
+				if(computer.getManufacturerCompany() != null)
+					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+				else 
+					preparedStatement.setString(4, null);
 
-		try {
-			
-			//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
-			if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
-				throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
-			
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT);
-			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
-			preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
-			if(computer.getManufacturerCompany() != null)
-				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
-			else 
-				preparedStatement.setString(4, null);
-			if (preparedStatement.executeUpdate() > 0)
-				isAdd = true ;
-
-			connection.close();
-			
-		}catch (SQLException | CompanyDoesNotExistException e) {
-			e.printStackTrace();
+				preparedStatement.executeUpdate();
+				ResultSet resultSet = preparedStatement.getGeneratedKeys();
+				while(resultSet.next())
+				{
+					idRes = resultSet.getLong(1);
+				}
+				connection.close();
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return isAdd;
+
+		
+		return idRes;
 	}
 
 	@Override

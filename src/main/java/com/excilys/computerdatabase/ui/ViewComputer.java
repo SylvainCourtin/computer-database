@@ -1,9 +1,9 @@
 package com.excilys.computerdatabase.ui;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
@@ -58,25 +58,25 @@ public class ViewComputer {
 	//demande d'une date ou null (format exigeant !)
 	public Date showRequestDateIntroduced()
 	{
-		return RequestOkDate();
+		return MyUtils.RequestOkDate();
 	}
 	//demande d'une date ou null (format exigeant !)
 	public Date showRequestDateDiscontinued()
 	{
-		return RequestOkDate();
+		return  MyUtils.RequestOkDate();
 		
 	}
 	//effectue la création d'un computer
-	public boolean createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	public long createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
 	{
 		try {
 			return serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company );
 				
-		} catch (DateDiscontinuedIntroducedException e) {
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
 			System.out.println(e.getMessage());
 			System.err.println("Action cancel");
 		}
-		return false;
+		return -1;
 	}
 	
 	//effectue l'update d'un computer
@@ -115,21 +115,5 @@ public class ViewComputer {
 	public ServiceComputer getServiceComputer() {
 		return serviceComputer;
 	}
-	//boucle qui vérifie si la date est OK, si KO elle redemande (null fonctionne)
-	private Date RequestOkDate()
-	{
-		Date date = null;
-		boolean isValid = false;
-		while(!isValid)
-		{
-			try {
-				date = MyUtils.stringToDate(scanner.nextLine().trim());
-				isValid = true;
-			} catch (ParseException e) {
-				System.out.println("Unvalidate format, try again or write null");
-				isValid	= false;
-			}
-		}
-		return date;
-	}
+	
 }

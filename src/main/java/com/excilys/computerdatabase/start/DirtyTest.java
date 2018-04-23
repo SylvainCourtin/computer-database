@@ -4,6 +4,7 @@ import java.util.Calendar;
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
@@ -97,7 +98,12 @@ public class DirtyTest {
 	
 	public static void testAddComputer(ComputerDao computerDao, Computer c)
 	{
-		computerDao.add(c);
+		try {
+			computerDao.add(c);
+		} catch (CompanyDoesNotExistException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		testGetDaoComputer(computerDao);
 	}
 

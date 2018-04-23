@@ -6,7 +6,9 @@ public class MapperCompany {
 
 	public static Company fromParameters(long id, String name)
 	{
-		Company company = new Company(id,name);
+		Company company = null;
+		if(id > 0)
+			company = new Company(id,name);
 		return company;
 	}
 }

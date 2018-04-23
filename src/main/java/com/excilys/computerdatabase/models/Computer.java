@@ -20,7 +20,6 @@ public class Computer {
 	}	
 	
 	public Computer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
-		super();
 		this.name = name;
 		if(dateIntroduced != null && dateDiscontinued != null)
 			dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
@@ -32,7 +31,6 @@ public class Computer {
 	
 
 	public Computer(long id, String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.dateIntroduced = dateIntroduced;
@@ -127,9 +125,9 @@ public class Computer {
 	@Override
 	public String toString() {
 		
-		String dateIntro = "empty";
-		String dateDisc = "empty";
-		String company = "empty";
+		String dateIntro = "null";
+		String dateDisc = "null";
+		String company = "null";
 		
 		if(dateDiscontinued != null)
 			dateDisc = MyUtils.dateToString(dateDiscontinued);
@@ -166,8 +164,11 @@ public class Computer {
 	
 	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
 	{
-		if(introduced.after(discontinued))
-			throw new DateDiscontinuedIntroducedException(introduced.toString() + " must be before than " + discontinued.toString());
+		if(introduced != null && discontinued != null)
+		{
+			if(introduced.after(discontinued))
+				throw new DateDiscontinuedIntroducedException(introduced.toString() + " must be before than " + discontinued.toString());
+		}
 	}
 
 	

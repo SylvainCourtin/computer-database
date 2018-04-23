@@ -25,9 +25,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public boolean add(Computer computer) throws CompanyDoesNotExistException {
+	public long add(Computer computer) throws CompanyDoesNotExistException {
 		
-		boolean isAdd = false;
+		long idRes = -1;
 		
 		if(computer.getName() != null && !computer.getName().equals(""))
 		{
@@ -38,7 +38,7 @@ public class ComputerDaoImpl implements ComputerDao {
 					throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
 				
 				Connection connection = daoFactory.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT);
+				PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT, Statement.RETURN_GENERATED_KEYS);
 				preparedStatement.setString(1, computer.getName());
 				preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
 				preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
@@ -46,9 +46,13 @@ public class ComputerDaoImpl implements ComputerDao {
 					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
 				else 
 					preparedStatement.setString(4, null);
-				if (preparedStatement.executeUpdate() > 0)
-					isAdd = true ;
 
+				preparedStatement.executeUpdate();
+				ResultSet resultSet = preparedStatement.getGeneratedKeys();
+				while(resultSet.next())
+				{
+					idRes = resultSet.getLong(1);
+				}
 				connection.close();
 				
 			}catch (SQLException e) {
@@ -57,7 +61,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 
 		
-		return isAdd;
+		return idRes;
 	}
 
 	@Override

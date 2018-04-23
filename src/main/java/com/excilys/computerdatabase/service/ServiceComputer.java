@@ -44,7 +44,7 @@ public class ServiceComputer {
 	}
 
 	
-	public boolean addComputer(Computer computer) throws CompanyDoesNotExistException {
+	public long addComputer(Computer computer) throws CompanyDoesNotExistException {
 		return computerDao.add(computer);
 	}
 	
@@ -56,7 +56,7 @@ public class ServiceComputer {
 	 * @param manufacturerCompany can be null
 	 * @return if the adding is successfull
 	 */
-	public boolean addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public long addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
 		
 	}

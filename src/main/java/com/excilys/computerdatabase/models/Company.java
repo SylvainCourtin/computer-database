@@ -10,14 +10,13 @@ public class Company {
 	}
 	
 	public Company(String name) {
-		super();
+		this();
 		this.name = name;
 	}
 
 	public Company(long idCompany, String name) {
-		super();
+		this(name);
 		this.id = idCompany;
-		this.name = name;
 	}
 
 	public String getName() {

@@ -67,7 +67,7 @@ public class ViewComputer {
 		
 	}
 	//effectue la création d'un computer
-	public boolean createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	public long createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
 	{
 		try {
 			return serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company );
@@ -76,7 +76,7 @@ public class ViewComputer {
 			System.out.println(e.getMessage());
 			System.err.println("Action cancel");
 		}
-		return false;
+		return -1;
 	}
 	
 	//effectue l'update d'un computer

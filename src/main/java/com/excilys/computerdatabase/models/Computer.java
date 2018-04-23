@@ -20,7 +20,6 @@ public class Computer {
 	}	
 	
 	public Computer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
-		super();
 		this.name = name;
 		if(dateIntroduced != null && dateDiscontinued != null)
 			dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
@@ -32,7 +31,6 @@ public class Computer {
 	
 
 	public Computer(long id, String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.dateIntroduced = dateIntroduced;
@@ -127,9 +125,9 @@ public class Computer {
 	@Override
 	public String toString() {
 		
-		String dateIntro = "empty";
-		String dateDisc = "empty";
-		String company = "empty";
+		String dateIntro = "null";
+		String dateDisc = "null";
+		String company = "null";
 		
 		if(dateDiscontinued != null)
 			dateDisc = MyUtils.dateToString(dateDiscontinued);
@@ -141,7 +139,7 @@ public class Computer {
 			company =  manufacturerCompany.getName();
 		
 		return "Computer [id=" + id  +", name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
-				+ dateDisc + ", manufacturerCompany=" + company + "]";
+				+ dateDisc + ", manufacturerCompany=" + manufacturerCompany + "]";
 	}
 	
 	public String toStringDetails() {

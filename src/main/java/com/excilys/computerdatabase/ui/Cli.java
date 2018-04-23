@@ -117,9 +117,11 @@ public final class Cli {
 		System.out.println("Company id ?\nCan be null");
 		Company company = this.company.showRequestCompany();
 		
-		
-		if(computer.createComputer(name,dateIntroduced,dateDiscontinued,company))
+		long id = computer.createComputer(name,dateIntroduced,dateDiscontinued,company);
+		if( id > 0) {
 			System.out.println("Successfully added !");
+			System.out.println("New ID : "+ id);
+		}
 		else
 			System.out.println("Echec :(");
 	}

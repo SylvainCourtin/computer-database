@@ -166,8 +166,11 @@ public class Computer {
 	
 	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
 	{
-		if(introduced.after(discontinued))
-			throw new DateDiscontinuedIntroducedException(introduced.toString() + " must be before than " + discontinued.toString());
+		if(introduced != null && discontinued != null)
+		{
+			if(introduced.after(discontinued))
+				throw new DateDiscontinuedIntroducedException(introduced.toString() + " must be before than " + discontinued.toString());
+		}
 	}
 
 	

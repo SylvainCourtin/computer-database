@@ -139,7 +139,7 @@ public class Computer {
 			company =  manufacturerCompany.getName();
 		
 		return "Computer [id=" + id  +", name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
-				+ dateDisc + ", manufacturerCompany=" + manufacturerCompany + "]";
+				+ dateDisc + ", manufacturerCompany=" + company + "]";
 	}
 	
 	public String toStringDetails() {

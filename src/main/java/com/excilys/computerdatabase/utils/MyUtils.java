@@ -3,9 +3,11 @@ package com.excilys.computerdatabase.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 public class MyUtils {
 	
+	private static Scanner scanner = new Scanner(System.in);
 	
 	/* Convertie une date en format yyyy-MM-dd
 	 * @param date
@@ -55,6 +57,24 @@ public class MyUtils {
 		}
 		else
 			return null;
+	}
+	
+	//boucle qui vérifie si la date est OK, si KO elle redemande (null fonctionne)
+	public static Date RequestOkDate()
+	{
+		Date date = null;
+		boolean isValid = false;
+		while(!isValid)
+		{
+			try {
+				date = MyUtils.stringToDate(scanner.nextLine().trim());
+				isValid = true;
+			} catch (ParseException e) {
+				System.out.println("Unvalidate format, try again or write null");
+				isValid	= false;
+			}
+		}
+		return date;
 	}
 
 

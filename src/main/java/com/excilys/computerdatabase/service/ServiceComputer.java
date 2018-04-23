@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
@@ -43,7 +44,7 @@ public class ServiceComputer {
 	}
 
 	
-	public boolean addComputer(Computer computer) {
+	public boolean addComputer(Computer computer) throws CompanyDoesNotExistException {
 		return computerDao.add(computer);
 	}
 	
@@ -55,7 +56,7 @@ public class ServiceComputer {
 	 * @param manufacturerCompany can be null
 	 * @return if the adding is successfull
 	 */
-	public boolean addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
+	public boolean addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
 		
 	}

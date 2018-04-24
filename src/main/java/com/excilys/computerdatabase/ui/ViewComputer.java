@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.ui;
 
+import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAGE;
+
 import java.util.Date;
 import java.util.Scanner;
 
@@ -26,7 +28,7 @@ public class ViewComputer {
 	 */
 	public void showList()
 	{
-		PageComputer pageComputer = new PageComputer(serviceComputer.getComputers(Page.NUMBER_LIST_PER_PAGE,0), serviceComputer.getNumberRowComputer());
+		PageComputer pageComputer = new PageComputer(serviceComputer.getComputers(NUMBER_LIST_PER_PAGE,0), serviceComputer.getNumberRowComputer());
 		//On récupere tout la 1er page des 10 premiers element, et on récupere le nombre d'élements total dans la bdd
 		pageComputer.getInfoPage();
 		int tmpOldPage = 0;//evite de réafficher la meme page si elle a deja été affiché 
@@ -34,7 +36,7 @@ public class ViewComputer {
 		{
 			if(pageComputer.getChoixPages() != tmpOldPage)
 			{
-				pageComputer.setComputers(serviceComputer.getComputers(Page.NUMBER_LIST_PER_PAGE, pageComputer.getChoixPages()*Page.NUMBER_LIST_PER_PAGE));
+				pageComputer.setComputers(serviceComputer.getComputers(NUMBER_LIST_PER_PAGE, pageComputer.getChoixPages()*NUMBER_LIST_PER_PAGE));
 				pageComputer.getInfoPage();
 				tmpOldPage = pageComputer.getChoixPages() ;
 			}

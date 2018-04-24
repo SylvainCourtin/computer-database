@@ -1,7 +1,7 @@
 package com.excilys.computerdatabase.ui.page;
 
 import java.util.Scanner;
-
+import com.excilys.computerdatabase.utils.MyConstants;
 /**
  * Cette méthode va effectuer des pages pour la partie CLI, il va permettre de généré des listes
  * trop grande avant de les mettre sur plusieurs "page" via le terminal, 
@@ -11,12 +11,11 @@ import java.util.Scanner;
  * -soit indiquer le numéro de page qu'il veut aller
  */
 public abstract class Page  {
-	
-	public static final int NUMBER_LIST_PER_PAGE = 10;
 
 	protected Scanner scanner = new Scanner(System.in);
 	protected long numberOfPages;
 	protected int choixPages=0;
+	public final int NUMBER_LIST_PER_PAGE = MyConstants.NUMBER_LIST_PER_PAGE;
 	
 	public abstract void getInfoPage();
 	

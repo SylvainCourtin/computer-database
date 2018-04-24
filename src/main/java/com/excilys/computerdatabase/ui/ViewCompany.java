@@ -1,10 +1,11 @@
 package com.excilys.computerdatabase.ui;
 
+import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAGE;
+
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
-import com.excilys.computerdatabase.ui.page.Page;
 import com.excilys.computerdatabase.ui.page.PageCompany;
 
 public class ViewCompany {
@@ -21,14 +22,14 @@ public class ViewCompany {
 	public void showList()
 	{
 		//On récupere tout la 1er page des 10 premiers element, et on récupere le nombre d'élements total dans la bdd
-		PageCompany pageCompany = new PageCompany(serviceCompany.getCompanies(Page.NUMBER_LIST_PER_PAGE,0), serviceCompany.getNumberRowComputer());
+		PageCompany pageCompany = new PageCompany(serviceCompany.getCompanies(NUMBER_LIST_PER_PAGE,0), serviceCompany.getNumberRowComputer());
 		pageCompany.getInfoPage();
 		int tmpOldPage = 0;//evite de réafficher la meme page si elle a deja été affiché 
 		while(!pageCompany.menuPage())
 		{
 			if(pageCompany.getChoixPages() != tmpOldPage)
 			{
-				pageCompany.setCompanies(serviceCompany.getCompanies(Page.NUMBER_LIST_PER_PAGE, pageCompany.getChoixPages()*Page.NUMBER_LIST_PER_PAGE));
+				pageCompany.setCompanies(serviceCompany.getCompanies(NUMBER_LIST_PER_PAGE, pageCompany.getChoixPages()*NUMBER_LIST_PER_PAGE));
 				pageCompany.getInfoPage();
 				tmpOldPage = pageCompany.getChoixPages() ;
 			}

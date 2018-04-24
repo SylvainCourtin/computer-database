@@ -63,7 +63,7 @@ private ComputerDao computerDao;
 			
 			computer.setId(id);
 			
-			assertThat(computerDao.getComputer(id).toString(), equalTo(computer.toString()));
+			assertThat(computerDao.getComputer(id), equalTo(computer));
 			
 		 }catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
 			 fail("No exception expected");

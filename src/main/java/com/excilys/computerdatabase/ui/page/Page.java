@@ -2,7 +2,7 @@ package com.excilys.computerdatabase.ui.page;
 
 import java.util.Scanner;
 
-/*
+/**
  * Cette méthode va effectuer des pages pour la partie CLI, il va permettre de généré des listes
  * trop grande avant de les mettre sur plusieurs "page" via le terminal, 
  * On part du principe d'avoir 10 id par page, la possibilité a l'utilisateur de : 
@@ -20,7 +20,7 @@ public abstract class Page  {
 	
 	public abstract void getInfoPage();
 	
-	/*
+	/**
 	 * @return return true if the user quit
 	 */
 	public boolean menuPage()

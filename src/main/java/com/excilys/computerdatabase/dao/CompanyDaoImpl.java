@@ -56,8 +56,8 @@ public class CompanyDaoImpl implements CompanyDao {
 			result.close();
 			connection.close();
 			
-		}catch (Exception e) {
-			// TODO: handle exception
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
 		return companies;

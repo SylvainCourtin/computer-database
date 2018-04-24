@@ -16,7 +16,6 @@ public class Computer {
 	
 	
 	public Computer() {
-		// TODO Auto-generated constructor stub
 	}	
 	
 	public Computer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {

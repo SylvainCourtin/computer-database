@@ -29,14 +29,14 @@ public class ServiceCompany{
 		return companyDao.getNumberElement();
 	}
 
-	/*
+	/**
 	 * @return return the list of all companies in the bdd
 	 */
 	public List<Company> getCompanies(int limite, int offset) {
 		return companyDao.getList(limite,offset);
 	}
 	
-	/*
+	/**
 	 * @param id company id
 	 * @return return true if this id company exist in the bdd
 	 */
@@ -45,7 +45,7 @@ public class ServiceCompany{
 		return (companyDao.getCompany(id)!= null);
 			
 	}
-	/*
+	/**
 	 * @param id company id
 	 * @return Company finding in the bdd
 	 */

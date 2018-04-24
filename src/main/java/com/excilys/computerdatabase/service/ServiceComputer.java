@@ -48,7 +48,7 @@ public class ServiceComputer {
 		return computerDao.add(computer);
 	}
 	
-	/*
+	/**
 	 * Ajoute un nouvelle ordinateur, dateIntroduced doit etre avant dateDiscontinued
 	 * @param name not null
 	 * @param dateIntroduced can be null
@@ -61,7 +61,6 @@ public class ServiceComputer {
 		
 	}
 
-	
 	public boolean updateComputer(Computer oldComputer, Computer newComputer) {
 		newComputer.setId(oldComputer.getId());
 		return computerDao.update(newComputer);

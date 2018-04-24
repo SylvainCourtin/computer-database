@@ -15,6 +15,9 @@ public class ViewCompany {
 		serviceCompany = ServiceCompany.getInstance();
 	}
 	
+	/**
+	 * Gere l'affichage d'une page company, affiche un certain nombre de company, et demande si l'utilisateur veut changer de page ou revenir au menu
+	 */
 	public void showList()
 	{
 		//On récupere tout la 1er page des 10 premiers element, et on récupere le nombre d'élements total dans la bdd
@@ -37,7 +40,10 @@ public class ViewCompany {
 		return serviceCompany;
 	}
 	
-	//demande à l'utilisateur un ID d'une company, s'il ecrit null, on revoit null, sinon on regarde que l'id existe bien
+	/**
+	 * demande à l'utilisateur un ID d'une company, s'il ecrit null, on revoit null, sinon on regarde que l'id existe bien
+	 * @return retourne une company valide qui existe dans la bdd (ou null)
+	 */
 	public Company showRequestCompany()
 	{
 		Company company = null;

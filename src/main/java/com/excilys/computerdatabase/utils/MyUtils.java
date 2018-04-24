@@ -9,7 +9,7 @@ public class MyUtils {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	
-	/* Convertie une date en format yyyy-MM-dd
+	/** Convertie une date en format yyyy-MM-dd
 	 * @param date
 	 * @return String "yyyy-MM-dd"
 	 */
@@ -18,7 +18,7 @@ public class MyUtils {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.format(date);
 	}
-	/* Convertie une date en format dd-MM-yyyy, utiliser pour l'affichage
+	/** Convertie une date en format dd-MM-yyyy, utiliser pour l'affichage
 	 * @param date
 	 * @return String "dd-MM-yyyy"
 	 */
@@ -29,7 +29,7 @@ public class MyUtils {
 	}
 	
 	
-	/* Convertie une date en sql.date tout en passant au format yyyy-MM-dd
+	/** Convertie une date en sql.date tout en passant au format yyyy-MM-dd
 	 * @param date
 	 * @return sql.date format "yyyy-MM-dd"
 	 */
@@ -42,7 +42,7 @@ public class MyUtils {
 	}
 	
 	
-	/* Convertie un string avec le format dd-MM-yyyy ou renvoie null si sDate est null
+	/** Convertie un string avec le format dd-MM-yyyy ou renvoie null si sDate est null
 	 * @param sDate "dd-MM-yyyy" or NULL
 	 * @return date 
 	 * @throw this string didn't work
@@ -59,7 +59,11 @@ public class MyUtils {
 			return null;
 	}
 	
-	//boucle qui vérifie si la date est OK, si KO elle redemande (null fonctionne)
+	/** boucle qui demande à l'utilisateur une date valide à l'utilisateur
+	 * sous format dd-MM-yyyy
+	 * 
+	 * @return une date valide
+	 */
 	public static Date RequestOkDate()
 	{
 		Date date = null;
@@ -67,7 +71,7 @@ public class MyUtils {
 		while(!isValid)
 		{
 			try {
-				date = MyUtils.stringToDate(scanner.nextLine().trim());
+				date = stringToDate(scanner.nextLine().trim());
 				isValid = true;
 			} catch (ParseException e) {
 				System.out.println("Unvalidate format, try again or write null");

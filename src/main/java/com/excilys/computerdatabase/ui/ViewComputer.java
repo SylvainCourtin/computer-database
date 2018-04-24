@@ -21,6 +21,9 @@ public class ViewComputer {
 		serviceComputer = ServiceComputer.getInstance();
 	}
 	
+	/**
+	 * Gere l'affichage d'une page computer, affiche un certain nombre de pc, et demande si l'utilisateur veut changer de page ou revenir au menu
+	 */
 	public void showList()
 	{
 		PageComputer pageComputer = new PageComputer(serviceComputer.getComputers(Page.NUMBER_LIST_PER_PAGE,0), serviceComputer.getNumberRowComputer());
@@ -37,8 +40,9 @@ public class ViewComputer {
 			}
 		}
 	}
-	//affichage d'un pc
-	/*
+	//
+	/**
+	 * affichage d'un pc
 	 * @param id computer id
 	 */
 	public void showOneComputer(long id)
@@ -49,24 +53,33 @@ public class ViewComputer {
 			System.err.println("Cette ID n'existe pas !");
 	}
 	
-	//demande un nom (pour la création d'un computer ou update)
+	/**
+	 * demande un nom (pour la création d'un computer ou update)
+	 * @return ce qu'a écrit l'utilisateur
+	 */
 	public String showRequestName()
 	{
 		return scanner.nextLine().trim();
 	}
 	
-	//demande d'une date ou null (format exigeant !)
+	/**
+	 * demande d'une date ou null (format exigeant !)
+	 */
 	public Date showRequestDateIntroduced()
 	{
 		return MyUtils.RequestOkDate();
 	}
-	//demande d'une date ou null (format exigeant !)
+	/**
+	 * demande d'une date ou null (format exigeant !)
+	 */
 	public Date showRequestDateDiscontinued()
 	{
 		return  MyUtils.RequestOkDate();
 		
 	}
-	//effectue la création d'un computer
+	/**
+	 * effectue la création d'un computer
+	*/
 	public long createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
 	{
 		try {
@@ -80,7 +93,7 @@ public class ViewComputer {
 	}
 	
 	//effectue l'update d'un computer
-	/*
+	/**
 	 * @param oldComputer The old computer
 	 * @param name new name
 	 * @param dateIntroduced new date (or null)
@@ -98,7 +111,7 @@ public class ViewComputer {
 		}
 		return false;
 	}
-	/*
+	/**
 	 * @param id computer id
 	 */
 	public boolean deleteComputer(long id)

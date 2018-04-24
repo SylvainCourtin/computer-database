@@ -54,7 +54,7 @@ public class DaoFactory {
     }
 
 
-    // Récupération du Dao
+    /*------------------------------ Récupération du Dao ------------------------------ */
 
     public CompanyDao getCompanyDao() {
 

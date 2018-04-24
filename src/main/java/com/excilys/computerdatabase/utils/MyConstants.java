@@ -13,5 +13,7 @@ public class MyConstants {
 	public static final String SQL_QUERY_COMPUTER_DELETE = "DELETE FROM computer WHERE id=";
 	public static final String SQL_QUERY_COMPUTER_UPDATE = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;";
 	public static final String SQL_QUERY_COMPUTER_COUNT = "SELECT COUNT(*) FROM computer;";
+	
+	public static final int NUMBER_LIST_PER_PAGE = 10;
 
 }

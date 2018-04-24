@@ -66,6 +66,20 @@ public class ComputerDTO {
 	public void setManufacturerCompanyBasicView(CompanyBasicView manufacturerCompanyBasicView) {
 		this.manufacturerCompanyBasicView = manufacturerCompanyBasicView;
 	}
+
+	/**
+	 * @return the computerBasicView
+	 */
+	public ComputerBasicView getComputerBasicView() {
+		return computerBasicView;
+	}
+
+	/**
+	 * @return the manufacturerCompanyBasicView
+	 */
+	public CompanyBasicView getManufacturerCompanyBasicView() {
+		return manufacturerCompanyBasicView;
+	}
 	
 	
 

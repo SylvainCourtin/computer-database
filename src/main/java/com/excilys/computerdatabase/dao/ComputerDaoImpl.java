@@ -95,6 +95,38 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		return computers;
 	}
+	
+	@Override
+	public List<Computer> getList(int limite, int offset, String sLike) {
+		List<Computer> computers = new ArrayList<>();
+		
+		try {
+			Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT);
+			preparedStatement.setInt(1, limite);
+			preparedStatement.setInt(2, offset);
+			ResultSet result = preparedStatement.executeQuery();
+			
+			while(result.next())
+			{
+				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
+
+				computers.add(MapperComputer.fromParameters(
+						result.getLong("computer.id"),
+						result.getString("computer.name"),
+						result.getDate("computer.introduced"),
+						result.getDate("computer.discontinued"),
+						company));
+			}
+			result.close();
+			connection.close();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return computers;
+	}
 
 	@Override
 	public Computer getComputer(long id) {

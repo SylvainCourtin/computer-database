@@ -8,6 +8,7 @@ public class MyConstants {
 	public static final String SQL_QUERY_COMPANY_COUNT = "SELECT COUNT(*) FROM company;";
 
 	public static final String SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ? OFFSET ? ;";
+	public static final String SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ? OFFSET ? ;";
 	public static final String SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY = "SELECT * FROM computer LEFT JOIN company ON company.id = computer.company_id WHERE computer.id=?;";
 	public static final String SQL_QUERY_COMPUTER_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?);";
 	public static final String SQL_QUERY_COMPUTER_DELETE = "DELETE FROM computer WHERE id=";

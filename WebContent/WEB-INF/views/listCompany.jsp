@@ -30,15 +30,17 @@
             <h1 id="homeTitle">
                 <c:out value="${numberOfCompanies} companies found"></c:out>
             </h1>
-       
+       </div>
 			<div class="container" style="margin-top: 10px;">
             <table class="table table-striped table-bordered">
+            <thead>
                 <th>
                     Company ID
                 </th>
                 <th>
                    	Company Name
                 </th>
+           </thead>
 				<c:forEach var="company" items="${companies}">
 				<tr>
 					<td><c:out value="${company.companyBasicView.id}"></c:out></td>
@@ -48,7 +50,6 @@
 				
 			</table>
 			</div>
-		</div>
 </section>
 
 

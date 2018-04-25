@@ -149,6 +149,9 @@ public class ServletComputers extends HttpServlet {
 	 */
 	protected void dispatchGetComputers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		String filter = "";
+		if(request.getParameter("search") != null)
+			filter = request.getParameter("search");
 		long numberOfComputer = facade.getNumberRowComputer();
 		int res = 0;
 		if(numberOfComputer%MyConstants.NUMBER_LIST_PER_PAGE > 0)
@@ -166,7 +169,7 @@ public class ServletComputers extends HttpServlet {
 				page =  numberOfPages;
 				
 		}
-		for(Computer computer : facade.getComputers(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(page-1)))
+		for(Computer computer : facade.getComputers(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(page-1), filter))
 		{
 			computers.add(MapperComputer.computerToDTO(computer));
 		}

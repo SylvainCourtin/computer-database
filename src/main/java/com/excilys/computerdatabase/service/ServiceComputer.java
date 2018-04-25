@@ -38,6 +38,10 @@ public class ServiceComputer {
 	public List<Computer> getComputers(int limit, int offset) {
 		return computerDao.getList(limit,offset);
 	}
+	
+	public List<Computer> getComputers(int limit, int offset, String sLike) {
+		return computerDao.getList(limit,offset,sLike);
+	}
 
 	
 	public boolean deleteComputer(Computer computer) {

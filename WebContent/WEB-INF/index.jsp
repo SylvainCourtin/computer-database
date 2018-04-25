@@ -1,21 +1,31 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-	<jsp:directive.page contentType="text/html; charset=UTF-8" 
-		pageEncoding="UTF-8" session="false"/>
-	<jsp:output doctype-root-element="html"
-		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-		omit-xml-declaration="true" />
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title>Computer Database</title>
-<h1>Hello</h1>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<!-- Bootstrap -->
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
+<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
-
 <body>
-<form action="Controleur" method="post">
-    <input type="submit" />
-</form>
-</body>
+	<header class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<h2 class="navbar-brand">Application - Computer Database</h2>
+		</div>
+	</header>
+	<section id="main">
+		<form action="companies" method="post" class="form-inline">
+			<input type="submit" />
+		</form>
+	</section>
+<footer class="navbar-fixed-bottom"> </footer>
+
+	
+ 	<script  src="static/js/jquery.min.js"></script>
+	<script  src="static/js/bootstrap.min.js"></script>
+	<script  src="static/js/dashboard.js"></script>
+	</body>
 </html>
-</jsp:root>

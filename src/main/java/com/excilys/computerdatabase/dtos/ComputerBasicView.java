@@ -1,7 +1,6 @@
 package com.excilys.computerdatabase.dtos;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.Date;
 
 import com.excilys.computerdatabase.models.Computer;
 
@@ -9,17 +8,21 @@ public class ComputerBasicView {
 	
 	private long id;
 	private String name;
-	private LocalDate introduced;
-	private LocalDate discontinued;
+	private Date introduced;
+	private Date discontinued;
 
 	public ComputerBasicView(Computer computer) {
 		id = computer.getId();
 		name = computer.getName();
-		introduced = computer.getDateIntroduced().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		discontinued = computer.getDateDiscontinued().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		introduced = null;
+		discontinued = null;
+		if(computer.getDateIntroduced() != null)
+			introduced = computer.getDateIntroduced();
+		if(computer.getDateDiscontinued() != null)
+			discontinued = computer.getDateDiscontinued();
 	}
 
-	public ComputerBasicView(long id, String name, LocalDate introduced, LocalDate discontinued) {
+	public ComputerBasicView(long id, String name, Date introduced, Date discontinued) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -35,11 +38,11 @@ public class ComputerBasicView {
 		return name;
 	}
 
-	public LocalDate getIntroduced() {
+	public Date getIntroduced() {
 		return introduced;
 	}
 
-	public LocalDate getDiscontinued() {
+	public Date getDiscontinued() {
 		return discontinued;
 	}
 }

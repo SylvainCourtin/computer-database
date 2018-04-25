@@ -2,6 +2,11 @@ package com.excilys.computerdatabase.exception;
 
 public class CompanyDoesNotExistException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public CompanyDoesNotExistException() {
 	}
 

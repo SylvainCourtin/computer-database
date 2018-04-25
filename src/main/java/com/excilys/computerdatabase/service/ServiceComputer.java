@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
+import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
@@ -58,6 +59,22 @@ public class ServiceComputer {
 	 */
 	public long addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
+		
+	}
+	
+	/**
+	 * Ajoute un nouvelle ordinateur, dateIntroduced doit etre avant dateDiscontinued
+	 * @param name not null
+	 * @param dateIntroduced can be null
+	 * @param dateDiscontinued can be null
+	 * @param manufacturerCompany is DTO (can be null
+	 * @return if the adding is successfull
+	 */
+	public long addComputer(String name, Date dateIntroduced, Date dateDiscontinued, CompanyDTO manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+		Company company = null;
+		if(manufacturerCompany != null)
+			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());
+		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, company)));
 		
 	}
 

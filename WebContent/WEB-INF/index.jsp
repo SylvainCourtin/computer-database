@@ -17,15 +17,30 @@
 		</div>
 	</header>
 	<section id="main">
-		<form action="companies" method="post" class="form-inline">
-			<input type="submit" />
-		</form>
+	<div class="container">
+        <h1 id="homeTitle"> Action : </h1>
+        <div id="actions" class="form-horizontal">
+            <div class="pull-left">
+                <form action="companies" method="post" class="form-inline">
+					<input type="submit" class="btn btn-default" name="goToListCompanies" value="Get list companies"/>
+				</form>
+				<form action="computer" method="post" class="form-inline">
+					<input type="submit" class="btn btn-default" name="goToListComputers" value="List computer"/>
+				</form>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-success" id="addComputer" href="">Add Computer</a> 
+                <a class="btn btn-default" id="editComputer" href="">Edit</a>
+            </div>
+        </div>
+    </div>
+		
 	</section>
 <footer class="navbar-fixed-bottom"> </footer>
 
-	
- 	<script  src="static/js/jquery.min.js"></script>
-	<script  src="static/js/bootstrap.min.js"></script>
-	<script  src="static/js/dashboard.js"></script>
-	</body>
+
+<script  src="static/js/jquery.min.js"></script>
+<script  src="static/js/bootstrap.min.js"></script>
+<script  src="static/js/dashboard.js"></script>
+</body>
 </html>

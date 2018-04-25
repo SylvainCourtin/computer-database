@@ -1,10 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>All companies</title>
+<title>All Computer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -19,30 +18,42 @@
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
 		</div>
 </header>
-<c:if test="${empty companies}">
+<c:if test="${empty computers}">
 	<p>
-		<i>No companies :(</i>
+		<i>No Computer :(</i>
 	</p>
 </c:if>
-<c:if test="${not empty companies}">
+<c:if test="${not empty computers}">
 <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${numberOfCompanies} companies found"></c:out>
+                <c:out value="${numberOfComputer} companies found"></c:out>
             </h1>
        
 			<div class="container" style="margin-top: 10px;">
             <table class="table table-striped table-bordered">
                 <th>
-                    Company ID
+                    Computer ID
+                </th>
+                <th>
+                   	Computer Name
+                </th>
+                <th>
+                   	Date introduced
+                </th>
+                <th>
+                   	Date discontinued
                 </th>
                 <th>
                    	Company Name
                 </th>
-				<c:forEach var="company" items="${companies}">
+				<c:forEach var="computer" items="${computers}">
 				<tr>
-					<td><c:out value="${company.companyBasicView.id}"></c:out></td>
-					<td><c:out value="${company.companyBasicView.name}"></c:out></td>
+					<td><c:out value="${computer.computerBasicView.id}"></c:out></td>
+					<td><c:out value="${computer.computerBasicView.name}"></c:out></td>
+					<td><c:out value="${computer.computerBasicView.introduced}"></c:out></td>
+					<td><c:out value="${computer.computerBasicView.discontinued}"></c:out></td>
+					<td><c:out value="${computer.manufacturerCompanyBasicView.name}"></c:out></td>
 				</tr>
 				</c:forEach>
 				
@@ -55,7 +66,7 @@
 <footer class="navbar-fixed-bottom">
      <div class="container text-center">
            <ul class="pagination">
-			<form action="companies" method="get" id="action">
+			<form action="computer" method="get" id="goToListComputers">
 				<input id="selectPage" type="number" min=1 max="${numberOfPages}" value="${page}" name="page" placeholder="${page}"/>/<c:out value="${numberOfPages}" ></c:out>
 			</form>
 			</ul>
@@ -65,7 +76,7 @@
 </c:if>
 
 <script type="text/javascript">
-
+	
 	document.getElementById("selectPage").autofocus = true;
 	
 	//L'utilisateur fait entrer
@@ -73,7 +84,7 @@
 	input.addEventListener("keyup", function(event) {
 	    event.preventDefault();
 	    if (event.keyCode === 13) {
-	    	document.getElementById("action").submit();
+	    	document.getElementById("goToListComputers").submit();
 	    }
 	});
 </script>

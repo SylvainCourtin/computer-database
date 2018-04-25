@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.dtos;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
@@ -43,7 +43,7 @@ public class ComputerDTO {
 	 * @param discontinued Can be null
 	 * @param company Can be null
 	 */
-	public ComputerDTO(long id, String name,LocalDate introduced, LocalDate discontinued, Company company)
+	public ComputerDTO(long id, String name,Date introduced, Date discontinued, Company company)
 	{
 		computerBasicView = new ComputerBasicView(id,name,introduced,discontinued);
 		manufacturerCompanyBasicView = null;

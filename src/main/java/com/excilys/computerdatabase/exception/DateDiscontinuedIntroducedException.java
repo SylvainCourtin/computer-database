@@ -2,6 +2,11 @@ package com.excilys.computerdatabase.exception;
 
 public class DateDiscontinuedIntroducedException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DateDiscontinuedIntroducedException() {
 	}
 

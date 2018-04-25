@@ -10,7 +10,6 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceComputer;
-import com.excilys.computerdatabase.ui.page.Page;
 import com.excilys.computerdatabase.ui.page.PageComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
@@ -69,14 +68,14 @@ public class ViewComputer {
 	 */
 	public Date showRequestDateIntroduced()
 	{
-		return MyUtils.RequestOkDate();
+		return MyUtils.requestOkDate();
 	}
 	/**
 	 * demande d'une date ou null (format exigeant !)
 	 */
 	public Date showRequestDateDiscontinued()
 	{
-		return  MyUtils.RequestOkDate();
+		return  MyUtils.requestOkDate();
 		
 	}
 	/**

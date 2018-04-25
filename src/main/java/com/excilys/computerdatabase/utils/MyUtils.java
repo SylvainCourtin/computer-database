@@ -2,6 +2,8 @@ package com.excilys.computerdatabase.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -64,7 +66,7 @@ public class MyUtils {
 	 * 
 	 * @return une date valide
 	 */
-	public static Date RequestOkDate()
+	public static Date requestOkDate()
 	{
 		Date date = null;
 		boolean isValid = false;
@@ -79,6 +81,19 @@ public class MyUtils {
 			}
 		}
 		return date;
+	}
+	
+	/**
+	 * Transforme un objet type date en localDate
+	 * @param date
+	 * @return localDate
+	 */
+	public static LocalDate dateToLocalDate(Date date)
+	{
+		if(date != null)
+			return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		else 
+			return null;
 	}
 
 

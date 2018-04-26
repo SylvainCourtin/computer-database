@@ -22,20 +22,27 @@
 <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${numberOfComputer} companies found"></c:out>
+                <c:out value="${numberOfComputer} computers found"></c:out>
             </h1>
             
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+                    <form id="searchForm" action="computer" method="GET" class="form-inline">
                         <input type="search" id="searchbox" name="search" value="${search}" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
                     </form>
+                    <c:if test="${not empty result}">
+	               	<div class="form-group">
+	               		<div class="alert alert-success">
+	               			<strong><c:out value="${result}"></c:out></strong>
+	               		</div>
+	               	</div>
+	               </c:if>
                 </div>
                 	<div class="pull-right">
-                    	<a class="btn btn-success" id="addComputer" href="#">Add Computer</a> 
-                    	<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    	<a class="btn btn-success" id="add" href="#" onclick='active("add")'>Add Computer</a> 
+                    	<a class="btn btn-default" id="edit" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 	</div>
             	</div>
        	 	</div>
@@ -71,9 +78,10 @@
 					<tr>
 						<td class="editMode">
 	                        <input type="checkbox" name="cb" class="cb" value="0">
+	                        <input type="hidden" name="computer" value="${computer}">
 	                    </td>
 						<td><c:out value="${computer.computerBasicView.id}"></c:out></td>
-						<td><a href="" onclick=""><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
+						<td><a href="#" onclick='active("edit")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
 						<td><c:out value="${computer.computerBasicView.introduced}"></c:out></td>
 						<td><c:out value="${computer.computerBasicView.discontinued}"></c:out></td>
 						<td><c:out value="${computer.manufacturerCompanyBasicView.name}"></c:out></td>
@@ -117,6 +125,9 @@
 	</div>
 </footer>
 
+<form action="computer" method="POST" id="action">
+	<input type="hidden" name="act" id="act" value="">
+</form>
 
 <script type="text/javascript">
 
@@ -133,6 +144,13 @@
 		page.value=++numPage;
 		document.getElementById("goToListComputers").submit()
 	}
+	
+	function active(name_action)
+	{
+        document.getElementById("act").value = name_action;
+        document.getElementById("action").submit();
+	}
+	
 </script>
 <script  src="static/js/jquery.min.js"></script>
 <script  src="static/js/bootstrap.min.js"></script>

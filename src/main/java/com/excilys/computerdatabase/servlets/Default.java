@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletResponse;
  * Cette servlet sert a rediriger l'utilisateur sur le dashboard
  */
 @WebServlet("")
-public class Menu extends HttpServlet {
+public class Default extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Menu() {
+    public Default() {
         super();
     }
 

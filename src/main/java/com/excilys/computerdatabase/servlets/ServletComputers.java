@@ -21,7 +21,9 @@ import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.mappers.MapperComputer;
+import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.MyConstants;
 import com.excilys.computerdatabase.utils.MyUtils;
@@ -49,15 +51,48 @@ public class ServletComputers extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		dispatchGetComputers(request,response);
+		doIt(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getParameter("goToListComputers") != null)
-			dispatchGetComputers(request,response);
+		doIt(request, response);
+	}
+	
+
+	/**
+	 * Permet d'avoir une sorte de menu en fonction des appeles du parametres act
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	protected void doIt(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String act = request.getParameter("act");
+		
+		if(act == null)
+		{
+			dispatchGetComputers(request, response);
+		}
+		else if(act.equals("add"))
+		{
+			dispatchAddComputers(request, response);
+		}
+		else if(act.equals("valideAdd"))
+		{
+			actionAddComputer(request, response);
+		}
+		else if(act.equals("edit"))
+		{
+			dispatchUpdateComputer(request, response);
+		}
+		else
+		{
+			dispatchGetComputers(request, response);
+		}
+		
 	}
 	
 	/* **************************************************************************
@@ -76,23 +111,33 @@ public class ServletComputers extends HttpServlet {
 	 */
 	protected void actionAddComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{		
-		String name = request.getParameter("name");
+		String name = request.getParameter("computerName");
 		Date dateIntroduced = null;
 		Date dateDiscontinued = null;
-		int id_company = Integer.valueOf(request.getParameter("id_company"));
+		int id_company = Integer.valueOf(request.getParameter("companyId"));
 		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
 		try {
-			dateDiscontinued = MyUtils.stringToDate(request.getParameter("discontinued"));
-			dateIntroduced = MyUtils.stringToDate(request.getParameter("introduced"));
+			dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
+			dateIntroduced = MyUtils.stringToDateInv(request.getParameter("introduced"));
 		} catch (ParseException e) {
 			// TODO
 			logger.debug("Wrong format date");
 		}
 		
 		try {
-			facade.addComputer(name, dateIntroduced, dateDiscontinued, company);
-			logger.info("Success added");
-			request.setAttribute("resultat", "Sucess.");
+			if(facade.addComputer(name, dateIntroduced, dateDiscontinued, company) > 0)
+			{
+				logger.info("Success added");
+				request.setAttribute("result", "Success added.");
+				//On renvoit l'utilisateur sur la page de la liste des computers
+				dispatchGetComputers(request,response);
+			}
+			else
+			{
+				request.setAttribute("result", "Fail. You forget the name, didn't you ?");
+				dispatchAddComputers(request, response);
+				
+			}
 		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
 			// TODO Gestion erreur
 			if(e instanceof DateDiscontinuedIntroducedException)
@@ -102,12 +147,13 @@ public class ServletComputers extends HttpServlet {
 			}
 			else
 			{
-				//TODO
 				logger.debug("Company didn't exist");
 			}
+			request.setAttribute("result", "Fail, "+e.getMessage());
+			dispatchAddComputers(request, response);
+			
 		}
-		//On renvoit l'utilisateur sur la page de la liste des computers
-		dispatchGetComputers(request,response);
+		
 	}
 	
 	/**
@@ -196,7 +242,14 @@ public class ServletComputers extends HttpServlet {
 	 */
 	protected void dispatchAddComputers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		List<CompanyDTO> companies = new ArrayList<>();
+		for(Company company : ServiceCompany.getInstance().getCompanies(100, 0))
+		{
+			companies.add(MapperCompany.companyToDTO(company));
+		}
 		
+		request.setAttribute("companies", companies);
+		request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
 	
 	/**
@@ -209,5 +262,16 @@ public class ServletComputers extends HttpServlet {
 	protected void dispatchUpdateComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		
+		ComputerDTO computer = (ComputerDTO) request.getAttribute("computer");
+		
+		List<CompanyDTO> companies = new ArrayList<>();
+		for(Company company : ServiceCompany.getInstance().getCompanies(100, 0))
+		{
+			companies.add(MapperCompany.companyToDTO(company));
+		}
+		
+		request.setAttribute("computer", computer);
+		request.setAttribute("companies", companies);
+		request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
 }

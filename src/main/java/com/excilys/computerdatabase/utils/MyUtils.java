@@ -11,13 +11,13 @@ public class MyUtils {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	
-	/** Convertie une date en format yyyy-MM-dd
+	/** Convertie une date en format dd-MM-yyyy
 	 * @param date
-	 * @return String "yyyy-MM-dd"
+	 * @return String "dd-MM-yyyy"
 	 */
 	public static String formatDateToString(Date date)
 	{
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		return format.format(date);
 	}
 	/** Convertie une date en format dd-MM-yyyy, utiliser pour l'affichage
@@ -55,6 +55,23 @@ public class MyUtils {
 		{
 			SimpleDateFormat format;
 			format = new SimpleDateFormat("dd-MM-yyyy");
+			return format.parse(sDate);
+		}
+		else
+			return null;
+	}
+	
+	/** Convertie un string avec le format yyyy-MM-dd ou renvoie null si sDate est null
+	 * @param sDate "yyyy-MM-dd" or NULL
+	 * @return date 
+	 * @throw this string didn't work
+	 */
+	public static Date stringToDateInv(String sDate) throws ParseException
+	{
+		if(!sDate.equals("null") && sDate != null)
+		{
+			SimpleDateFormat format;
+			format = new SimpleDateFormat("yyyy-MM-dd");
 			return format.parse(sDate);
 		}
 		else

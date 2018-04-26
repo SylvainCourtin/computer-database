@@ -160,15 +160,21 @@ public class Computer {
 				+ dateDisc + ", manufacturerCompany=" + company + "]";
 	}
 	
-	
-	public static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
+	/**
+	 * Compare to date, Introduced must be before Discontinued
+	 * @param introduced Date
+	 * @param discontinued Date
+	 * @throws DateDiscontinuedIntroducedException
+	 */
+	private static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
 	{
 		if(introduced != null && discontinued != null)
 		{
 			if(introduced.after(discontinued))
-				throw new DateDiscontinuedIntroducedException(introduced.toString() + " must be before than " + discontinued.toString());
+				throw new DateDiscontinuedIntroducedException(
+						"the date introduced("+MyUtils.dateToString(introduced) + ") "
+						+ "must be before than " 
+						+ "the date discontinued (" + MyUtils.dateToString(discontinued) +")");
 		}
 	}
-
-	
 }

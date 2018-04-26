@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +17,8 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
+import bddTest.MyBDDTest;
+
 public class DeleteComputer {
 	
 	private ComputerDao computerDao;
@@ -23,10 +26,17 @@ public class DeleteComputer {
 	@Before 
 	public void initBDD()
 	{
+		MyBDDTest.getInstance().init();
 		computerDao = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
 	            + "?serverTimezone=UTC"
 	            + "&useSSL=true", 
 	            "admincdb", "qwerty1234").getComputerDao();
+	}
+	
+	@After
+	public void destroyTest()
+	{
+		MyBDDTest.getInstance().destroy();
 	}
 
 	@Test

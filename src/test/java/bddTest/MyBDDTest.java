@@ -9,12 +9,31 @@ import java.sql.Statement;
 
 import com.excilys.computerdatabase.dao.DaoFactory;
 
+/**
+ * Cette classe permet d'effectuer une reset de la bdd de test nommé  computer-database-db-test sur mysql
+ * 
+ * @author courtin
+ *	Need : BDD mysql -> name = computer-database-db-test
+ *	User with all privilige : admincdb, qwerty1234
+ */
 public class MyBDDTest {
 	private static final String DROP_CONSTRAINT = "ALTER TABLE computer DROP CONSTRAINT FK_COMPUTER_COMPANY_1";
     private static final String DROP_COMPUTER = "DROP TABLE computer";
     private static final String DROP_COMPANY = "DROP TABLE company";
     
-    private DaoFactory daoFactory = DaoFactory.getInstance();
+    private DaoFactory daoFactory = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
+            + "?serverTimezone=UTC"
+            + "&useSSL=true", 
+            "admincdb", "qwerty1234");
+    
+    private static MyBDDTest instance;
+    
+    public static MyBDDTest getInstance()
+    {
+    	 if(instance == null)
+    		 instance = new MyBDDTest();
+    	return instance;
+    }
     
     /**
      * Initializes the HSQL Database with tables and entries

@@ -63,6 +63,31 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		return idRes;
 	}
+	
+	/**
+	 * Créer une list de computer grace au résultat  
+	 * @param result result of the query
+	 * @return list<Computer>
+	 * @throws SQLException
+	 */
+	private List<Computer> getList(ResultSet result) throws SQLException
+	{
+		List<Computer> computers = new ArrayList<>();
+		
+		while(result.next())
+		{
+			Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
+
+			computers.add(MapperComputer.fromParameters(
+					result.getLong("computer.id"),
+					result.getString("computer.name"),
+					result.getDate("computer.introduced"),
+					result.getDate("computer.discontinued"),
+					company));
+		}
+		
+		return computers;
+	}
 
 	@Override
 	public List<Computer> getList(int limite, int offset) {
@@ -75,17 +100,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement.setInt(2, offset);
 			ResultSet result = preparedStatement.executeQuery();
 			
-			while(result.next())
-			{
-				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
-
-				computers.add(MapperComputer.fromParameters(
-						result.getLong("computer.id"),
-						result.getString("computer.name"),
-						result.getDate("computer.introduced"),
-						result.getDate("computer.discontinued"),
-						company));
-			}
+			computers = getList(result);
+			
 			result.close();
 			connection.close();
 			
@@ -97,27 +113,21 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 	
 	@Override
-	public List<Computer> getList(int limite, int offset, String sLike) {
+	public List<Computer> getListLike(int limite, int offset, String sLike) {
 		List<Computer> computers = new ArrayList<>();
 		
 		try {
 			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT);
-			preparedStatement.setInt(1, limite);
-			preparedStatement.setInt(2, offset);
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT);
+			
+			preparedStatement.setString(1, "%"+sLike+"%");
+			preparedStatement.setInt(2, limite);
+			preparedStatement.setInt(3, offset);
+			
 			ResultSet result = preparedStatement.executeQuery();
 			
-			while(result.next())
-			{
-				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
-
-				computers.add(MapperComputer.fromParameters(
-						result.getLong("computer.id"),
-						result.getString("computer.name"),
-						result.getDate("computer.introduced"),
-						result.getDate("computer.discontinued"),
-						company));
-			}
+			computers = getList(result);
+			
 			result.close();
 			connection.close();
 			
@@ -223,6 +233,27 @@ public class ComputerDaoImpl implements ComputerDao {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT);
+			while(result.next())
+			{
+				nbElement = result.getInt("COUNT(*)");
+			}
+			
+			result.close();
+			connection.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbElement;
+	}
+
+	@Override
+	public long getNumberElementLike(String sLike) {
+		long nbElement = 0;
+		try {
+			Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE);
+			preparedStatement.setString(1, "%"+sLike+"%");
+			ResultSet result = preparedStatement.executeQuery();
 			while(result.next())
 			{
 				nbElement = result.getInt("COUNT(*)");

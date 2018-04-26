@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,17 +19,26 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
+import bddTest.MyBDDTest;
+
 public class UpdateComputer {
 	
-private ComputerDao computerDao;
+	private ComputerDao computerDao;
 	
 	@Before 
 	public void initBDD()
 	{
+		MyBDDTest.getInstance().init();
 		computerDao = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
 	            + "?serverTimezone=UTC"
 	            + "&useSSL=true", 
 	            "admincdb", "qwerty1234").getComputerDao();
+	}
+	
+	@After
+	public void destroyTest()
+	{
+		MyBDDTest.getInstance().destroy();
 	}
 	
 	@Test
@@ -56,15 +66,14 @@ private ComputerDao computerDao;
 	public void testEchecChangeDateUpdateComputer()
 	{
 		try {
-			Computer computer = new Computer("mauvais", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), null);
+			Computer computer = new Computer("YouCantUpdateMe", MyUtils.stringToDate("12-12-1999"), MyUtils.stringToDate("null"), null);
 			long id;
 			assertThat(id = computerDao.add(computer), 
 					not(equalTo(-1L)));
 			
 			computer.setId(id);
 			//On fait les modifications
-			computer.setName("OtherName");
-			computer.setDateIntroduced(MyUtils.stringToDate("12-12-1999"));
+			computer.setName("FailUpdateCauseDate");
 			computer.setDateDiscontinued(MyUtils.stringToDate("12-12-1998"));
 			assertThat(computerDao.update(computer), 
 					is(false));

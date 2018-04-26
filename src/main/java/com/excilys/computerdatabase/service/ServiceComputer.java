@@ -33,6 +33,11 @@ public class ServiceComputer {
 	{
 		return computerDao.getNumberElement();
 	}
+	
+	public long getNumberRowComputerLike(String sLike)
+	{
+		return computerDao.getNumberElementLike(sLike);
+	}
 
 	
 	public List<Computer> getComputers(int limit, int offset) {
@@ -40,7 +45,7 @@ public class ServiceComputer {
 	}
 	
 	public List<Computer> getComputers(int limit, int offset, String sLike) {
-		return computerDao.getList(limit,offset,sLike);
+		return computerDao.getListLike(limit,offset,sLike);
 	}
 
 	

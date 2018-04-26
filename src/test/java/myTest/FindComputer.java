@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,17 +17,26 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
+import bddTest.MyBDDTest;
+
 public class FindComputer {
 	
-private ComputerDao computerDao;
+	private ComputerDao computerDao;
 	
 	@Before 
 	public void initBDD()
 	{
+		MyBDDTest.getInstance().init();
 		computerDao = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
-	            + "?serverTimezone=UTC"
-	            + "&useSSL=true", 
-	            "admincdb", "qwerty1234").getComputerDao();
+	        + "?serverTimezone=UTC"
+	        + "&useSSL=true", 
+	        "admincdb", "qwerty1234").getComputerDao();
+	}
+	
+	@After
+	public void destroyTest()
+	{
+		MyBDDTest.getInstance().destroy();
 	}
 
 	/**
@@ -47,7 +57,11 @@ private ComputerDao computerDao;
 			assertThat(computerDao.add(new Computer("LEGRAND___v4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), null)), 
 					not(equalTo(-1L)));
 			
-			assertThat(computerDao.getList(1000, 0, "LEGRAND").size(), equalTo(4));
+			String likeName = "LEGRAND";
+			//On vérifie que le nombre mis en BDD correspond bien 
+			assertThat(computerDao.getListLike(1000, 0, likeName).size(), equalTo(4));
+			//getNumberElement return a LONG
+			assertThat(computerDao.getNumberElementLike(likeName), equalTo(4L));
 			
 			
 			

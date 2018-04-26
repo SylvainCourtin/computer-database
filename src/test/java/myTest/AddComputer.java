@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.text.ParseException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,8 @@ import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.utils.MyUtils;
 
+import bddTest.MyBDDTest;
+
 public class AddComputer {
 	
 private ComputerDao computerDao;
@@ -25,10 +28,17 @@ private ComputerDao computerDao;
 	@Before 
 	public void initBDD()
 	{
+		MyBDDTest.getInstance().init();
 		computerDao = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
 	            + "?serverTimezone=UTC"
 	            + "&useSSL=true", 
 	            "admincdb", "qwerty1234").getComputerDao();
+	}
+	
+	@After
+	public void destroyTest()
+	{
+		MyBDDTest.getInstance().destroy();
 	}
 	
 	@Test
@@ -74,7 +84,7 @@ private ComputerDao computerDao;
 	public void testEchecDateAddComputer()
 	{
 		try {
-			Computer computer = new Computer("ilMarche", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("15-01-1999"), null);
+			Computer computer = new Computer("faildate", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("15-01-1999"), null);
 			fail("Exception expected");
 			assertThat(computerDao.add(computer), 
 					equalTo(-1L));
@@ -103,7 +113,7 @@ private ComputerDao computerDao;
 	public void testEchecCompanyNotExistAddComputer()
 	{
 		try {
-			assertThat(computerDao.add(new Computer("ilMarche", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
+			assertThat(computerDao.add(new Computer("failCompany", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
 					equalTo(-1L));
 		} catch (DateDiscontinuedIntroducedException | ParseException e) {
 			fail("No exception DateDiscontinuedIntroducedException or ParseException expected");

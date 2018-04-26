@@ -152,7 +152,7 @@ public class ServletComputers extends HttpServlet {
 		String filter = "";
 		if(request.getParameter("search") != null)
 			filter = request.getParameter("search");
-		long numberOfComputer = facade.getNumberRowComputer();
+		long numberOfComputer = facade.getNumberRowComputerLike(filter);
 		int res = 0;
 		if(numberOfComputer%MyConstants.NUMBER_LIST_PER_PAGE > 0)
 			res=1;
@@ -161,14 +161,18 @@ public class ServletComputers extends HttpServlet {
 		List<ComputerDTO> computers = new ArrayList<>();
 		int page=1;
 		//On récupere la page, si pas de numéro donné, on mets 0 par defaut
-		if(request.getParameter("page") != null && Integer.valueOf(request.getParameter("page")) > 0)
-		{
-			page = Integer.valueOf(request.getParameter("page"));
-			//On redirige a la derniere page si le choix de la page dépasse le nombre de pages
-			if(MyConstants.NUMBER_LIST_PER_PAGE*(page-1) > numberOfComputer)
-				page =  numberOfPages;
-				
+		try {
+			if(request.getParameter("page") != null && Integer.valueOf(request.getParameter("page")) > 0)
+			{
+				page = Integer.valueOf(request.getParameter("page"));
+				//On redirige a la derniere page si le choix de la page dépasse le nombre de pages
+				if(MyConstants.NUMBER_LIST_PER_PAGE*(page-1) > numberOfComputer)
+					page =  numberOfPages;
+					
+			}
+		}catch (NumberFormatException e) {
 		}
+		
 		for(Computer computer : facade.getComputers(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(page-1), filter))
 		{
 			computers.add(MapperComputer.computerToDTO(computer));
@@ -178,6 +182,7 @@ public class ServletComputers extends HttpServlet {
 		request.setAttribute("page", page);
 		request.setAttribute("numberOfPages", numberOfPages);
 		request.setAttribute("numberOfComputer", numberOfComputer);
+		request.setAttribute("search", filter);
 		request.getRequestDispatcher("/WEB-INF/views/listComputer.jsp").forward(request, response);
 		
 	}

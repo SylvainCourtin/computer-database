@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,27 +18,25 @@
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
 		</div>
 </header>
-<c:if test="${empty companies}">
-	<p>
-		<i>No companies :(</i>
-	</p>
-</c:if>
-<c:if test="${not empty companies}">
+
 <section id="main">
         <div class="container">
             <h1 id="homeTitle">
                 <c:out value="${numberOfCompanies} companies found"></c:out>
             </h1>
        </div>
+       <c:if test="${not empty companies}">
 			<div class="container" style="margin-top: 10px;">
             <table class="table table-striped table-bordered">
             <thead>
+           	<tr>
                 <th>
                     Company ID
                 </th>
                 <th>
                    	Company Name
                 </th>
+           </tr>
            </thead>
 				<c:forEach var="company" items="${companies}">
 				<tr>
@@ -50,33 +47,54 @@
 				
 			</table>
 			</div>
+		</c:if>
 </section>
 
 
 <footer class="navbar-fixed-bottom">
      <div class="container text-center">
            <ul class="pagination">
-			<form action="companies" method="get" id="action">
-				<input id="selectPage" type="number" min=1 max="${numberOfPages}" value="${page}" name="page" placeholder="${page}"/>/<c:out value="${numberOfPages}" ></c:out>
-			</form>
+			<li>
+                 <a href="#" aria-label="Previous" onclick='previous("${page}")' >
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" aria-label="Next" onclick='next("${page}")'>
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+			
 			</ul>
+		 <div class="btn-group btn-group-sm pull-right" role="group" >
+           <form action="companies" method="get" id="action">
+				<c:if test="${not empty companies}">
+					<input id="selectPage" type="number" min=1 max="${numberOfPages}" value="${page}" name="page" placeholder="${page}"/>/<c:out value="${numberOfPages}" ></c:out>
+				</c:if>
+				<input type="hidden" name="search" value="${search}"/>
+			</form>
+       	</div>
 	</div>
 </footer>
 
-</c:if>
+
 
 <script type="text/javascript">
 
 	document.getElementById("selectPage").autofocus = true;
-	
-	//L'utilisateur fait entrer
-	var input = document.getElementById("selectPage");
-	input.addEventListener("keyup", function(event) {
-	    event.preventDefault();
-	    if (event.keyCode === 13) {
-	    	document.getElementById("action").submit();
-	    }
-	});
+	function previous(numPage)
+	{
+		var page=document.getElementById("selectPage");
+		page.value=--numPage;
+		document.getElementById("action").submit()
+		
+	}
+	function next(numPage)
+	{
+		var page=document.getElementById("selectPage");
+		page.value=++numPage;
+		document.getElementById("action").submit()
+	}
 </script>
 <script  src="static/js/jquery.min.js"></script>
 <script  src="static/js/bootstrap.min.js"></script>

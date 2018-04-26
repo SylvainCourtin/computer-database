@@ -36,7 +36,10 @@ public class ServiceComputer {
 	
 	public long getNumberRowComputerLike(String sLike)
 	{
-		return computerDao.getNumberElementLike(sLike);
+		if(sLike != null && !sLike.equals(""))
+			return computerDao.getNumberElementLike(sLike);
+		else
+			return computerDao.getNumberElement();
 	}
 
 	
@@ -45,7 +48,10 @@ public class ServiceComputer {
 	}
 	
 	public List<Computer> getComputers(int limit, int offset, String sLike) {
-		return computerDao.getListLike(limit,offset,sLike);
+		if(sLike != null && !sLike.equals(""))
+			return computerDao.getListLike(limit,offset,sLike);
+		else
+			return computerDao.getList(limit,offset);
 	}
 
 	

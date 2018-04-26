@@ -15,6 +15,7 @@ import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
 import bddTest.MyBDDTest;
@@ -22,6 +23,7 @@ import bddTest.MyBDDTest;
 public class FindComputer {
 	
 	private ComputerDao computerDao;
+	private ServiceComputer serviceComputer;
 	
 	@Before 
 	public void initBDD()
@@ -31,6 +33,7 @@ public class FindComputer {
 	        + "?serverTimezone=UTC"
 	        + "&useSSL=true", 
 	        "admincdb", "qwerty1234").getComputerDao();
+		serviceComputer = ServiceComputer.getInstance();
 	}
 	
 	@After
@@ -68,6 +71,42 @@ public class FindComputer {
 		} catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
 			fail("No exception expected");
 		}
+	}
+	
+	/**
+	 * Ici on vérifie que si la recherche sur Service avec like = null nous renvoit bien le nombre d'élément de la bdd sans le like
+	 */
+	@Test
+	public void testServiceFind()
+	{
+		assertEquals(serviceComputer.getNumberRowComputerLike(null), serviceComputer.getNumberRowComputer());
+	}
+	
+	/**
+	 * Ici on vérifie que si la recherche sur Service avec like avec un name qui exite
+	 * Par exemple : commodore
+	 *  nous renvoie un nombre différent que sans 
+	 */
+	@Test
+	public void testServiceFindNotEquals()
+	{
+		assertNotEquals(serviceComputer.getNumberRowComputerLike("commodore"), serviceComputer.getNumberRowComputer());
+	}
+	
+	/**
+	 * On vérifie qu'il existe dans notre BDD de test bien 13 commodore
+	 * Ceci vérifie aussi avec la sensibilité à la 'case'
+	 */
+	@Test
+	public void testFindNumberOfCommodore()
+	{
+		String lowercaseCommodore = "commodore";
+		String upperCaseCommodore = "Commodore";
+		//Check case
+		assertEquals(computerDao.getNumberElementLike(upperCaseCommodore), computerDao.getNumberElementLike(lowercaseCommodore));
+		
+		//On vérifie le nombre
+		assertEquals(computerDao.getNumberElementLike(upperCaseCommodore), 13L);
 	}
 
 }

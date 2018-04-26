@@ -17,7 +17,6 @@ import com.excilys.computerdatabase.dao.DaoFactory;
  *	User with all privilige : admincdb, qwerty1234
  */
 public class MyBDDTest {
-	private static final String DROP_CONSTRAINT = "ALTER TABLE computer DROP CONSTRAINT FK_COMPUTER_COMPANY_1";
     private static final String DROP_COMPUTER = "DROP TABLE computer";
     private static final String DROP_COMPANY = "DROP TABLE company";
     
@@ -61,9 +60,9 @@ public class MyBDDTest {
         try (Connection connexion = daoFactory.getConnection()) {
             Statement statement = connexion.createStatement();
             
-            statement.executeUpdate(DROP_CONSTRAINT);
-            statement.executeUpdate(DROP_COMPANY);
             statement.executeUpdate(DROP_COMPUTER);
+            statement.executeUpdate(DROP_COMPANY);
+           
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -5,7 +5,6 @@ import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
-import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
@@ -46,11 +45,11 @@ public class DirtyTest {
 			CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
 			ComputerDao computerDao =DaoFactory.getInstance().getComputerDao();
 			
-			Computer c1 = new Computer("c1", cal1.getTime(), cal2.getTime(), null);
+			/*Computer c1 = new Computer("c1", cal1.getTime(), cal2.getTime(), null);
 			Computer c2 = new Computer("c2", cal3.getTime(), cal4.getTime(), comp1);
 			Computer c3 = new Computer("c3", cal5.getTime(), cal6.getTime(), comp2);
 			Computer c4 = new Computer("c4", cal7.getTime(), cal8.getTime(), comp3);
-			Computer c5 = new Computer("c5", cal9.getTime(), cal10.getTime(), comp3);
+			Computer c5 = new Computer("c5", cal9.getTime(), cal10.getTime(), comp3);*/
 			
 			//testGetDaoCompany(companyDao);
 			//testGetDaoComputer(computerDao);
@@ -62,7 +61,7 @@ public class DirtyTest {
 			//testAddComputer(computerDao,c2);
 			
 		}
-		catch (DateDiscontinuedIntroducedException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

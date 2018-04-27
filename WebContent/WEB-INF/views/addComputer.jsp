@@ -55,7 +55,7 @@
                             </c:if>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" name="act" value="valideAdd" class="btn btn-primary">
+                            <button type="submit" name="act" value="valideAdd" class="btn btn-primary">Add</button>
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>

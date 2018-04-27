@@ -2,7 +2,7 @@ package com.excilys.computerdatabase.ui;
 
 import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAGE;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -66,14 +66,14 @@ public class ViewComputer {
 	/**
 	 * demande d'une date ou null (format exigeant !)
 	 */
-	public Date showRequestDateIntroduced()
+	public LocalDate showRequestDateIntroduced()
 	{
 		return MyUtils.requestOkDate();
 	}
 	/**
 	 * demande d'une date ou null (format exigeant !)
 	 */
-	public Date showRequestDateDiscontinued()
+	public LocalDate showRequestDateDiscontinued()
 	{
 		return  MyUtils.requestOkDate();
 		
@@ -81,7 +81,7 @@ public class ViewComputer {
 	/**
 	 * effectue la création d'un computer
 	*/
-	public long createComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	public long createComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company company)
 	{
 		try {
 			return serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company );
@@ -101,7 +101,7 @@ public class ViewComputer {
 	 * @param dateDiscontinued new date (or null)
 	 * @param company new company (or null)
 	 */
-	public boolean updateComputer(Computer oldComputer, String name, Date dateIntroduced, Date dateDiscontinued, Company company)
+	public boolean updateComputer(Computer oldComputer, String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company company)
 	{
 		try {
 			return serviceComputer.updateComputer(oldComputer, new Computer(name, dateIntroduced, dateDiscontinued, company ));

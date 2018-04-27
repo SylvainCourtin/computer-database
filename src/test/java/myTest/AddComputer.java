@@ -75,6 +75,28 @@ private ComputerDao computerDao;
 			
 			assertThat(computerDao.getComputer(id), equalTo(computer));
 			
+			//---------------------------Test avec une date----------------------------------------------------------
+			
+			computer = new Computer("ilMarcheDate2", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("null"), null);
+			
+			assertThat(computerDao.add(computer), 
+					not(equalTo(-1L)));
+			
+			computer.setId(id);
+			
+			assertThat(computerDao.getComputer(id), equalTo(computer));
+			
+			//------------------------------------------Test avec une company--------------------------------------------
+			
+			computer = new Computer("ilMarcheDate2", null, null, ServiceCompany.getInstance().getCompany(1));
+			
+			assertThat(computerDao.add(computer), 
+					not(equalTo(-1L)));
+			
+			computer.setId(id);
+			
+			assertThat(computerDao.getComputer(id), equalTo(computer));
+			
 		 }catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
 			 fail("No exception expected");
 		}

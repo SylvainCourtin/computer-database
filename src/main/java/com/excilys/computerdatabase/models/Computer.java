@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.utils.MyUtils;
@@ -9,8 +9,8 @@ public class Computer {
 
 	private long id;
 	private String name;
-	private Date dateIntroduced;
-	private Date dateDiscontinued;
+	private LocalDate dateIntroduced;
+	private LocalDate dateDiscontinued;
 	
 	private Company manufacturerCompany;
 	
@@ -18,7 +18,7 @@ public class Computer {
 	public Computer() {
 	}	
 	
-	public Computer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
+	public Computer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
 		this.name = name;
 		if(dateIntroduced != null && dateDiscontinued != null)
 			dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
@@ -29,7 +29,7 @@ public class Computer {
 	
 	
 
-	public Computer(long id, String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) {
+	public Computer(long id, String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) {
 		this.id = id;
 		this.name = name;
 		this.dateIntroduced = dateIntroduced;
@@ -37,21 +37,21 @@ public class Computer {
 		this.manufacturerCompany = manufacturerCompany;
 	}
 
-	public Date getDateDiscontinued() {
+	public LocalDate getDateDiscontinued() {
 		return dateDiscontinued;
 	}
 	public String getName() {
 		return name;
 	}
-	public Date getDateIntroduced() {
+	public LocalDate getDateIntroduced() {
 		return dateIntroduced;
 	}
 	
-	public void setDateDiscontinued(Date dateDiscontinued) throws DateDiscontinuedIntroducedException {
+	public void setDateDiscontinued(LocalDate dateDiscontinued) throws DateDiscontinuedIntroducedException {
 		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateDiscontinued = dateDiscontinued;
 	}
-	public void setDateIntroduced(Date dateIntroduced) throws DateDiscontinuedIntroducedException {
+	public void setDateIntroduced(LocalDate dateIntroduced) throws DateDiscontinuedIntroducedException {
 		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateIntroduced = dateIntroduced;
 	}
@@ -129,10 +129,10 @@ public class Computer {
 		String company = "null";
 		
 		if(dateDiscontinued != null)
-			dateDisc = MyUtils.dateToString(dateDiscontinued);
+			dateDisc = MyUtils.formatDateToString(dateDiscontinued);
 		
 		if(dateIntroduced != null)
-			dateIntro = MyUtils.dateToString(dateIntroduced);
+			dateIntro = MyUtils.formatDateToString(dateIntroduced);
 		
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.getName();
@@ -148,10 +148,10 @@ public class Computer {
 		String company = "empty";
 		
 		if(dateDiscontinued != null)
-			dateDisc = MyUtils.dateToString(dateDiscontinued);
+			dateDisc = MyUtils.formatDateToString(dateDiscontinued);
 		
 		if(dateIntroduced != null)
-			dateIntro = MyUtils.dateToString(dateIntroduced);
+			dateIntro = MyUtils.formatDateToString(dateIntroduced);
 		
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.toString();
@@ -166,15 +166,15 @@ public class Computer {
 	 * @param discontinued Date
 	 * @throws DateDiscontinuedIntroducedException
 	 */
-	private static void dateDiscontinuedGreaterThanIntroduced(Date introduced, Date discontinued) throws DateDiscontinuedIntroducedException
+	private static void dateDiscontinuedGreaterThanIntroduced(LocalDate introduced, LocalDate discontinued) throws DateDiscontinuedIntroducedException
 	{
 		if(introduced != null && discontinued != null)
 		{
-			if(introduced.after(discontinued))
+			if(introduced.isAfter(discontinued))
 				throw new DateDiscontinuedIntroducedException(
-						"the date introduced("+MyUtils.dateToString(introduced) + ") "
+						"the date introduced("+MyUtils.formatDateToString(introduced) + ") "
 						+ "must be before than " 
-						+ "the date discontinued (" + MyUtils.dateToString(discontinued) +")");
+						+ "the date discontinued (" + MyUtils.formatDateToString(discontinued) +")");
 		}
 	}
 }

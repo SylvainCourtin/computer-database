@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
@@ -72,7 +72,7 @@ public class ServiceComputer {
 	 * @param manufacturerCompany can be null
 	 * @return if the adding is successfull
 	 */
-	public long addComputer(String name, Date dateIntroduced, Date dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
 		
 	}
@@ -85,7 +85,7 @@ public class ServiceComputer {
 	 * @param manufacturerCompany is DTO (can be null
 	 * @return if the adding is successfull
 	 */
-	public long addComputer(String name, Date dateIntroduced, Date dateDiscontinued, CompanyDTO manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, CompanyDTO manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
 		Company company = null;
 		if(manufacturerCompany != null)
 			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());

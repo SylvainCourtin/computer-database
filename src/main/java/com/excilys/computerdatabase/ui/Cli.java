@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.ui;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -107,11 +107,11 @@ public final class Cli {
 		
 		System.out.println("----------------------------");
 		System.out.println("DateIntroduced ?\nexample : dd-MM-yyyy. You can also write null");
-		Date dateIntroduced= computer.showRequestDateIntroduced();
+		LocalDate dateIntroduced= computer.showRequestDateIntroduced();
 		
 		System.out.println("----------------------------");
 		System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : dd-MM-yyyy. You can also write null");
-		Date dateDiscontinued = computer.showRequestDateDiscontinued();
+		LocalDate dateDiscontinued = computer.showRequestDateDiscontinued();
 		
 		System.out.println("----------------------------");
 		System.out.println("Company id ?\nCan be null");
@@ -141,11 +141,11 @@ public final class Cli {
 			
 			System.out.println("----------------------------");
 			System.out.println("DateIntroduced ?\nexample : dd-MM-yyyy. You can also write null");
-			Date dateIntroduced= computer.showRequestDateIntroduced();
+			LocalDate dateIntroduced= computer.showRequestDateIntroduced();
 			
 			System.out.println("----------------------------");
 			System.out.println("DateDiscontinued ? \n/!\\ Must be more greater than DateIntroduced  \nexample : dd-MM-yyyy. You can also write null");
-			Date dateDiscontinued = computer.showRequestDateDiscontinued();
+			LocalDate dateDiscontinued = computer.showRequestDateDiscontinued();
 			
 			System.out.println("----------------------------");
 			System.out.println("Company id ?\nCan be null");

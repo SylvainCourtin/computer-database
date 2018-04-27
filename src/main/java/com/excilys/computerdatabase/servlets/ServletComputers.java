@@ -2,8 +2,8 @@ package com.excilys.computerdatabase.servlets;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -112,19 +112,21 @@ public class ServletComputers extends HttpServlet {
 	protected void actionAddComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{		
 		String name = request.getParameter("computerName");
-		Date dateIntroduced = null;
-		Date dateDiscontinued = null;
+		LocalDate dateIntroduced = null;
+		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
 		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
-		try {
-			dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
-			dateIntroduced = MyUtils.stringToDateInv(request.getParameter("introduced"));
+		try 
+		{
+			dateDiscontinued = MyUtils.stringToDate(request.getParameter("discontinued"));
+			dateIntroduced = MyUtils.stringToDate(request.getParameter("introduced"));
 		} catch (ParseException e) {
 			// TODO
 			logger.debug("Wrong format date");
 		}
 		
-		try {
+		try 
+		{
 			if(facade.addComputer(name, dateIntroduced, dateDiscontinued, company) > 0)
 			{
 				logger.info("Success added");

@@ -30,7 +30,13 @@ public class MapperComputer {
 	 * @return
 	 */
 	public static Computer fromParameters(long id, String name, Date introduced, Date discontinued, Company company) {
-		Computer computer = new Computer(id, name, introduced.toLocalDate(), discontinued.toLocalDate(),company);
+		LocalDate localDateIntroduced = null;
+		LocalDate localDateDiscontinued = null;
+		if(introduced != null)
+			localDateIntroduced = introduced.toLocalDate();
+		if(discontinued != null)
+			localDateDiscontinued = discontinued.toLocalDate();
+		Computer computer = new Computer(id, name, localDateIntroduced, localDateDiscontinued,company);
 		return computer;
 	}
 

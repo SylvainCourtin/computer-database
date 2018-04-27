@@ -9,6 +9,8 @@ import java.text.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
@@ -24,6 +26,8 @@ import bddTest.MyBDDTest;
 public class AddComputer {
 	
 private ComputerDao computerDao;
+
+ 	private Logger logger;
 	
 	@Before 
 	public void initBDD()
@@ -33,6 +37,7 @@ private ComputerDao computerDao;
 	            + "?serverTimezone=UTC"
 	            + "&useSSL=true", 
 	            "admincdb", "qwerty1234").getComputerDao();
+		logger = LoggerFactory.getLogger(AddComputer.class);
 	}
 	
 	@After
@@ -72,6 +77,8 @@ private ComputerDao computerDao;
 					not(equalTo(-1L)));
 			
 			computer.setId(id);
+			
+			logger.debug("Id :"+id);
 			
 			assertThat(computerDao.getComputer(id), equalTo(computer));
 			

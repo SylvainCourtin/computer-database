@@ -42,9 +42,8 @@ public class MyUtils {
 	{
 		if(!sDate.equals("null") && sDate != null)
 		{
-			/*SimpleDateFormat format;
-			format = new SimpleDateFormat("dd-MM-yyyy");*/
-			return LocalDate.parse(sDate);
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			return LocalDate.parse(sDate, dtf);
 		}
 		else
 			return null;

@@ -105,12 +105,12 @@ public class DirtyTest {
 		}
 		testGetDaoComputer(computerDao);
 	}
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//myTest();
-		testDao();
-
+		//testDao();
 	}
 
 }

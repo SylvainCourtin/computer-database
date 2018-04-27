@@ -4,7 +4,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.hamcrest.CoreMatchers.*;
 
-import java.text.ParseException;
+import java.time.format.DateTimeParseException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -62,7 +62,7 @@ private ComputerDao computerDao;
 			assertThat(computerDao.add(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), ServiceCompany.getInstance().getCompany(1))), 
 					not(equalTo(-1L)));
 			
-		} catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			fail("No exception expected");
 		}
 	}
@@ -84,27 +84,41 @@ private ComputerDao computerDao;
 			
 			//---------------------------Test avec une date----------------------------------------------------------
 			
-			computer = new Computer("ilMarcheDate2", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("null"), null);
+			computer = new Computer("ilMarcheDate2", MyUtils.stringToDate("16-01-2000"),null, null);
 			
-			assertThat(computerDao.add(computer), 
+			assertThat(id = computerDao.add(computer), 
 					not(equalTo(-1L)));
 			
 			computer.setId(id);
 			
 			assertThat(computerDao.getComputer(id), equalTo(computer));
+			
+			//---------------------------Test avec deux date----------------------------------------------------------
+			
+			computer = new Computer("ilMarcheDate2", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("10-10-2017"), null);
+			
+			assertThat(id = computerDao.add(computer), 
+					not(equalTo(-1L)));
+			
+			computer.setId(id);
+			
+			assertThat(computerDao.getComputer(id), equalTo(computer));
+			
+
+			
 			
 			//------------------------------------------Test avec une company--------------------------------------------
 			
 			computer = new Computer("ilMarcheDate2", null, null, ServiceCompany.getInstance().getCompany(1));
 			
-			assertThat(computerDao.add(computer), 
+			assertThat(id = computerDao.add(computer), 
 					not(equalTo(-1L)));
 			
 			computer.setId(id);
 			
 			assertThat(computerDao.getComputer(id), equalTo(computer));
 			
-		 }catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
+		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			 fail("No exception expected");
 		}
 	}
@@ -117,7 +131,7 @@ private ComputerDao computerDao;
 			fail("Exception expected");
 			assertThat(computerDao.add(computer), 
 					equalTo(-1L));
-		} catch (ParseException | CompanyDoesNotExistException e) {
+		} catch (DateTimeParseException | CompanyDoesNotExistException e) {
 			fail("ParseException or CompanyDoesNotExistException wasn't expected");
 		}
 		catch(DateDiscontinuedIntroducedException e){
@@ -133,7 +147,7 @@ private ComputerDao computerDao;
 			
 			assertThat(computerDao.add(computer), 
 					equalTo(-1L));
-		} catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			fail("Not expected exception");
 		}
 	}
@@ -144,7 +158,7 @@ private ComputerDao computerDao;
 		try {
 			assertThat(computerDao.add(new Computer("failCompany", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
 					equalTo(-1L));
-		} catch (DateDiscontinuedIntroducedException | ParseException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException e) {
 			fail("No exception DateDiscontinuedIntroducedException or ParseException expected");
 		}
 		catch( CompanyDoesNotExistException e)

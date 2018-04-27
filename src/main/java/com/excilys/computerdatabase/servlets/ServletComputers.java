@@ -1,8 +1,8 @@
 package com.excilys.computerdatabase.servlets;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,9 +118,11 @@ public class ServletComputers extends HttpServlet {
 		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
 		try 
 		{
-			dateDiscontinued = MyUtils.stringToDate(request.getParameter("discontinued"));
-			dateIntroduced = MyUtils.stringToDate(request.getParameter("introduced"));
-		} catch (ParseException e) {
+			if(request.getParameter("discontinued") != null && request.getParameter("introduced").equals(""))
+				dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
+			if(request.getParameter("introduced") != null && request.getParameter("introduced").equals(""))
+				dateIntroduced = MyUtils.stringToDateInv(request.getParameter("introduced"));
+		} catch (DateTimeParseException e) {
 			// TODO
 			logger.debug("Wrong format date");
 		}

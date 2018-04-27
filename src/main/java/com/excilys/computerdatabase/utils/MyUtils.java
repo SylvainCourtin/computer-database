@@ -1,8 +1,8 @@
 package com.excilys.computerdatabase.utils;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class MyUtils {
@@ -34,15 +34,31 @@ public class MyUtils {
 	
 	
 	/** Convertie un string en LocalDate ou renvoie null si sDate est null
-	 * @param sDate String for a date
+	 * @param sDate String for a date format : "dd-MM-yyyy"
 	 * @return date 
 	 * @throw this string didn't work
 	 */
-	public static LocalDate stringToDate(String sDate) throws ParseException
+	public static LocalDate stringToDate(String sDate) throws DateTimeParseException
 	{
 		if(!sDate.equals("null") && sDate != null)
 		{
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			return LocalDate.parse(sDate, dtf);
+		}
+		else
+			return null;
+	}
+	
+	/** Convertie un string en LocalDate ou renvoie null si sDate est null
+	 * @param sDate String for a date format : "yyyy-MM-dd"
+	 * @return date 
+	 * @throw this string didn't work
+	 */
+	public static LocalDate stringToDateInv(String sDate) throws DateTimeParseException
+	{
+		if(!sDate.equals("null") && sDate != null)
+		{
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			return LocalDate.parse(sDate, dtf);
 		}
 		else
@@ -64,7 +80,7 @@ public class MyUtils {
 			try {
 				date = stringToDate(scanner.nextLine().trim());
 				isValid = true;
-			} catch (ParseException e) {
+			} catch (DateTimeParseException e) {
 				System.out.println("Unvalidate format, try again or write null");
 				isValid	= false;
 			}

@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.text.ParseException;
+import java.time.format.DateTimeParseException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class DeleteComputer {
 			assertThat(computerDao.delete(computer), 
 					is(true));
 			
-		} catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			fail("No exception expected");
 		}
 	}
@@ -65,7 +65,7 @@ public class DeleteComputer {
 			assertThat(computerDao.delete(computer), 
 					is(false));
 			
-		} catch (ParseException e) {
+		} catch (DateTimeParseException e) {
 			fail("No exception expected");
 		}
 	}

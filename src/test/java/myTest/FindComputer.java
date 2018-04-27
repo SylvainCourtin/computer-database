@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
-import java.text.ParseException;
+import java.time.format.DateTimeParseException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -68,9 +68,21 @@ public class FindComputer {
 			
 			
 			
-		} catch (DateDiscontinuedIntroducedException | ParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			fail("No exception expected");
 		}
+	}
+	
+	/**
+	 * Récupère le computer à l'id 5 existant nativement dans la BDD, il doit avoir une date introduced mais pas de discontinued
+	 */
+	@Test
+	public void testFindWithDate()
+	{
+		//Computer = id:5, name:CM-5, introduced:01-01-1991, discontinued:null, company_id:2
+		assertThat(computerDao.getComputer(5).getDateIntroduced(), not(equalTo(null)));
+		
+		assertThat(computerDao.getComputer(5).getDateDiscontinued(), equalTo(null));
 	}
 	
 	/**

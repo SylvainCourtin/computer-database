@@ -88,6 +88,10 @@ public class ServletComputers extends HttpServlet {
 		{
 			dispatchUpdateComputer(request, response);
 		}
+		else if(act.equals("validEdit"))
+		{
+			actionUpdateComputer(request, response);
+		}
 		else
 		{
 			dispatchGetComputers(request, response);
@@ -126,7 +130,8 @@ public class ServletComputers extends HttpServlet {
 			
 			
 		} catch (DateTimeParseException e) {
-			// TODO
+			request.setAttribute("result", "Fail, "+e.getMessage());
+			dispatchAddComputers(request, response);
 			logger.debug("Wrong format date");
 		}
 		
@@ -172,7 +177,64 @@ public class ServletComputers extends HttpServlet {
 	 */
 	protected void actionUpdateComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-	
+		int idComputer = Integer.valueOf(request.getParameter("id"));
+		
+		String name = request.getParameter("computerName");
+		LocalDate dateIntroduced = null;
+		LocalDate dateDiscontinued = null;
+		int id_company = Integer.valueOf(request.getParameter("companyId"));
+		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
+		try 
+		{
+			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
+				dateIntroduced = MyUtils.stringToDateInv(request.getParameter("introduced"));
+			
+			if(request.getParameter("discontinued") != null && !request.getParameter("discontinued").equals(""))
+				dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
+			
+			
+		} catch (DateTimeParseException e) {
+			request.setAttribute("result", "Fail.");
+			request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
+			dispatchUpdateComputer(request, response);
+			logger.debug("Wrong format date");
+		}
+		
+		try 
+		{
+			if(facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company))
+			{
+				logger.info("Success added");
+				request.setAttribute("result", "Success added.");
+				//On renvoit l'utilisateur sur la page de la liste des computers
+				dispatchGetComputers(request,response);
+			}
+			else
+			{
+				request.setAttribute("result", "Fail.");
+				request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
+				dispatchUpdateComputer(request, response);
+				
+			}
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
+			// TODO Gestion erreur
+			if(e instanceof DateDiscontinuedIntroducedException)
+			{
+				//TODO afficher combo de date non possible
+				logger.debug("Invalid date, Introduced > Discontinued");
+			}
+			else
+			{
+				logger.debug("Company didn't exist");
+			}
+			request.setAttribute("result", "Fail, "+e.getMessage());
+			request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
+			dispatchUpdateComputer(request, response);
+			
+		}
+		request.setAttribute("result", "Fail.");
+		request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
+		dispatchUpdateComputer(request, response);
 	}
 	
 	/**

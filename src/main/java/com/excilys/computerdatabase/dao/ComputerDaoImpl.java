@@ -189,39 +189,43 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public boolean update(Computer computer) {
 		boolean isUpdate = false;
-		try {
-			
-			//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
-			if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
-				throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
+		if(computer.getName() != null && !computer.getName().equals(""))
+		{
+			try {
+				
+				//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
+				if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
+					throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
 
-			
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_UPDATE);
-			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
-			preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
-			if(computer.getManufacturerCompany() != null)
-				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
-			else 
-				preparedStatement.setString(4, null);
-			//Where id=?
-			preparedStatement.setLong(5, computer.getId());
-			if(computer.getManufacturerCompany() != null)
-				preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
-			else 
-				preparedStatement.setString(4, null);
-			if (preparedStatement.executeUpdate() > 0)
-				isUpdate = true;
+				
+				Connection connection = daoFactory.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_UPDATE);
+				preparedStatement.setString(1, computer.getName());
+				preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
+				preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
+				if(computer.getManufacturerCompany() != null)
+					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+				else 
+					preparedStatement.setString(4, null);
+				//Where id=?
+				preparedStatement.setLong(5, computer.getId());
+				if(computer.getManufacturerCompany() != null)
+					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
+				else 
+					preparedStatement.setString(4, null);
+				if (preparedStatement.executeUpdate() > 0)
+					isUpdate = true;
 
-			connection.close();
-			
-			
-			
+				connection.close();
+				
+				
+				
+			}
+			catch (SQLException | CompanyDoesNotExistException e) {
+				e.printStackTrace();
+			}
 		}
-		catch (SQLException | CompanyDoesNotExistException e) {
-			e.printStackTrace();
-		}
+		
 		return isUpdate;
 		
 	}

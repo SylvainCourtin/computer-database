@@ -28,23 +28,23 @@
                     <h1>Edit Computer</h1>
 
                     <form action="computer" method="POST">
-                        <input type="hidden" value="0" id="id"/> <!-- TODO: Change this value with the computer id -->
+                        <input type="hidden" value="${computer.computerBasicView.id}" name="id" id="id"/>
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name*</label>
-                                <input type="text" class="form-control" id="computerName" placeholder="${computer.computerBasicView.name}">
+                                <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.computerBasicView.name}" placeholder="Computer name">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date : <tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></label>
-                                <input type="date" class="form-control" id="introduced" placeholder="${computer.computerBasicView.introduced}">
+                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.computerBasicView.introduced}" placeholder="Introduced date">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date : <tagdate:display localDate="${computer.computerBasicView.discontinued}"></tagdate:display></label>
-                                <input type="date" class="form-control" id="discontinued" placeholder="${computer.computerBasicView.discontinued}">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.computerBasicView.discontinued}" placeholder="Discontinued date">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" >
+                                <select class="form-control" id="companyId" name="companyId" >
                                     <option value="0">--</option>
                                     <c:forEach var="company" items="${companies}">
                                     	<c:if test="${company.companyBasicView.id == computer.companyBasicView.id }">
@@ -56,10 +56,17 @@
                                     	</c:if>
                                     </c:forEach>
                                 </select>
-                            </div>            
+                            </div>
+                            <c:if test="${not empty result}">
+                            	<div class="form-group">
+                            		<div class="alert alert-warning">
+                            			<strong><c:out value="${result}"></c:out></strong>
+                            		</div>
+                            	</div>
+                            </c:if>            
                         </fieldset>
                         <div class="actions pull-right">
-                           <button type="submit" name="act" value="edit" class="btn btn-primary">Edit</button>
+                           <button type="submit" name="act" value="validEdit" class="btn btn-primary">Edit</button>
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>

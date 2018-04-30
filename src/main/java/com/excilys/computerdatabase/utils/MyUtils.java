@@ -24,7 +24,7 @@ public class MyUtils {
 	{
 		if(date != null)
 		{
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			return date.format(formatter);
 		}
 		logger.error("The Localdate date can't be null !");

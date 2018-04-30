@@ -82,12 +82,17 @@ public class ServiceComputer {
 	}
 	
 	/**
+	
+	 */
+	/**
 	 * Ajoute un nouvelle ordinateur, dateIntroduced doit etre avant dateDiscontinued
 	 * @param name not null
 	 * @param dateIntroduced can be null
 	 * @param dateDiscontinued can be null
 	 * @param manufacturerCompany is DTO (can be null
 	 * @return if the adding is successfull
+	 * @throws DateDiscontinuedIntroducedException
+	 * @throws CompanyDoesNotExistException
 	 */
 	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, CompanyDTO manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
 		Company company = null;
@@ -101,6 +106,26 @@ public class ServiceComputer {
 		newComputer.setId(oldComputer.getId());
 		return computerDao.update(newComputer);
 	}
+	
+	/**
+	 * Update un computer
+	 * @param id must be in the BDD
+	 * @param name
+	 * @param introduced
+	 * @param discontinued
+	 * @param manufacturerCompany
+	 * @throws DateDiscontinuedIntroducedException
+	 * @throws CompanyDoesNotExistException
+	 * @return
+	 */
+	public boolean updateComputer(long id, String name, LocalDate introduced,LocalDate discontinued, CompanyDTO manufacturerCompany)throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+		Company company = null;
+		if(manufacturerCompany != null)
+			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());
+		return computerDao.update((new Computer(id,name, introduced, discontinued, company)));
+	}
+	
+	
 	
 	public Computer getComputer(long id)
 	{

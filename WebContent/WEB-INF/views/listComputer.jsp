@@ -66,7 +66,6 @@
 	                            </a>
 	                    </span>
 	                </th>
-	                <th>Computer ID</th>
 	                <th>Computer Name</th>
 	                <th>Date introduced</th>
 	                <th>Date discontinued</th>
@@ -80,7 +79,6 @@
 	                        <input type="checkbox" name="cb" class="cb" value="0">
 	                        <input type="hidden" name="computer" value="${computer}">
 	                    </td>
-						<td><c:out value="${computer.computerBasicView.id}"></c:out></td>
 						<td><a href="#" onclick='active("edit")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
 						<td><c:out value="${computer.computerBasicView.introduced}"></c:out></td>
 						<td><c:out value="${computer.computerBasicView.discontinued}"></c:out></td>

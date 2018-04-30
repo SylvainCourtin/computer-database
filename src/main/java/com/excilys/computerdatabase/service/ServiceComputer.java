@@ -29,6 +29,10 @@ public class ServiceComputer {
 		computerDao = DaoFactory.getInstance().getComputerDao();
 	}
 	
+	public ServiceComputer(String url, String username, String password) {
+		computerDao = new DaoFactory(url,username,password).getComputerDao();
+	}
+	
 	public long getNumberRowComputer()
 	{
 		return computerDao.getNumberElement();

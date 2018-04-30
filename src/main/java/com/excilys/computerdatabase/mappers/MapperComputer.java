@@ -11,8 +11,7 @@ public class MapperComputer {
 	
 	public static Computer fromParameters(long id, String name, LocalDate introduced, LocalDate discontinued, Company company)
 	{
-		Computer computer = new Computer(id, name, introduced, discontinued,company);
-		return computer;
+		return new Computer(id, name, introduced, discontinued,company);
 	}
 	
 	public static ComputerDTO computerToDTO(Computer computer)
@@ -24,20 +23,31 @@ public class MapperComputer {
 	 * Create a new computer, the type date is convert to LocalDate
 	 * @param id Id giving by the BDD
 	 * @param name 
-	 * @param introduced Date wil be convert to LocalDate
-	 * @param discontinued Date wil be convert to LocalDate
+	 * @param introduced Date will be convert to LocalDate
+	 * @param discontinued Date will be convert to LocalDate
 	 * @param company The company, can be null
 	 * @return
 	 */
 	public static Computer fromParameters(long id, String name, Date introduced, Date discontinued, Company company) {
-		LocalDate localDateIntroduced = null;
-		LocalDate localDateDiscontinued = null;
-		if(introduced != null)
-			localDateIntroduced = introduced.toLocalDate();
-		if(discontinued != null)
-			localDateDiscontinued = discontinued.toLocalDate();
-		Computer computer = new Computer(id, name, localDateIntroduced, localDateDiscontinued,company);
-		return computer;
+		//Convertie la date en localDate si non null
+		LocalDate localDateIntroduced = (introduced == null ? null : introduced.toLocalDate());
+		LocalDate localDateDiscontinued = (discontinued == null ? null : discontinued.toLocalDate());
+		return new Computer(id, name, localDateIntroduced, localDateDiscontinued,company);
 	}
-
+	
+	/**
+	 * Create a new computer, the type date is convert to LocalDate
+	 * @param id Id giving by the BDD
+	 * @param name 
+	 * @param introduced String from BDD 
+	 * @param discontinued String from BDD 
+	 * @param company The company, can be null
+	 * @return
+	 */
+	public static Computer fromParameters(long id, String name, String introduced, String discontinued, Company company) {
+		//Convertie la date en localDate si non null
+		LocalDate localDateIntroduced = (introduced == null ? null : LocalDate.parse(introduced));
+		LocalDate localDateDiscontinued = (discontinued == null ? null : LocalDate.parse(discontinued));
+		return new Computer(id, name, localDateIntroduced, localDateDiscontinued,company);
+	}
 }

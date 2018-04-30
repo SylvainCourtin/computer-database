@@ -25,9 +25,9 @@ import bddTest.MyBDDTest;
 
 public class AddComputer {
 	
-private ComputerDao computerDao;
+	private ComputerDao computerDao;
 
- 	private Logger logger;
+	private Logger logger;
 	
 	@Before 
 	public void initBDD()

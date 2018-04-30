@@ -71,7 +71,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		try {
 			Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_SELECT+"WHERE id="+id+";");
+			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPANY_SELECT+"WHERE id="+id+" ORDER BY name DESC ;");
 			
 			while(result.next())
 			{

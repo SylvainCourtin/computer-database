@@ -9,7 +9,7 @@ public class ComputerDTO {
 
 	private ComputerBasicView computerBasicView;
 	
-	private CompanyBasicView manufacturerCompanyBasicView;
+	private CompanyBasicView companyBasicView;
 	
 	/**
 	 * @param computer computer pour la vue
@@ -17,10 +17,10 @@ public class ComputerDTO {
 	public ComputerDTO(Computer computer) {
 		computerBasicView = new ComputerBasicView(computer);
 		
-		manufacturerCompanyBasicView = null;
+		companyBasicView = null;
 		if(computer.getManufacturerCompany() != null)
 		{
-			manufacturerCompanyBasicView = new CompanyBasicView(computer.getManufacturerCompany());
+			companyBasicView = new CompanyBasicView(computer.getManufacturerCompany());
 		}
 	}
 	
@@ -32,7 +32,7 @@ public class ComputerDTO {
 	public ComputerDTO(long id, String name)
 	{
 		computerBasicView = new ComputerBasicView(id,name,null,null);
-		manufacturerCompanyBasicView = null;	
+		companyBasicView = null;	
 	}
 	
 	/**
@@ -46,10 +46,10 @@ public class ComputerDTO {
 	public ComputerDTO(long id, String name,LocalDate introduced, LocalDate discontinued, Company company)
 	{
 		computerBasicView = new ComputerBasicView(id,name,introduced,discontinued);
-		manufacturerCompanyBasicView = null;
+		companyBasicView = null;
 		if(company != null)
 		{
-			manufacturerCompanyBasicView = new CompanyBasicView(company);
+			companyBasicView = new CompanyBasicView(company);
 		}
 	}
 
@@ -63,8 +63,8 @@ public class ComputerDTO {
 	/**
 	 * @param manufacturerCompanyBasicView the manufacturerCompanyBasicView to set
 	 */
-	public void setManufacturerCompanyBasicView(CompanyBasicView manufacturerCompanyBasicView) {
-		this.manufacturerCompanyBasicView = manufacturerCompanyBasicView;
+	public void setCompanyBasicView(CompanyBasicView manufacturerCompanyBasicView) {
+		this.companyBasicView = manufacturerCompanyBasicView;
 	}
 
 	/**
@@ -77,8 +77,8 @@ public class ComputerDTO {
 	/**
 	 * @return the manufacturerCompanyBasicView
 	 */
-	public CompanyBasicView getManufacturerCompanyBasicView() {
-		return manufacturerCompanyBasicView;
+	public CompanyBasicView getCompanyBasicView() {
+		return companyBasicView;
 	}
 	
 	

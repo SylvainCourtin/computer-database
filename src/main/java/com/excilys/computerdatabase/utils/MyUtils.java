@@ -70,7 +70,7 @@ public class MyUtils {
 			return DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		}
 		else
-			throw new DateTimeException("Wrong format");
+			throw new DateTimeParseException("Wrong format : ", sDate, 0);
 	}
 	
 	/** Convertie un string en LocalDate ou renvoie null si sDate est null

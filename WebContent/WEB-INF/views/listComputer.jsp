@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="tagdate" uri="tagdate" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,13 +77,16 @@
 					<c:forEach var="computer" items="${computers}">
 					<tr>
 						<td class="editMode">
+						<form action="computer" method="POST" id="action_computer">
+							<input type="hidden" name="act" id="act_computer" value="">
 	                        <input type="checkbox" name="cb" class="cb" value="0">
-	                        <input type="hidden" name="computer" value="${computer}">
+	                        <input type="hidden" id="actIdComputer" name="computer" value="">
+	                    </form>
 	                    </td>
-						<td><a href="#" onclick='active("edit")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
-						<td><c:out value="${computer.computerBasicView.introduced}"></c:out></td>
-						<td><c:out value="${computer.computerBasicView.discontinued}"></c:out></td>
-						<td><c:out value="${computer.manufacturerCompanyBasicView.name}"></c:out></td>
+						<td><a href="#" onclick='goTo("edit", "${computer.computerBasicView.id}")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
+						<td><tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></td>
+						<td><tagdate:display localDate="${computer.computerBasicView.discontinued}"></tagdate:display></td>
+						<td><c:out value="${computer.companyBasicView.name}"></c:out></td>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -147,6 +151,12 @@
 	{
         document.getElementById("act").value = name_action;
         document.getElementById("action").submit();
+	}
+	function goTo(name_action,id)
+	{
+		document.getElementById("actIdComputer").value=id;
+		document.getElementById("act_computer").value = name_action;
+		document.getElementById("action_computer").submit();
 	}
 	
 </script>

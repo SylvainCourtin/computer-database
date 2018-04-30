@@ -118,10 +118,13 @@ public class ServletComputers extends HttpServlet {
 		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
 		try 
 		{
-			if(request.getParameter("discontinued") != null && request.getParameter("introduced").equals(""))
-				dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
-			if(request.getParameter("introduced") != null && request.getParameter("introduced").equals(""))
+			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
 				dateIntroduced = MyUtils.stringToDateInv(request.getParameter("introduced"));
+			
+			if(request.getParameter("discontinued") != null && !request.getParameter("discontinued").equals(""))
+				dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
+			
+			
 		} catch (DateTimeParseException e) {
 			// TODO
 			logger.debug("Wrong format date");
@@ -265,17 +268,23 @@ public class ServletComputers extends HttpServlet {
 	 */
 	protected void dispatchUpdateComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		
-		ComputerDTO computer = (ComputerDTO) request.getAttribute("computer");
-		
-		List<CompanyDTO> companies = new ArrayList<>();
-		for(Company company : ServiceCompany.getInstance().getCompanies(100, 0))
+		if(request.getParameter("computer") != null)
 		{
-			companies.add(MapperCompany.companyToDTO(company));
+			int IdComputer = Integer.valueOf(request.getParameter("computer"));
+			
+			List<CompanyDTO> companies = new ArrayList<>();
+			for(Company company : ServiceCompany.getInstance().getCompanies(100, 0))
+			{
+				companies.add(MapperCompany.companyToDTO(company));
+			}
+			
+			ComputerDTO computer = MapperComputer.computerToDTO(facade.getComputer(IdComputer));
+			
+			request.setAttribute("computer", computer);
+			request.setAttribute("companies", companies);
+			request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 		}
-		
-		request.setAttribute("computer", computer);
-		request.setAttribute("companies", companies);
-		request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+		else
+			request.getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
 	}
 }

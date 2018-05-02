@@ -2,12 +2,15 @@ package com.excilys.computerdatabase.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.dtos.CompanyDTO;
+import com.excilys.computerdatabase.dtos.ComputerDTO;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
@@ -171,9 +174,18 @@ public class ServiceComputer {
 	 * @param id
 	 * @return
 	 */
-	public Computer getComputer(long id)
+	public Optional<Computer> getComputer(long id)
 	{
 		return computerDao.getComputer(id);
+	}
+	
+	public Optional<ComputerDTO> getComputerDTO(long id)
+	{
+		Optional<Computer> computer = computerDao.getComputer(id);
+		if(computer.isPresent())
+			return Optional.of(MapperComputer.computerToDTO(computer.get()));
+		else
+			return Optional.empty();
 	}
 
 }

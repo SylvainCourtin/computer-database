@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.ui;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.models.Company;
@@ -129,8 +130,8 @@ public final class Cli {
 	public void requestUpdateComputer()
 	{
 		long id = requestIdComputer();
-		Computer oldComputer = computer.getServiceComputer().getComputer(id);
-		if( oldComputer != null)
+		Optional<Computer> oldComputer = computer.getServiceComputer().getComputer(id);
+		if( oldComputer.isPresent())
 		{
 			System.out.println("\n-----------Old Computer-----------------");
 			//On affiche les anciennes informations
@@ -151,7 +152,7 @@ public final class Cli {
 			System.out.println("Company id ?\nCan be null");
 			Company company = this.company.showRequestCompany();
 			
-			if(computer.updateComputer(oldComputer,name,dateIntroduced,dateDiscontinued,company))
+			if(computer.updateComputer(oldComputer.get(),name,dateIntroduced,dateDiscontinued,company))
 				System.out.println("Successfully Updated !");
 			else
 				System.out.println("Echec :(");

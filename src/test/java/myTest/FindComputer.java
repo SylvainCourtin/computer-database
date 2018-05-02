@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -80,9 +81,18 @@ public class FindComputer {
 	public void testFindWithDate()
 	{
 		//Computer = id:5, name:CM-5, introduced:01-01-1991, discontinued:null, company_id:2
-		assertThat(computerDao.getComputer(5).getDateIntroduced(), not(equalTo(null)));
+		Optional<Computer> computer = computerDao.getComputer(5);
+		if(computer.isPresent())
+		{
+			assertThat(computer.get().getDateIntroduced(), not(equalTo(null)));
+			assertThat(computer.get().getDateDiscontinued(), equalTo(null));
+		}
+		else
+		{
+			fail();
+		}
+
 		
-		assertThat(computerDao.getComputer(5).getDateDiscontinued(), equalTo(null));
 	}
 	
 	/**

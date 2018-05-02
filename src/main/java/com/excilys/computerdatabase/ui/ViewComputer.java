@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.ui;
 import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAGE;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -48,8 +49,9 @@ public class ViewComputer {
 	 */
 	public void showOneComputer(long id)
 	{
-		if(serviceComputer.getComputer(id) != null)
-			System.out.println(serviceComputer.getComputer(id).toStringDetails());
+		Optional<Computer> computer = serviceComputer.getComputer(id);
+		if( computer.isPresent())
+			System.out.println(computer.get().toStringDetails());
 		else
 			System.err.println("Cette ID n'existe pas !");
 	}
@@ -117,8 +119,9 @@ public class ViewComputer {
 	 */
 	public boolean deleteComputer(long id)
 	{
-		if(serviceComputer.getComputer(id) != null)
-			return serviceComputer.deleteComputer(serviceComputer.getComputer(id));
+		Optional<Computer> computer = serviceComputer.getComputer(id);
+		if( computer.isPresent())
+			return serviceComputer.deleteComputer(computer.get());
 		else
 		{
 			System.err.println("Cette ID n'existe pas !");

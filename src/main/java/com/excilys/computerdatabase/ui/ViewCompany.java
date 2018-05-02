@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.ui;
 
 import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAGE;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.models.Company;
@@ -53,14 +54,17 @@ public class ViewCompany {
 			String tmp = scanner.nextLine();
 			if(!tmp.equals("null"))
 			{
-				company = serviceCompany.getCompany(Long.parseLong(tmp));
-				if( company == null)
+				Optional<Company> optCompany = serviceCompany.getCompany(Long.parseLong(tmp));
+				if(!optCompany.isPresent())
 				{
 					isIDValid = false;
 					System.out.println("\n\t This company doesn't exist try again");
 				}
 				else
+				{
 					isIDValid = true;
+					company = optCompany.get();
+				}
 			}
 			else
 			{

@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
@@ -49,7 +50,7 @@ public class ServiceCompany{
 	 * @param id company id
 	 * @return Company finding in the bdd
 	 */
-	public Company getCompany(long id)
+	public Optional<Company> getCompany(long id)
 	{
 		return companyDao.getCompany(id);
 			

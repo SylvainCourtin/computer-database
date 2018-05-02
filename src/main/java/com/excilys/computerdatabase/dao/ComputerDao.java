@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Computer;
@@ -17,7 +18,7 @@ public interface ComputerDao {
 	 * @return arraylist of computers
 	 */
 	public List<Computer> getListLike(int limite, int offset, String sLike);
-	public Computer getComputer(long id);
+	public Optional<Computer> getComputer(long id);
 	public boolean delete(Computer computer);
 	public boolean delete(long id);
 	public boolean update(Computer computer);

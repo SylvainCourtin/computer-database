@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
@@ -93,13 +94,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	public List<Computer> getList(int limite, int offset) {
 		List<Computer> computers = new ArrayList<>();
 		
-		try {
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT);
-			preparedStatement.setInt(1, limite);
-			preparedStatement.setInt(2, offset);
-			ResultSet result = preparedStatement.executeQuery();
-			
+		try(Connection connection = daoFactory.getConnection();
+				PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT,
+						false, limite, offset);
+				
+				ResultSet result = preparedStatement.executeQuery();) {
+
 			computers = getList(result);
 			
 			result.close();
@@ -139,7 +139,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public Computer getComputer(long id) {
+	public Optional<Computer> getComputer(long id) {
 		Computer computer = null;
 		try {
 			Connection connection = daoFactory.getConnection();
@@ -165,7 +165,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return computer;
+		return Optional.ofNullable(computer);
 	}
 
 	@Override
@@ -290,5 +290,16 @@ public class ComputerDaoImpl implements ComputerDao {
 			e.printStackTrace();
 		}
 		return nbElement;
+	}
+	
+	private PreparedStatement initPreparedStatementWithParameters(Connection connection, String sql, boolean isReturnKey, Object...objects) throws SQLException
+	{
+		PreparedStatement preparedStatement = connection.prepareStatement(sql, isReturnKey ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
+		int params = 1;
+		for (Object object : objects) {
+			preparedStatement.setObject(params, object);
+			params++;
+		}
+		return preparedStatement;
 	}
 }

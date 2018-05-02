@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
@@ -64,7 +65,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 	
 	@Override
-	public Company getCompany(long id)
+	public Optional<Company> getCompany(long id)
 	{
 		Company company = null;
 		
@@ -86,7 +87,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			e.printStackTrace();
 		}
 		
-		return company;
+		return Optional.ofNullable(company);
 	}
 
 	@Override

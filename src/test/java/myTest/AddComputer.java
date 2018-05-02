@@ -59,7 +59,7 @@ public class AddComputer {
 			assertThat(computerDao.add(new Computer("ilMarcheDate3", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("16-01-2001"), null)), 
 					not(equalTo(-1L)));
 			
-			assertThat(computerDao.add(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), ServiceCompany.getInstance().getCompany(1))), 
+			assertThat(computerDao.add(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), ServiceCompany.getInstance().getCompany(1).get())), 
 					not(equalTo(-1L)));
 			
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
@@ -109,7 +109,7 @@ public class AddComputer {
 			
 			//------------------------------------------Test avec une company--------------------------------------------
 			
-			computer = new Computer("ilMarcheDate2", null, null, ServiceCompany.getInstance().getCompany(1));
+			computer = new Computer("ilMarcheDate2", null, null, ServiceCompany.getInstance().getCompany(1).get());
 			
 			assertThat(id = computerDao.add(computer), 
 					not(equalTo(-1L)));

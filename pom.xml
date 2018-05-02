@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   
   <groupId>com.excilys</groupId>
   <artifactId>computerdatabase</artifactId>
-  <version>0.2.2</version>
+  <version>0.2.3-SNAPSHOT</version>
   
   <packaging>war</packaging>
   <name>computer-database</name>

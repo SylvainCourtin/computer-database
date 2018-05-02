@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -124,7 +125,7 @@ public class ServletComputers extends HttpServlet {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
-		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
+		Optional<CompanyDTO> company = MapperCompany.fromIdCompanyDTO(id_company);
 		try 
 		{
 			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
@@ -142,7 +143,7 @@ public class ServletComputers extends HttpServlet {
 		
 		try 
 		{
-			if(facade.addComputer(name, dateIntroduced, dateDiscontinued, company) > 0)
+			if(company.isPresent() && facade.addComputer(name, dateIntroduced, dateDiscontinued, company.get()) > 0)
 			{
 				logger.info("Success added");
 				request.setAttribute("result", "Success added.");
@@ -187,7 +188,7 @@ public class ServletComputers extends HttpServlet {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
-		CompanyDTO company = MapperCompany.fromIdCompanyDTO(id_company);
+		Optional<CompanyDTO> company = MapperCompany.fromIdCompanyDTO(id_company);
 		try 
 		{
 			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
@@ -198,26 +199,24 @@ public class ServletComputers extends HttpServlet {
 			
 			
 		} catch (DateTimeParseException e) {
-			request.setAttribute("result", "Fail.");
-			request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
-			dispatchUpdateComputer(request, response);
+			request.setAttribute("result", "Fail. The date didn't match correctly");
+			dispatchGetComputers(request, response);
 			logger.debug("Wrong format date");
 		}
 		
 		try 
 		{
-			if(facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company))
+			if(company.isPresent() && facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company.get()))
 			{
 				logger.info("Success updated");
-				request.setAttribute("result", "Success added.");
+				request.setAttribute("result", "Success updated.");
 				//On renvoit l'utilisateur sur la page de la liste des computers
 				dispatchGetComputers(request,response);
 			}
 			else
 			{
-				request.setAttribute("result", "Fail.");
-				request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
-				dispatchUpdateComputer(request, response);
+				request.setAttribute("result", "Fail updated");
+				dispatchGetComputers(request, response);
 				
 			}
 		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
@@ -378,12 +377,13 @@ public class ServletComputers extends HttpServlet {
 				companies.add(MapperCompany.companyToDTO(company));
 			}
 			
-			try {
-				ComputerDTO computer = MapperComputer.computerToDTO(facade.getComputer(IdComputer));
-				request.setAttribute("computer", computer);
+			Optional<ComputerDTO> computer = facade.getComputerDTO(IdComputer);
+			if(computer.isPresent())
+			{
+				request.setAttribute("computer", computer.get());
 				request.setAttribute("companies", companies);
 				request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
-			} catch (Exception e) {
+			} else {
 				request.setAttribute("result", "Error, you try to edit something has been deleted");
 				request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 			}	

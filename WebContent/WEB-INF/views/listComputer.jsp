@@ -37,13 +37,13 @@
                     <c:if test="${not empty result}">
 	               	<div class="form-group">
 	               	<c:choose>
-	               		<c:when test="${fn:contains(result, 'Success')}">
-	               			<div class="alert alert-success">
+	               		<c:when test="${fn:contains(result, 'Fail')}">
+	               			<div class="alert alert-danger">
 	               				<strong><c:out value="${result}"></c:out></strong>
 	               			</div>
 	               		</c:when>
 	               		<c:otherwise>
-	               			<div class="alert alert-danger">
+	               			<div class="alert alert-success">
 	               				<strong><c:out value="${result}"></c:out></strong>
 	               			</div>
 	               		</c:otherwise>

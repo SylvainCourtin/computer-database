@@ -173,8 +173,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		boolean isDelete = false;
 		try {
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			if(statement.executeUpdate(MyConstants.SQL_QUERY_COMPUTER_DELETE+computer.getId() +";") > 0)
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_DELETE);
+			preparedStatement.setLong(1, computer.getId());
+			if (preparedStatement.executeUpdate() > 0)
 					isDelete = true;
 
 			connection.close();
@@ -192,8 +193,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		boolean isDelete = false;
 		try {
 			Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			if(statement.executeUpdate(MyConstants.SQL_QUERY_COMPUTER_DELETE+id +";") > 0)
+			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_DELETE);
+			preparedStatement.setLong(1, id);
+			if (preparedStatement.executeUpdate() > 0)
 					isDelete = true;
 
 			connection.close();

@@ -29,15 +29,30 @@ public class ServiceComputer {
 		computerDao = DaoFactory.getInstance().getComputerDao();
 	}
 	
+	/**
+	 * Create service for a specific DB (like for the test)
+	 * @param url
+	 * @param username
+	 * @param password
+	 */
 	public ServiceComputer(String url, String username, String password) {
 		computerDao = new DaoFactory(url,username,password).getComputerDao();
 	}
 	
+	/**
+	 * Return the number of computer in the DB
+	 * @return
+	 */
 	public long getNumberRowComputer()
 	{
 		return computerDao.getNumberElement();
 	}
 	
+	/**
+	 * Return the number of computer in the DB
+	 * @param sLike How many computer got this name *sLike* 
+	 * @return
+	 */
 	public long getNumberRowComputerLike(String sLike)
 	{
 		if(sLike != null && !sLike.equals(""))
@@ -46,11 +61,23 @@ public class ServiceComputer {
 			return computerDao.getNumberElement();
 	}
 
-	
+	/**
+	 * Return the list of computer 
+	 * @param limit MaxComputer
+	 * @param offset where start ? 
+	 * @return list of computer
+	 */
 	public List<Computer> getComputers(int limit, int offset) {
 		return computerDao.getList(limit,offset);
 	}
 	
+	/**
+	 * Return the list of computer with specific name 
+	 * @param limit
+	 * @param offset
+	 * @param sLike name of computer like
+	 * @return
+	 */
 	public List<Computer> getComputers(int limit, int offset, String sLike) {
 		if(sLike != null && !sLike.equals(""))
 			return computerDao.getListLike(limit,offset,sLike);

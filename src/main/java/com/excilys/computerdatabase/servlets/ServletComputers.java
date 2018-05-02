@@ -167,7 +167,7 @@ public class ServletComputers extends HttpServlet {
 				logger.debug("Company didn't exist");
 			}
 			request.setAttribute("result", "Fail, "+e.getMessage());
-			dispatchAddComputers(request, response);	
+			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 		
 	}
@@ -230,8 +230,7 @@ public class ServletComputers extends HttpServlet {
 				logger.debug("Company didn't exist");
 			}
 			request.setAttribute("result", "Fail, "+e.getMessage());
-			request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
-			dispatchUpdateComputer(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 			
 		}
 	}
@@ -263,18 +262,19 @@ public class ServletComputers extends HttpServlet {
 				else
 					nbFail++;
 			}
+			message.append("Computers deleted - ");
 			//On affiche le message
-			if(nbFail >= 0)
+			if(nbFail == 0)
 			{
-				message.append("Success deleted : ");
+				message.append("Success : ");
 				message.append(nbSuccess);
 			}
 			else
 			{
-				message.append("Fail deleted : ");
+				message.append("Fail : ");
 				message.append(nbFail);
 				message.append("\t");
-				message.append("Success deleted : ");
+				message.append("Success : ");
 				message.append(nbSuccess);
 			}
 			request.setAttribute("result", message.toString());

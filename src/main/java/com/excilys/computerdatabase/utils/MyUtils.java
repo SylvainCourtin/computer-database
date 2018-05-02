@@ -49,6 +49,12 @@ public class MyUtils {
 			return null;
 	}
 	
+	/**
+	 * Check if the style is - or / for the date writing like dd MM yyyy
+	 * @param sDate
+	 * @return
+	 * @throws DateTimeParseException
+	 */
 	private static DateTimeFormatter knowFormat(String sDate) throws DateTimeParseException
 	{
 		if(sDate.contains("-"))
@@ -61,6 +67,12 @@ public class MyUtils {
 			throw new DateTimeException("Wrong format");
 	}
 	
+	/**
+	 * Check if the style is - or / for the date writing like yyyy MM dd
+	 * @param sDate
+	 * @return
+	 * @throws DateTimeParseException
+	 */
 	private static DateTimeFormatter knowFormatInv(String sDate) throws DateTimeParseException
 	{
 		if(sDate.contains("-"))

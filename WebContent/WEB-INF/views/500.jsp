@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +22,13 @@
 			<div class="alert alert-danger">
 				Error 500: An error has occured!
 				<br/>
-				<!-- stacktrace -->
+				<c:if test="${not empty result}">
+	               	<div class="form-group">
+              			<div class="alert alert-danger">
+              				<strong><c:out value="${result}"></c:out></strong>
+              			</div>
+	               	</div>
+	            </c:if>
 			</div>
 		</div>
 	</section>

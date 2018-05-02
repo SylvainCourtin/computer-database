@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -92,6 +93,10 @@ public class ServletComputers extends HttpServlet {
 		{
 			actionUpdateComputer(request, response);
 		}
+		else if(act.equals("delete"))
+		{
+			actionDeleteComputer(request, response);
+		}
 		else
 		{
 			dispatchGetComputers(request, response);
@@ -162,8 +167,7 @@ public class ServletComputers extends HttpServlet {
 				logger.debug("Company didn't exist");
 			}
 			request.setAttribute("result", "Fail, "+e.getMessage());
-			dispatchAddComputers(request, response);
-			
+			dispatchAddComputers(request, response);	
 		}
 		
 	}
@@ -204,7 +208,7 @@ public class ServletComputers extends HttpServlet {
 		{
 			if(facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company))
 			{
-				logger.info("Success added");
+				logger.info("Success updated");
 				request.setAttribute("result", "Success added.");
 				//On renvoit l'utilisateur sur la page de la liste des computers
 				dispatchGetComputers(request,response);
@@ -217,10 +221,8 @@ public class ServletComputers extends HttpServlet {
 				
 			}
 		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
-			// TODO Gestion erreur
 			if(e instanceof DateDiscontinuedIntroducedException)
 			{
-				//TODO afficher combo de date non possible
 				logger.debug("Invalid date, Introduced > Discontinued");
 			}
 			else
@@ -232,13 +234,10 @@ public class ServletComputers extends HttpServlet {
 			dispatchUpdateComputer(request, response);
 			
 		}
-		request.setAttribute("result", "Fail.");
-		request.setAttribute("computer", MapperComputer.computerToDTO(facade.getComputer(idComputer)));
-		dispatchUpdateComputer(request, response);
 	}
 	
 	/**
-	 * Efface un computer
+	 * Efface une liste de computer, les idées sont coté sous la forme "23,12,29,299, ..." chaque Id est séparé par une virgule
 	 * @param request
 	 * @param response
 	 * @throws ServletException
@@ -246,7 +245,46 @@ public class ServletComputers extends HttpServlet {
 	 */
 	protected void actionDeleteComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		//id,id,id
+		String stringIdComputerSeparateByComma = request.getParameter("selection");
+		StringBuilder message = new StringBuilder("");
+		short nbSuccess = 0;
+		short nbFail = 0;
+		
+		try{
+			List<String> listStringIdComputer = Arrays.asList(stringIdComputerSeparateByComma.split(","));
+			for (String sId : listStringIdComputer) {
+				
+				int idComputer = Integer.parseInt(sId);
+				
+
+				if(facade.deleteComputer(idComputer))
+					nbSuccess++;
+				else
+					nbFail++;
+			}
+			//On affiche le message
+			if(nbFail >= 0)
+			{
+				message.append("Success deleted : ");
+				message.append(nbSuccess);
+			}
+			else
+			{
+				message.append("Fail deleted : ");
+				message.append(nbFail);
+				message.append("\t");
+				message.append("Success deleted : ");
+				message.append(nbSuccess);
+			}
+			request.setAttribute("result", message.toString());
+			dispatchGetComputers(request,response);
 	
+		}catch (Exception e) {
+			
+			request.setAttribute("result", "Error ! "+e.getMessage());
+			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
+		}
 	}
 	
 
@@ -340,13 +378,21 @@ public class ServletComputers extends HttpServlet {
 				companies.add(MapperCompany.companyToDTO(company));
 			}
 			
-			ComputerDTO computer = MapperComputer.computerToDTO(facade.getComputer(IdComputer));
-			
-			request.setAttribute("computer", computer);
-			request.setAttribute("companies", companies);
-			request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+			try {
+				ComputerDTO computer = MapperComputer.computerToDTO(facade.getComputer(IdComputer));
+				request.setAttribute("computer", computer);
+				request.setAttribute("companies", companies);
+				request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+			} catch (Exception e) {
+				request.setAttribute("result", "Error, you try to edit something has been deleted");
+				request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
+			}	
 		}
 		else
-			request.getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
+		{
+			request.setAttribute("result", "Error, nothing was selected to being edit");
+			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
+		}
+			
 	}
 }

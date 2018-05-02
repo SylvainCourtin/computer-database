@@ -19,6 +19,7 @@ public interface ComputerDao {
 	public List<Computer> getListLike(int limite, int offset, String sLike);
 	public Computer getComputer(long id);
 	public boolean delete(Computer computer);
+	public boolean delete(long id);
 	public boolean update(Computer computer);
 	public long getNumberElement();
 	/**

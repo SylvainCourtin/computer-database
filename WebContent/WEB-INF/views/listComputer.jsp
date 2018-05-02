@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tagdate" uri="tagdate" %>
 <!DOCTYPE html>
 <html>
@@ -35,9 +36,19 @@
                     </form>
                     <c:if test="${not empty result}">
 	               	<div class="form-group">
-	               		<div class="alert alert-success">
-	               			<strong><c:out value="${result}"></c:out></strong>
-	               		</div>
+	               	<c:choose>
+	               		<c:when test="${fn:contains(result, 'Success')}">
+	               			<div class="alert alert-success">
+	               				<strong><c:out value="${result}"></c:out></strong>
+	               			</div>
+	               		</c:when>
+	               		<c:otherwise>
+	               			<div class="alert alert-danger">
+	               				<strong><c:out value="${result}"></c:out></strong>
+	               			</div>
+	               		</c:otherwise>
+	               	</c:choose>
+	               		
 	               	</div>
 	               </c:if>
                 </div>
@@ -48,7 +59,8 @@
             	</div>
        	 	</div>
 
-	        <form id="deleteForm" action="#" method="POST">
+	        <form id="deleteForm" action="computer" method="GET">
+	            <input type="hidden" name="act" value="delete">
 	            <input type="hidden" name="selection" value="">
 	        </form>
        		<c:if test="${not empty computers}">
@@ -79,7 +91,7 @@
 						<td class="editMode">
 						<form action="computer" method="POST" id="action_computer">
 							<input type="hidden" name="act" id="act_computer" value="">
-	                        <input type="checkbox" name="cb" class="cb" value="0">
+	                        <input type="checkbox" name="cb" class="cb" value="${computer.computerBasicView.id}">
 	                        <input type="hidden" id="actIdComputer" name="computer" value="">
 	                    </form>
 	                    </td>

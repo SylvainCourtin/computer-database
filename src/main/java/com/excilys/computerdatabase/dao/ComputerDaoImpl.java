@@ -185,6 +185,25 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 		return isDelete;
 	}
+	
+	@Override
+	public boolean delete(long id)
+	{
+		boolean isDelete = false;
+		try {
+			Connection connection = daoFactory.getConnection();
+			Statement statement = connection.createStatement();
+			if(statement.executeUpdate(MyConstants.SQL_QUERY_COMPUTER_DELETE+id +";") > 0)
+					isDelete = true;
+
+			connection.close();
+			
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isDelete;
+	}
 
 	@Override
 	public boolean update(Computer computer) {

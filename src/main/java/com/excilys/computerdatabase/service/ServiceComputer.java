@@ -58,9 +58,22 @@ public class ServiceComputer {
 			return computerDao.getList(limit,offset);
 	}
 
-	
+	/**
+	 * Efface grace à un computer déjà enregistrer possèdant un ID
+	 * @param computer
+	 * @return if success
+	 */
 	public boolean deleteComputer(Computer computer) {
 		return computerDao.delete(computer);
+	}
+	
+	/**
+	 * Efface grace à un ID d'un computer existant deja dans la base
+	 * @param id computer's id
+	 * @return if success
+	 */
+	public boolean deleteComputer(long id) {
+		return computerDao.delete(id);
 	}
 
 	
@@ -126,7 +139,11 @@ public class ServiceComputer {
 	}
 	
 	
-	
+	/**
+	 * Return the computer or NULL
+	 * @param id
+	 * @return
+	 */
 	public Computer getComputer(long id)
 	{
 		return computerDao.getComputer(id);

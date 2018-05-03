@@ -17,9 +17,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <junit>4.12</junit>
     <org.mockito>2.18.0</org.mockito>
     <org.slf4j>1.7.25</org.slf4j>
-    <javax.servlet-api>3.1.0</javax.servlet-api>
+    <javax.servlet.api>3.1.0</javax.servlet.api>
     <javax.servlet.jstl>1.2</javax.servlet.jstl>
     <org.apache.maven.plugins>3.0.0</org.apache.maven.plugins>
+    <org.seleniumhq.selenium>3.11.0</org.seleniumhq.selenium>
 </properties>
   
   <dependencies>
@@ -51,13 +52,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
-	    <version>${javax.servlet-api}</version>
+	    <version>${javax.servlet.api}</version>
 	</dependency>
      <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>jstl</artifactId>
          <version>${javax.servlet.jstl}</version>
      </dependency>
+     <dependency>
+		<groupId>org.seleniumhq.selenium</groupId>
+		<artifactId>selenium-java</artifactId>
+		<version>${org.seleniumhq.selenium}</version>
+	</dependency>
   </dependencies>
   
   <reporting>

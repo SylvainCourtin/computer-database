@@ -63,7 +63,12 @@
                             			<strong><c:out value="${result}"></c:out></strong>
                             		</div>
                             	</div>
-                            </c:if>            
+                            </c:if> 
+                            <div style="display:none;" id="wrongOrderDate" class="form-group">
+                           		<div class="alert alert-warning">
+                           			<strong>The date introduced must be before discontinued</strong>
+                           		</div>
+                           	</div>            
                         </fieldset>
                         <div class="actions pull-right">
                            <button type="submit" name="act" value="validEdit" class="btn btn-primary">Edit</button>
@@ -76,4 +81,7 @@
         </div>
     </section>
 </body>
+<script  src="static/js/jquery.min.js"></script>
+<script  src="static/js/bootstrap.min.js"></script>
+<script src="static/js/checkDate.js"></script>
 </html>

@@ -27,15 +27,15 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name*</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
+                                <input type="text" required="required" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" onchange="compare();">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" onchange="compare();">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -52,10 +52,15 @@
                             			<strong><c:out value="${result}"></c:out></strong>
                             		</div>
                             	</div>
-                            </c:if>                  
+                            </c:if>
+                            <div style="display:none;" id="wrongOrderDate" class="form-group">
+                           		<div class="alert alert-warning">
+                           			<strong>The date introduced must be before discontinued</strong>
+                           		</div>
+                           	</div>               
                         </fieldset>
                         <div class="actions pull-right">
-                            <button type="submit" name="act" value="valideAdd" class="btn btn-primary">Add</button>
+                            <button id="act" type="submit" name="act" value="valideAdd" class="btn btn-primary">Add</button>
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
@@ -65,4 +70,8 @@
         </div>
     </section>
 </body>
+
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/checkDate.js"></script>
 </html>

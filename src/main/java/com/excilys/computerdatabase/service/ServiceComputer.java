@@ -13,6 +13,7 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.validators.ValidatorComputer;
 
 public class ServiceComputer {
 	
@@ -106,8 +107,15 @@ public class ServiceComputer {
 		return computerDao.delete(id);
 	}
 
-	
-	public long addComputer(Computer computer) throws CompanyDoesNotExistException {
+	/**
+	 * 
+	 * @param computer
+	 * @return Id of this new computer
+	 * @throws CompanyDoesNotExistException
+	 * @throws DateDiscontinuedIntroducedException
+	 */
+	public long addComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException {
+		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
 		return computerDao.add(computer);
 	}
 	
@@ -125,9 +133,6 @@ public class ServiceComputer {
 	}
 	
 	/**
-	
-	 */
-	/**
 	 * Ajoute un nouvelle ordinateur, dateIntroduced doit etre avant dateDiscontinued
 	 * @param name not null
 	 * @param dateIntroduced can be null
@@ -144,8 +149,16 @@ public class ServiceComputer {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, company)));
 		
 	}
-
-	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws CompanyDoesNotExistException {
+	/**
+	 * 
+	 * @param oldComputer
+	 * @param newComputer
+	 * @return
+	 * @throws DateDiscontinuedIntroducedException
+	 * @throws CompanyDoesNotExistException
+	 */
+	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(newComputer.getDateIntroduced(), newComputer.getDateDiscontinued());
 		newComputer.setId(oldComputer.getId());
 		return computerDao.update(newComputer);
 	}
@@ -162,6 +175,7 @@ public class ServiceComputer {
 	 * @return
 	 */
 	public boolean updateComputer(long id, String name, LocalDate introduced,LocalDate discontinued, CompanyDTO manufacturerCompany)throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(introduced, discontinued);
 		Company company = null;
 		if(manufacturerCompany != null)
 			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());

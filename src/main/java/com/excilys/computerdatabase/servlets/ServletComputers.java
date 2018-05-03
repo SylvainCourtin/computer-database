@@ -125,7 +125,10 @@ public class ServletComputers extends HttpServlet {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
-		Optional<CompanyDTO> company = MapperCompany.fromIdCompanyDTO(id_company);
+		Optional<CompanyDTO> optCompany = MapperCompany.fromIdCompanyDTO(id_company);
+		CompanyDTO company = null;
+		if(optCompany.isPresent())
+			company = optCompany.get();
 		try 
 		{
 			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
@@ -143,7 +146,7 @@ public class ServletComputers extends HttpServlet {
 		
 		try 
 		{
-			if(company.isPresent() && facade.addComputer(name, dateIntroduced, dateDiscontinued, company.get()) > 0)
+			if(facade.addComputer(name, dateIntroduced, dateDiscontinued, company) > 0)
 			{
 				logger.debug("Success added");
 				request.setAttribute("result", "Success added.");
@@ -152,7 +155,8 @@ public class ServletComputers extends HttpServlet {
 			}
 			else
 			{
-				request.setAttribute("result", "Fail. You forget the name, didn't you ?");
+				logger.debug("fail added");
+				request.setAttribute("result", "Fail");
 				dispatchAddComputers(request, response);
 				
 			}
@@ -188,7 +192,10 @@ public class ServletComputers extends HttpServlet {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
-		Optional<CompanyDTO> company = MapperCompany.fromIdCompanyDTO(id_company);
+		Optional<CompanyDTO> optCompany = MapperCompany.fromIdCompanyDTO(id_company);
+		CompanyDTO company = null;
+		if(optCompany.isPresent())
+			company = optCompany.get();
 		try 
 		{
 			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
@@ -206,7 +213,7 @@ public class ServletComputers extends HttpServlet {
 		
 		try 
 		{
-			if(company.isPresent() && facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company.get()))
+			if(facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company))
 			{
 				logger.debug("Success updated");
 				request.setAttribute("result", "Success updated.");

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.utils.MyUtils;
+import com.excilys.computerdatabase.validators.ValidatorComputer;
 
 public class Computer {
 
@@ -21,7 +22,7 @@ public class Computer {
 	public Computer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
 		this.name = name;
 		if(dateIntroduced != null && dateDiscontinued != null)
-			dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+			ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateIntroduced = dateIntroduced;
 		this.dateDiscontinued = dateDiscontinued;
 		this.manufacturerCompany = manufacturerCompany;
@@ -48,11 +49,11 @@ public class Computer {
 	}
 	
 	public void setDateDiscontinued(LocalDate dateDiscontinued) throws DateDiscontinuedIntroducedException {
-		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateDiscontinued = dateDiscontinued;
 	}
 	public void setDateIntroduced(LocalDate dateIntroduced) throws DateDiscontinuedIntroducedException {
-		dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
 		this.dateIntroduced = dateIntroduced;
 	}
 	public void setName(String name) {
@@ -159,22 +160,5 @@ public class Computer {
 		return "Computer [id=" + id  +", name=" + name + ", dateIntroduced=" + dateIntro + ", dateDiscontinued="
 				+ dateDisc + ", manufacturerCompany=" + company + "]";
 	}
-	
-	/**
-	 * Compare to date, Introduced must be before Discontinued
-	 * @param introduced Date
-	 * @param discontinued Date
-	 * @throws DateDiscontinuedIntroducedException
-	 */
-	private static void dateDiscontinuedGreaterThanIntroduced(LocalDate introduced, LocalDate discontinued) throws DateDiscontinuedIntroducedException
-	{
-		if(introduced != null && discontinued != null)
-		{
-			if(introduced.isAfter(discontinued))
-				throw new DateDiscontinuedIntroducedException(
-						"the date introduced("+MyUtils.formatDateToString(introduced) + ") "
-						+ "must be before than " 
-						+ "the date discontinued (" + MyUtils.formatDateToString(discontinued) +")");
-		}
-	}
+
 }

@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
@@ -114,6 +115,51 @@ public class AddServiceComputer {
 			
 		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			 fail("No exception expected");
+		}
+	}
+	
+	@Test
+	public void testEchecDateAddComputer()
+	{
+		try {
+			Computer computer = new Computer("faildate", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("15-01-1999"), null);
+			fail("Exception expected");
+			assertThat(serviceComputer.addComputer(computer), 
+					equalTo(-1L));
+		} catch (DateTimeParseException | CompanyDoesNotExistException e) {
+			fail("ParseException or CompanyDoesNotExistException wasn't expected");
+		}
+		catch(DateDiscontinuedIntroducedException e){
+			assert(true);
+		}
+	}
+	
+	@Test
+	public void testEchecNoNameAddComputer()
+	{
+		try {
+			Computer computer = new Computer(null, MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), null);
+			
+			assertThat(serviceComputer.addComputer(computer), 
+					equalTo(-1L));
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+			fail("Not expected exception");
+		}
+	}
+	
+	@Test
+	public void testEchecCompanyNotExistAddComputer()
+	{
+		try {
+			assertThat(serviceComputer.addComputer(new Computer("failCompany", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
+					equalTo(-1L));
+			fail("expecting exception");
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException e) {
+			fail("No exception DateDiscontinuedIntroducedException or ParseException expected");
+		}
+		catch( CompanyDoesNotExistException e)
+		{
+			assert(true);
 		}
 	}
 

@@ -80,7 +80,7 @@ public class AddComputer {
 			
 			logger.debug("Id :"+id);
 			
-			assertThat(computerDao.getComputer(id), equalTo(computer));
+			assertThat(computerDao.getComputer(id).get(), equalTo(computer));
 			
 			//---------------------------Test avec une date----------------------------------------------------------
 			
@@ -91,7 +91,7 @@ public class AddComputer {
 			
 			computer.setId(id);
 			
-			assertThat(computerDao.getComputer(id), equalTo(computer));
+			assertThat(computerDao.getComputer(id).get(), equalTo(computer));
 			
 			//---------------------------Test avec deux date----------------------------------------------------------
 			
@@ -102,7 +102,7 @@ public class AddComputer {
 			
 			computer.setId(id);
 			
-			assertThat(computerDao.getComputer(id), equalTo(computer));
+			assertThat(computerDao.getComputer(id).get(), equalTo(computer));
 			
 
 			
@@ -116,7 +116,7 @@ public class AddComputer {
 			
 			computer.setId(id);
 			
-			assertThat(computerDao.getComputer(id), equalTo(computer));
+			assertThat(computerDao.getComputer(id).get(), equalTo(computer));
 			
 		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			 fail("No exception expected");
@@ -158,6 +158,7 @@ public class AddComputer {
 		try {
 			assertThat(computerDao.add(new Computer("failCompany", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
 					equalTo(-1L));
+			fail("expecting exception");
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException e) {
 			fail("No exception DateDiscontinuedIntroducedException or ParseException expected");
 		}
@@ -165,7 +166,6 @@ public class AddComputer {
 		{
 			assert(true);
 		}
-
 	}
 
 }

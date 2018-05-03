@@ -108,7 +108,7 @@ public class ViewComputer {
 		try {
 			return serviceComputer.updateComputer(oldComputer, new Computer(name, dateIntroduced, dateDiscontinued, company ));
 				
-		} catch (DateDiscontinuedIntroducedException e) {
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
 			System.out.println(e.getMessage());
 			System.err.println("Action cancel");
 		}

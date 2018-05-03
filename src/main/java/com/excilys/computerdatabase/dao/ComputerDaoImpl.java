@@ -32,30 +32,25 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		if(computer.getName() != null && !computer.getName().equals(""))
 		{
-			try {
-				
-				//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
-				if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
-					throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
-				
-				Connection connection = daoFactory.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_INSERT, Statement.RETURN_GENERATED_KEYS);
-				preparedStatement.setString(1, computer.getName());
-				preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
-				preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
-				if(computer.getManufacturerCompany() != null)
-					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
-				else 
-					preparedStatement.setString(4, null);
-
+			Long companyId = companyExist(computer.getManufacturerCompany());
+			
+			try(Connection connection = daoFactory.getConnection();
+				PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_INSERT, true,
+					computer.getName(),
+					MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
+					MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
+					companyId)
+				)
+			{
 				preparedStatement.executeUpdate();
-				ResultSet resultSet = preparedStatement.getGeneratedKeys();
-				while(resultSet.next())
+				try(ResultSet resultSet = preparedStatement.getGeneratedKeys();)
 				{
-					idRes = resultSet.getLong(1);
+					while(resultSet.next())
+					{
+						idRes = resultSet.getLong(1);
+					}
 				}
-				connection.close();
-				
+
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -95,15 +90,11 @@ public class ComputerDaoImpl implements ComputerDao {
 		List<Computer> computers = new ArrayList<>();
 		
 		try(Connection connection = daoFactory.getConnection();
-				PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT,
-						false, limite, offset);
-				
-				ResultSet result = preparedStatement.executeQuery();) {
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT,
+					false, limite, offset);	
+			ResultSet result = preparedStatement.executeQuery();) {
 
 			computers = getList(result);
-			
-			result.close();
-			connection.close();
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -116,21 +107,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	public List<Computer> getListLike(int limite, int offset, String sLike) {
 		List<Computer> computers = new ArrayList<>();
 		
-		try {
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT);
-			
-			preparedStatement.setString(1, "%"+sLike+"%");
-			preparedStatement.setInt(2, limite);
-			preparedStatement.setInt(3, offset);
-			
-			ResultSet result = preparedStatement.executeQuery();
-			
+		try(Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,
+					false,"%"+sLike+"%", limite, offset);
+			ResultSet result = preparedStatement.executeQuery();) 
+		{
 			computers = getList(result);
-			
-			result.close();
-			connection.close();
-			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -141,12 +123,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Optional<Computer> getComputer(long id) {
 		Computer computer = null;
-		try {
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY);
-			preparedStatement.setLong(1, id);
+		try(Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY,
+					false,id);
 			ResultSet result = preparedStatement.executeQuery();
-
+			)
+		{
 			while(result.next())
 			{
 				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
@@ -159,10 +141,7 @@ public class ComputerDaoImpl implements ComputerDao {
 						company);
 			}
 			
-			result.close();
-			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Optional.ofNullable(computer);
@@ -170,36 +149,19 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Override
 	public boolean delete(Computer computer) {
-		boolean isDelete = false;
-		try {
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_DELETE);
-			preparedStatement.setLong(1, computer.getId());
-			if (preparedStatement.executeUpdate() > 0)
-					isDelete = true;
-
-			connection.close();
-			
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return isDelete;
+		return delete(computer.getId());
 	}
 	
 	@Override
 	public boolean delete(long id)
 	{
 		boolean isDelete = false;
-		try {
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_DELETE);
-			preparedStatement.setLong(1, id);
+		try (Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_DELETE,false, id);
+			)
+		{
 			if (preparedStatement.executeUpdate() > 0)
 					isDelete = true;
-
-			connection.close();
-			
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -208,19 +170,23 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public boolean update(Computer computer) {
+	public boolean update(Computer computer) throws CompanyDoesNotExistException {
 		boolean isUpdate = false;
 		if(computer.getName() != null && !computer.getName().equals(""))
 		{
-			try {
+			Long companyId = companyExist(computer.getManufacturerCompany());
+			
+			try(Connection connection = daoFactory.getConnection();
+				PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_UPDATE,false, 
+					computer.getName(),
+					MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
+					MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
+					companyId,
+					computer.getId());
+				) 
+			{				
 				
-				//on vérifie d'abord si la company n'existe pas avant de l'insérer dans la table, sinon on crée la company
-				if(computer.getManufacturerCompany() != null && daoFactory.getCompanyDao().getCompany(computer.getManufacturerCompany().getId()) == null)
-					throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
-
-				
-				Connection connection = daoFactory.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_UPDATE);
+				/*
 				preparedStatement.setString(1, computer.getName());
 				preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
 				preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
@@ -230,19 +196,11 @@ public class ComputerDaoImpl implements ComputerDao {
 					preparedStatement.setString(4, null);
 				//Where id=?
 				preparedStatement.setLong(5, computer.getId());
-				if(computer.getManufacturerCompany() != null)
-					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
-				else 
-					preparedStatement.setString(4, null);
+				*/
 				if (preparedStatement.executeUpdate() > 0)
-					isUpdate = true;
-
-				connection.close();
-				
-				
-				
+					isUpdate = true;	
 			}
-			catch (SQLException | CompanyDoesNotExistException e) {
+			catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -254,17 +212,16 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public long getNumberElement() {
 		long nbElement = 0;
-		try {
-			Connection connection = daoFactory.getConnection();
+		try(Connection connection = daoFactory.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT);
+			) 
+		{
 			while(result.next())
 			{
 				nbElement = result.getInt("COUNT(*)");
 			}
 			
-			result.close();
-			connection.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -274,25 +231,30 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public long getNumberElementLike(String sLike) {
 		long nbElement = 0;
-		try {
-			Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE);
-			preparedStatement.setString(1, "%"+sLike+"%");
+		try(Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE,false,"%"+sLike+"%");
 			ResultSet result = preparedStatement.executeQuery();
+			) 
+		{			
 			while(result.next())
 			{
 				nbElement = result.getInt("COUNT(*)");
 			}
-			
-			result.close();
-			connection.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return nbElement;
 	}
-	
-	private PreparedStatement initPreparedStatementWithParameters(Connection connection, String sql, boolean isReturnKey, Object...objects) throws SQLException
+	/**
+	 * Prepare et initialise la requete
+	 * @param connection
+	 * @param sql
+	 * @param isReturnKey
+	 * @param objects List of args of this request. Should be in the good order
+	 * @return
+	 * @throws SQLException
+	 */
+	private static PreparedStatement initPreparedStatementWithParameters(Connection connection, String sql, boolean isReturnKey, Object...objects) throws SQLException
 	{
 		PreparedStatement preparedStatement = connection.prepareStatement(sql, isReturnKey ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
 		int params = 1;
@@ -301,5 +263,16 @@ public class ComputerDaoImpl implements ComputerDao {
 			params++;
 		}
 		return preparedStatement;
+	}
+	
+	private Long companyExist(Company company) throws CompanyDoesNotExistException
+	{
+		if(company != null)
+			if(!daoFactory.getCompanyDao().getCompany(company.getId()).isPresent())
+				throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
+			else
+				return company.getId();
+		else
+			return null;
 	}
 }

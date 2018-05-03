@@ -130,5 +130,14 @@ public class FindComputer {
 		//On vérifie le nombre
 		assertEquals(computerDao.getNumberElementLike(upperCaseCommodore), 13L);
 	}
+	
+	/**
+	 * Test si avec une limite de 10 on récupère bien 10 élément
+	 */
+	@Test
+	public void testGetSomething()
+	{
+		assertEquals(computerDao.getList(10, 0).size(), 10);
+	}
 
 }

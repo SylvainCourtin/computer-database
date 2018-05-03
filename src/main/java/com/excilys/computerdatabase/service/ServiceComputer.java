@@ -145,7 +145,7 @@ public class ServiceComputer {
 		
 	}
 
-	public boolean updateComputer(Computer oldComputer, Computer newComputer) {
+	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws CompanyDoesNotExistException {
 		newComputer.setId(oldComputer.getId());
 		return computerDao.update(newComputer);
 	}

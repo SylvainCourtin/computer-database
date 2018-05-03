@@ -21,7 +21,7 @@ public interface ComputerDao {
 	public Optional<Computer> getComputer(long id);
 	public boolean delete(Computer computer);
 	public boolean delete(long id);
-	public boolean update(Computer computer);
+	public boolean update(Computer computer) throws CompanyDoesNotExistException;
 	public long getNumberElement();
 	/**
 	 * Give number of element  with the computer's name is like sLike

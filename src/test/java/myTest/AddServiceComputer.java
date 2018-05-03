@@ -74,7 +74,7 @@ public class AddServiceComputer {
 			
 			computer.setId(id);
 						
-			assertThat(serviceComputer.getComputer(id), equalTo(computer));
+			assertThat(serviceComputer.getComputer(id).get(), equalTo(computer));
 			
 			//---------------------------Test avec une date----------------------------------------------------------
 			
@@ -85,7 +85,7 @@ public class AddServiceComputer {
 			
 			computer.setId(id);
 			
-			assertThat(serviceComputer.getComputer(id), equalTo(computer));
+			assertThat(serviceComputer.getComputer(id).get(), equalTo(computer));
 			
 			//---------------------------Test avec deux date----------------------------------------------------------
 			
@@ -96,7 +96,7 @@ public class AddServiceComputer {
 			
 			computer.setId(id);
 			
-			assertThat(serviceComputer.getComputer(id), equalTo(computer));
+			assertThat(serviceComputer.getComputer(id).get(), equalTo(computer));
 			
 
 			
@@ -110,7 +110,7 @@ public class AddServiceComputer {
 			
 			computer.setId(id);
 			
-			assertThat(serviceComputer.getComputer(id), equalTo(computer));
+			assertThat(serviceComputer.getComputer(id).get(), equalTo(computer));
 			
 		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			 fail("No exception expected");

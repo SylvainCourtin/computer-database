@@ -145,7 +145,7 @@ public class ServletComputers extends HttpServlet {
 		{
 			if(company.isPresent() && facade.addComputer(name, dateIntroduced, dateDiscontinued, company.get()) > 0)
 			{
-				logger.info("Success added");
+				logger.debug("Success added");
 				request.setAttribute("result", "Success added.");
 				//On renvoit l'utilisateur sur la page de la liste des computers
 				dispatchGetComputers(request,response);
@@ -208,7 +208,7 @@ public class ServletComputers extends HttpServlet {
 		{
 			if(company.isPresent() && facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company.get()))
 			{
-				logger.info("Success updated");
+				logger.debug("Success updated");
 				request.setAttribute("result", "Success updated.");
 				//On renvoit l'utilisateur sur la page de la liste des computers
 				dispatchGetComputers(request,response);
@@ -277,10 +277,11 @@ public class ServletComputers extends HttpServlet {
 				message.append(nbSuccess);
 			}
 			request.setAttribute("result", message.toString());
+			logger.debug("Success delete");
 			dispatchGetComputers(request,response);
 	
 		}catch (Exception e) {
-			
+			logger.debug("Fail delete");
 			request.setAttribute("result", "Error ! "+e.getMessage());
 			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}

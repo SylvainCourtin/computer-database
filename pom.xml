@@ -12,46 +12,52 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    
+    <mysql>6.0.6</mysql>
+    <junit>4.12</junit>
+    <org.mockito>2.18.0</org.mockito>
+    <org.slf4j>1.7.25</org.slf4j>
+    <javax.servlet-api>3.1.0</javax.servlet-api>
+    <javax.servlet.jstl>1.2</javax.servlet.jstl>
+    <org.apache.maven.plugins>3.0.0</org.apache.maven.plugins>
 </properties>
   
   <dependencies>
   	<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>6.0.6</version>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>${mysql}</version>
 	</dependency>
 	<dependency>
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
-	    <version>4.12</version>
+	    <version>${junit}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.mockito</groupId>
 	    <artifactId>mockito-core</artifactId>
-	    <version>2.18.0</version>
+	    <version>${org.mockito}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.slf4j</groupId>
 	    <artifactId>slf4j-api</artifactId>
-	    <version>1.7.25</version>
+	    <version>${org.slf4j}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.slf4j</groupId>
 	    <artifactId>slf4j-jdk14</artifactId>
-	    <version>1.7.25</version>
+	    <version>${org.slf4j}</version>
 	</dependency>
 		<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
-	    <version>3.1.0</version>
+	    <version>${javax.servlet-api}</version>
 	</dependency>
-        
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-        
+     <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId>
+         <version>${javax.servlet.jstl}</version>
+     </dependency>
   </dependencies>
   
   <reporting>
@@ -59,7 +65,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>${org.apache.maven.plugins}</version>
           <configuration>
           <configLocation>checkstyle.xml</configLocation>
         </configuration>         

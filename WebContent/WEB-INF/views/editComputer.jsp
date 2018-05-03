@@ -36,11 +36,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date : <tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.computerBasicView.introduced}" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.computerBasicView.introduced}" onchange="compare();" placeholder="Introduced date">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date : <tagdate:display localDate="${computer.computerBasicView.discontinued}"></tagdate:display></label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.computerBasicView.discontinued}" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.computerBasicView.discontinued}" onchange="compare();" placeholder="Discontinued date">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -71,7 +71,7 @@
                            	</div>            
                         </fieldset>
                         <div class="actions pull-right">
-                           <button type="submit" name="act" value="validEdit" class="btn btn-primary">Edit</button>
+                           <button type="submit" name="act" id="act" value="validEdit" class="btn btn-primary">Edit</button>
                             or
                             <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
@@ -81,7 +81,7 @@
         </div>
     </section>
 </body>
-<script  src="static/js/jquery.min.js"></script>
-<script  src="static/js/bootstrap.min.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
 <script src="static/js/checkDate.js"></script>
 </html>

@@ -1,4 +1,4 @@
-package myTest;
+package myTest.service;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -26,10 +26,7 @@ public class UpdateServiceComputer {
 	public void initBDD()
 	{
 		MyBDDTest.getInstance().init();
-		serviceComputer = new ServiceComputer("jdbc:mysql://localhost:3306/computer-database-db-test"
-	            + "?serverTimezone=UTC"
-	            + "&useSSL=true", 
-	            "admincdb", "qwerty1234");
+		serviceComputer = ServiceComputer.getInstance();
 	}
 	
 	@After

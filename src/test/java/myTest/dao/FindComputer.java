@@ -1,4 +1,4 @@
-package myTest;
+package myTest.dao;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -30,10 +30,7 @@ public class FindComputer {
 	public void initBDD()
 	{
 		MyBDDTest.getInstance().init();
-		computerDao = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
-	        + "?serverTimezone=UTC"
-	        + "&useSSL=true", 
-	        "admincdb", "qwerty1234").getComputerDao();
+		computerDao = DaoFactory.getInstance().getComputerDao();
 		serviceComputer = ServiceComputer.getInstance();
 	}
 	

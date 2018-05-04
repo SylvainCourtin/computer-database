@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.excilys.computerdatabase.utils.ReadPropertiesFile;
+
 public class DaoFactory {
 	
 	private static DaoFactory daoFactory;
@@ -21,10 +23,12 @@ public class DaoFactory {
 	}
 	
 	public static DaoFactory getInstance() {
+		
+		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
 
         try {
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(propertiesFile.getDriver());
 
         } catch (ClassNotFoundException e) {
 
@@ -33,12 +37,8 @@ public class DaoFactory {
 
         if(daoFactory == null)
         {
-        	DaoFactory instance = new DaoFactory(
 
-                    "jdbc:mysql://localhost:3306/computer-database-db"
-                    + "?serverTimezone=UTC"
-                    + "&useSSL=true", 
-                    "admincdb", "qwerty1234");
+        	DaoFactory instance = new DaoFactory(propertiesFile.getUrl(), propertiesFile.getLogin(), propertiesFile.getPassword());
 
             return instance;
         }

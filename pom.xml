@@ -21,6 +21,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <javax.servlet.jstl>1.2</javax.servlet.jstl>
     <org.apache.maven.plugins>3.0.0</org.apache.maven.plugins>
     <org.seleniumhq.selenium>3.11.0</org.seleniumhq.selenium>
+    <com.zaxxer>2.7.8</com.zaxxer>
 </properties>
   
   <dependencies>
@@ -63,6 +64,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<groupId>org.seleniumhq.selenium</groupId>
 		<artifactId>selenium-java</artifactId>
 		<version>${org.seleniumhq.selenium}</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.zaxxer</groupId>
+	    <artifactId>HikariCP</artifactId>
+	    <version>${com.zaxxer}</version>
+	    <scope>compile</scope>
 	</dependency>
   </dependencies>
   

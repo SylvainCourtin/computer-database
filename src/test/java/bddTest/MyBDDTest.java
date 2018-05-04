@@ -20,10 +20,7 @@ public class MyBDDTest {
     private static final String DROP_COMPUTER = "DROP TABLE computer";
     private static final String DROP_COMPANY = "DROP TABLE company";
     
-    private DaoFactory daoFactory = new DaoFactory("jdbc:mysql://localhost:3306/computer-database-db-test"
-            + "?serverTimezone=UTC"
-            + "&useSSL=true", 
-            "admincdb", "qwerty1234");
+    private DaoFactory daoFactory = DaoFactory.getInstance();
     
     private static MyBDDTest instance;
     

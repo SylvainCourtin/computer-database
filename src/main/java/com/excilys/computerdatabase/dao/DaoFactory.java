@@ -1,10 +1,10 @@
 package com.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import com.excilys.computerdatabase.utils.ReadPropertiesFile;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class DaoFactory {
 	
@@ -14,6 +14,7 @@ public class DaoFactory {
 	private String url;
 	private String username;
 	private String password;
+	private HikariDataSource dataSource;
 	
 	public DaoFactory(String url, String username, String password) {
 		super();
@@ -25,19 +26,10 @@ public class DaoFactory {
 	public static DaoFactory getInstance() {
 		
 		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
-
-        try {
-
-            Class.forName(propertiesFile.getDriver());
-
-        } catch (ClassNotFoundException e) {
-
-
-        }
-
+		
         if(daoFactory == null)
         {
-
+        	
         	DaoFactory instance = new DaoFactory(propertiesFile.getUrl(), propertiesFile.getLogin(), propertiesFile.getPassword());
 
             return instance;
@@ -49,8 +41,19 @@ public class DaoFactory {
 
     public Connection getConnection() throws SQLException {
     	
-        return DriverManager.getConnection(url, username, password);
+    	dataSource = new HikariDataSource();
+		dataSource.setJdbcUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		
+    	
+		return dataSource.getConnection();
 
+    }
+    
+    public void closeConnection()
+    {
+    	dataSource.close();
     }
 
 

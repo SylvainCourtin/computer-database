@@ -161,12 +161,11 @@ public final class Cli {
 			System.err.println("Cette ID n'existe pas !");
 	}
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		System.out.println("---------Welcome on computer-database---------");
 		do {
 			
 		}while(Cli.getInstance().doAction());
 		System.out.println("---------Disconnected---------");
 	}
-
 }

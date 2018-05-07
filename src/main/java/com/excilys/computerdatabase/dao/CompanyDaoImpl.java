@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.utils.MyConstants;
@@ -107,18 +108,33 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 	
 	@Override
-	public boolean deleteCompany(long id) {
+	public boolean deleteCompany(long id) throws CompanyDoesNotExistException {
 		boolean isDelete = false;
-		try (Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPANY_DELETE,false, id);
-			)
+		if(getCompany(id).isPresent())
 		{
-			if (preparedStatement.executeUpdate() > 0)
-				isDelete = true;
-			
-		}catch (SQLException e) {
-			logger.warn("In dao.CompanyDaoImpl method deleteCompany : ", e.getMessage());
+			try (Connection connection = daoFactory.getConnection();)
+			{
+				connection.setAutoCommit(false);
+				try(PreparedStatement preparedStatementDeleteCompany = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPANY_DELETE,false, id);
+					PreparedStatement preparedStatementDeleteAllComputer = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,false,id))
+				{
+					if(preparedStatementDeleteAllComputer.executeUpdate() > 0)
+						if(preparedStatementDeleteCompany.executeUpdate() > 0)
+							isDelete = true;
+					connection.commit();
+				}catch(SQLException e) {
+					logger.warn("In dao.CompanyDaoImpl method deleteCompany : ", e.getMessage());
+					isDelete = false;
+					connection.rollback();
+				}
+				connection.setAutoCommit(true);
+			}catch (SQLException e) {
+				logger.warn("In dao.CompanyDaoImpl method deleteCompany : ", e.getMessage());
+				isDelete = false;
+			}
 		}
+		else
+			throw new CompanyDoesNotExistException();
 		return isDelete;
 	}
 	

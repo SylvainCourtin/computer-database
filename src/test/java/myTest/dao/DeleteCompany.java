@@ -48,32 +48,30 @@ public class DeleteCompany {
 				is(true));
 		
 		try {
-			assertThat(DaoFactory.getInstance().getComputerDao().deleteRelatedToCompany(id), 
-					not(equalTo(-1L)));
+			assertThat(companyDao.deleteCompany(id),
+					is(true));
 		} catch (CompanyDoesNotExistException e) {
 			logger.debug(e.getMessage());
 			fail("Didn't expected the exception CompanyDoesNotExistException");
 		}
-		
-		assertThat(companyDao.deleteCompany(id),
-				is(true));
-		
+
 		assertThat(companyDao.getCompany(id).isPresent(), 
 				is(false));
 	}
 	
 	@Test
 	public void testDeleteFail() {
-		//On récupère l'id 17 qui est Sony dans notre bdd
-		long id=17;
+
+		long id=1700;//doesn't exist
 		assertThat(companyDao.getCompany(id).isPresent(), 
-				is(true));
-		
-		assertThat(companyDao.deleteCompany(id),
 				is(false));
 		
-		assertThat(companyDao.getCompany(id).isPresent(), 
-				is(true));
+		try {
+			assertThat(companyDao.deleteCompany(id),
+					is(false));
+			fail("Expected exception");
+		} catch (CompanyDoesNotExistException e) {
+		}
 	}
 
 }

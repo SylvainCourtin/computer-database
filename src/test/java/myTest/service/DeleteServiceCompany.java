@@ -71,7 +71,6 @@ public class DeleteServiceCompany {
 			fail("Expected exception");
 		} catch (CompanyDoesNotExistException e) {
 			logger.debug(e.getMessage());
-			assert(true);
 		}
 	}
 

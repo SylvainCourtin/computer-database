@@ -265,19 +265,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		return nbElement;
 	}
 
-	@Override
-	public long deleteRelatedToCompany(long idCompany) throws CompanyDoesNotExistException {
-		long nbElement = 0;
-		companyExist(idCompany);
-		try(Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,false,idCompany);) 
-		{			
-			nbElement = preparedStatement.executeUpdate();
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return nbElement;
-	}
+	
 	
 	/**
 	 * Prepare et initialise la requete

@@ -38,11 +38,5 @@ public interface ComputerDao {
 	 */
 	public long getNumberComputerRelatedToThisCompany(long idCompany) throws CompanyDoesNotExistException;
 	
-	/**
-	 * return the number of row was been deleted
-	 * @param idCompany
-	 * @return return the number of row was been deleted.
-	 * @throws CompanyDoesNotExistException 
-	 */
-	public long deleteRelatedToCompany(long idCompany) throws CompanyDoesNotExistException;
+	
 }

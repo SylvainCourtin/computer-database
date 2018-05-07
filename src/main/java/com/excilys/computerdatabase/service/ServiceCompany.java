@@ -78,7 +78,6 @@ public class ServiceCompany{
 	 */
 	public boolean deleteCompanyAndAllComputerRelatedToThisCompany(long id) throws CompanyDoesNotExistException
 	{
-		computerDao.deleteRelatedToCompany(id);
 		return companyDao.deleteCompany(id);
 	}
 

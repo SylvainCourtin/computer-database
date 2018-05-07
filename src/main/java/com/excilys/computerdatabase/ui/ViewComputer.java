@@ -132,5 +132,16 @@ public class ViewComputer {
 	public ServiceComputer getServiceComputer() {
 		return serviceComputer;
 	}
-	
+	/**
+	 * 
+	 * @param idCompany
+	 * @return
+	 * @throws CompanyDoesNotExistException 
+	 */
+	public long getNumberComputerGotThisCompany(long idCompany) throws CompanyDoesNotExistException
+	{
+		long res = 0;
+		res = serviceComputer.getNumberOfComputerWithCompany(idCompany);
+		return res;
+	}
 }

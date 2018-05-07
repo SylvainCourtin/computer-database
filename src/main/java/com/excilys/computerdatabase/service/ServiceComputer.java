@@ -193,6 +193,16 @@ public class ServiceComputer {
 		return computerDao.getComputer(id);
 	}
 	
+	/**
+	 * @param idCompany
+	 * @return the number of computer who got the same company given in arg
+	 * @throws CompanyDoesNotExistException 
+	 */
+	public long getNumberOfComputerWithCompany(long idCompany) throws CompanyDoesNotExistException
+	{
+		return computerDao.getNumberComputerRelatedToThisCompany(idCompany);
+	}
+	
 	public Optional<ComputerDTO> getComputerDTO(long id)
 	{
 		Optional<Computer> computer = computerDao.getComputer(id);

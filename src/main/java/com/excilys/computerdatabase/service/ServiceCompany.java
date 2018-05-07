@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerdatabase.dao.CompanyDao;
-import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
@@ -12,7 +11,6 @@ import com.excilys.computerdatabase.models.Company;
 public class ServiceCompany{
 	
 	private CompanyDao companyDao;
-	private ComputerDao computerDao;
 	private static ServiceCompany serviceCompany;
 	
 	public static ServiceCompany getInstance()
@@ -26,7 +24,7 @@ public class ServiceCompany{
 
 	public ServiceCompany() {
 		companyDao = DaoFactory.getInstance().getCompanyDao();
-		computerDao = DaoFactory.getInstance().getComputerDao();
+		DaoFactory.getInstance().getComputerDao();
 	}
 	
 	public long getNumberRowComputer()
@@ -58,16 +56,6 @@ public class ServiceCompany{
 	{
 		return companyDao.getCompany(id);
 			
-	}
-	
-	/**
-	 * @param idCompany
-	 * @return the number of computer who got the same company given in arg
-	 * @throws CompanyDoesNotExistException 
-	 */
-	public long getNumberOfComputerWithCompany(long idCompany) throws CompanyDoesNotExistException
-	{
-		return computerDao.getNumberComputerRelatedToThisCompany(idCompany);
 	}
 	
 	/**

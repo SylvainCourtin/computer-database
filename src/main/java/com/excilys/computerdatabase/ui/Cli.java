@@ -5,6 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
@@ -21,7 +22,7 @@ public final class Cli {
 	
 	
 	//affichage du menu principale
-	public int displayAction()
+	public MenuCli displayAction()
 	{
 		
 		System.out.println("Selection your option ? ");
@@ -32,43 +33,49 @@ public final class Cli {
 		System.out.println("-4 Add a computer -");
 		System.out.println("-5 Update a computer -");
 		System.out.println("-6 Delete a computer -");
-		System.out.println("-7 Exit -");
+		System.out.println("-7 Delete a company -");
+		System.out.println("-8 Exit -");
 		System.out.println("----------------------------");
-		int i = 0;
+		MenuCli menucli = null;
 		try {
-			 i = scanner.nextInt();
-		} catch (InputMismatchException e) {
+			menucli = MenuCli.values()[scanner.nextInt()-1];
+		} catch (InputMismatchException | ArrayIndexOutOfBoundsException  e) {
 			System.out.println("Oops wrong value try again");
 		}
 		
-		return i;
+		return menucli;
 	}
 	//effectue l'affichage et le choix des options
 	public boolean doAction()
 	{
-		int option = displayAction();
-		
-		switch(option) {
-		case 1:
-			computer.showList();
-			break;
-		case 2:
-			company.showList();
-			break;
-		case 3:
-			displayOneComputer(requestIdComputer());
-			break;
-		case 4:
-			requestNewComputer();
-			break;
-		case 5:
-			requestUpdateComputer();
-			break;
-		case 6:
-			requestDeleteComputer(requestIdComputer());
-			break;
-		case 7:
-			return false;
+		MenuCli option = displayAction();
+		if(option != null)
+		{
+			switch(option) {
+			case GET_ALL_COMPUTERS:
+				computer.showList();
+				break;
+			case GET_ALL_COMPANIES:
+				company.showList();
+				break;
+			case SHOW_ONE_COMPUTER:
+				displayOneComputer(requestIdComputer());
+				break;
+			case ADD_COMPUTER:
+				requestNewComputer();
+				break;
+			case UPDATE_COMPUTER:
+				requestUpdateComputer();
+				break;
+			case DELETE_COMPUTER:
+				requestDeleteComputer(requestIdComputer());
+				break;
+			case DELETE_COMPANY:
+				requestDeleteCompany();
+				break;
+			default:
+				return false;
+			}
 		}
 		return true;
 	}
@@ -159,6 +166,57 @@ public final class Cli {
 		}
 		else
 			System.err.println("Cette ID n'existe pas !");
+	}
+	
+	public void requestDeleteCompany()
+	{
+		System.out.println("\n--------------Delete Company--------------");
+		System.out.println("Company id ?\nor enter quit to cancel this action");
+		Company company = this.company.showRequestCompanyNotNull();
+		if(company != null)
+		{
+			try {
+				long numberOfComputerLinked = computer.getNumberComputerGotThisCompany(company.getId());
+				StringBuilder message = new StringBuilder();
+				message.append("The company : ");
+				message.append(company.getName());
+				message.append(" will be deleted. Moreover, ");
+				message.append(numberOfComputerLinked);
+				message.append(" computers will be deleted too. Cause they are linked with this company.\nAre you sure too deleted this company ?");
+				System.out.println(message.toString());
+				if(readConfirmation())
+				{
+					if(this.company.deleteCompany(company.getId()))
+						System.out.println("Success !");
+					else
+						System.out.println("Echec !");
+				}
+				else
+				{
+					System.out.println("Cancel action");
+				}
+				
+			} catch (CompanyDoesNotExistException e) {
+				e.printStackTrace();
+				System.out.println("fail.");
+			}	
+		}
+		else
+			System.out.println("Cancel action");
+	}
+	
+	public boolean readConfirmation()
+	{
+		String response = scanner.next();
+		if(response.contains("yes") || response.equals("y"))
+			return true;
+		else if(response.contains("no") || response.equals("n"))
+			return false;
+		else
+		{
+			System.out.println("Write yes or no please");
+			return readConfirmation();
+		}
 	}
 
 	public static void main(String... args) {

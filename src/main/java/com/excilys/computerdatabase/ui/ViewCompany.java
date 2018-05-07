@@ -5,6 +5,7 @@ import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAG
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.ui.page.PageCompany;
@@ -51,27 +52,74 @@ public class ViewCompany {
 		Company company = null;
 		boolean isIDValid = false;
 		do {
-			String tmp = scanner.nextLine();
-			if(!tmp.equals("null"))
+			try
 			{
-				Optional<Company> optCompany = serviceCompany.getCompany(Long.parseLong(tmp));
-				if(!optCompany.isPresent())
+				String tmp = scanner.nextLine();
+				if(!tmp.equals("null"))
 				{
-					isIDValid = false;
-					System.out.println("\n\t This company doesn't exist try again");
+					Optional<Company> optCompany = serviceCompany.getCompany(Long.parseLong(tmp));
+					if(!optCompany.isPresent())
+					{
+						isIDValid = false;
+						System.out.println("\n\t This company doesn't exist try again");
+					}
+					else
+					{
+						isIDValid = true;
+						company = optCompany.get();
+					}
 				}
 				else
 				{
 					isIDValid = true;
-					company = optCompany.get();
 				}
+			}catch (Exception e) {
+				System.out.println("\n\tWrite a number or enter null");
 			}
-			else
-			{
-				isIDValid = true;
+			
+		}while(!isIDValid);
+		return company;
+	}
+	/**
+	 * Demande à l'utilisateur l'id d'une company qui existe, si l'utilisateur écrit quit, cancel la demande
+	 * @return
+	 */
+	public Company showRequestCompanyNotNull()
+	{
+		Company company = null;
+		boolean isIDValid = false;
+		do {
+			try {
+				
+				String tmp = scanner.nextLine();
+				if(!tmp.equals("quit"))
+				{
+					Optional<Company> optCompany = serviceCompany.getCompany(Long.parseLong(tmp));
+					if(!optCompany.isPresent())
+					{
+						isIDValid = false;
+						System.out.println("\n\t This company doesn't exist try again");
+					}
+					else
+					{
+						isIDValid = true;
+						company = optCompany.get();
+					}
+				}
+				else
+				{
+					isIDValid = true;
+				}
+			}catch (Exception e) {
+				System.out.println("\n\tWrite a number or enter quit");
 			}
 		}while(!isIDValid);
 		return company;
+	}
+	
+	public boolean deleteCompany(long id) throws CompanyDoesNotExistException
+	{
+		return serviceCompany.deleteCompanyAndAllComputerRelatedToThisCompany(id);
 	}
 
 }

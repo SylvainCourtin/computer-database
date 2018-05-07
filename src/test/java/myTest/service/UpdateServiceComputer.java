@@ -6,8 +6,8 @@ import static org.junit.Assert.fail;
 
 import java.time.format.DateTimeParseException;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -20,17 +20,17 @@ import bddTest.MyBDDTest;
 
 public class UpdateServiceComputer {
 	
-	private ServiceComputer serviceComputer;
+	private static ServiceComputer serviceComputer;
 
-	@Before 
-	public void initBDD()
+	@BeforeClass
+	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
 		serviceComputer = ServiceComputer.getInstance();
 	}
 	
-	@After
-	public void destroyTest()
+	@AfterClass
+	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
 	}

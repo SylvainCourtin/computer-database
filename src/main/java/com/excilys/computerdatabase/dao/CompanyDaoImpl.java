@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.utils.MyConstants;
@@ -16,9 +19,12 @@ import com.excilys.computerdatabase.utils.MyConstants;
 public class CompanyDaoImpl implements CompanyDao {
 	
 	private DaoFactory daoFactory;
+	private Logger logger;
+	
 
 	public CompanyDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
+		logger = LoggerFactory.getLogger(this.getClass());
 	}
 
 	@Override
@@ -92,12 +98,28 @@ public class CompanyDaoImpl implements CompanyDao {
 			
 			while(result.next())
 			{
-				nbElement = result.getInt("COUNT(*)");
+				nbElement = result.getLong(MyConstants.COUNT);
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return nbElement;
+	}
+	
+	@Override
+	public boolean deleteCompany(long id) {
+		boolean isDelete = false;
+		try (Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPANY_DELETE,false, id);
+			)
+		{
+			if (preparedStatement.executeUpdate() > 0)
+				isDelete = true;
+			
+		}catch (SQLException e) {
+			logger.warn("In dao.CompanyDaoImpl method deleteCompany : ", e.getMessage());
+		}
+		return isDelete;
 	}
 	
 	/**
@@ -119,4 +141,6 @@ public class CompanyDaoImpl implements CompanyDao {
 		}
 		return preparedStatement;
 	}
+
+	
 }

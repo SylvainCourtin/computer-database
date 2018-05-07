@@ -11,5 +11,11 @@ public interface CompanyDao {
 	public List<Company> getList(int limite, int offset);
 	public Optional<Company> getCompany(long id);
 	public long getNumberElement();
+	/**
+	 * Delete a company, you need before call this method ComputerDao.deleteRelatedToCompany, else it didn't work
+	 * @param id id company
+	 * @return return false is failed
+	 */
+	public boolean deleteCompany(long id);
 
 }

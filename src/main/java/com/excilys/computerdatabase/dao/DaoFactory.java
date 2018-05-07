@@ -21,6 +21,15 @@ public class DaoFactory {
 		dataSource.setPassword(password);
 	}
 	
+	public DaoFactory(String url, String username, String password, String driver) {
+		super();
+		dataSource = new HikariDataSource();
+		dataSource.setJdbcUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		dataSource.setDriverClassName(driver);
+	}
+	
 	public static DaoFactory getInstance() {
 		
 		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
@@ -28,7 +37,7 @@ public class DaoFactory {
         if(daoFactory == null)
         {
         	
-        	DaoFactory instance = new DaoFactory(propertiesFile.getUrl(), propertiesFile.getLogin(), propertiesFile.getPassword());
+        	DaoFactory instance = new DaoFactory(propertiesFile.getUrl(), propertiesFile.getLogin(), propertiesFile.getPassword(), propertiesFile.getDriver());
 
             return instance;
         }

@@ -7,8 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.time.format.DateTimeParseException;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
@@ -24,14 +24,14 @@ public class AddServiceComputer {
 	
 	private static ServiceComputer serviceComputer;
 
-	@Before 
+	@BeforeClass
 	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
 		serviceComputer = ServiceComputer.getInstance();
 	}
 	
-	@After
+	@AfterClass
 	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();

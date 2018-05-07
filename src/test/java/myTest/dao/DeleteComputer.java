@@ -37,7 +37,7 @@ public class DeleteComputer {
 	@Before
 	public void init()
 	{
-		logger = LoggerFactory.getLogger(AddComputer.class);
+		logger = LoggerFactory.getLogger(getClass());
 	}
 	
 	@AfterClass

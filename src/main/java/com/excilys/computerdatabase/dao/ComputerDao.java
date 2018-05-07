@@ -29,4 +29,20 @@ public interface ComputerDao {
 	 * @return number computer found with this %name% 
 	 */
 	public long getNumberElementLike(String sLike);
+	
+	/**
+	 * Return the number of row in the bdd linked with this company
+	 * @param idCompany the id of the Company 
+	 * @return Return the number of row in the bdd linked with this company
+	 * @throws CompanyDoesNotExistException 
+	 */
+	public long getNumberComputerRelatedToThisCompany(long idCompany) throws CompanyDoesNotExistException;
+	
+	/**
+	 * return the number of row was been deleted
+	 * @param idCompany
+	 * @return return the number of row was been deleted.
+	 * @throws CompanyDoesNotExistException 
+	 */
+	public long deleteRelatedToCompany(long idCompany) throws CompanyDoesNotExistException;
 }

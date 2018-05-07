@@ -219,7 +219,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		{
 			while(result.next())
 			{
-				nbElement = result.getInt("COUNT(*)");
+				nbElement = result.getLong(MyConstants.COUNT);
 			}
 			
 		}catch (SQLException e) {
@@ -238,13 +238,47 @@ public class ComputerDaoImpl implements ComputerDao {
 		{			
 			while(result.next())
 			{
-				nbElement = result.getInt("COUNT(*)");
+				nbElement = result.getLong(MyConstants.COUNT);
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return nbElement;
 	}
+	
+	@Override
+	public long getNumberComputerRelatedToThisCompany(long idCompany) throws CompanyDoesNotExistException {
+		long nbElement = 0;
+		companyExist(idCompany);
+		try(Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY,false,idCompany);
+			ResultSet result = preparedStatement.executeQuery();
+			) 
+		{			
+			while(result.next())
+			{
+				nbElement = result.getLong(MyConstants.COUNT_COMPUTER);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbElement;
+	}
+
+	@Override
+	public long deleteRelatedToCompany(long idCompany) throws CompanyDoesNotExistException {
+		long nbElement = 0;
+		companyExist(idCompany);
+		try(Connection connection = daoFactory.getConnection();
+			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,false,idCompany);) 
+		{			
+			nbElement = preparedStatement.executeUpdate();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nbElement;
+	}
+	
 	/**
 	 * Prepare et initialise la requete
 	 * @param connection
@@ -264,7 +298,12 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 		return preparedStatement;
 	}
-	
+	/**
+	 * Return the id of this company
+	 * @param company
+	 * @return id of this company or null if doesn't exist
+	 * @throws CompanyDoesNotExistException 
+	 */
 	private Long companyExist(Company company) throws CompanyDoesNotExistException
 	{
 		if(company != null)
@@ -274,5 +313,11 @@ public class ComputerDaoImpl implements ComputerDao {
 				return company.getId();
 		else
 			return null;
+	}
+	
+	private void companyExist(long idCompany) throws CompanyDoesNotExistException
+	{
+		if(!daoFactory.getCompanyDao().getCompany(idCompany).isPresent())
+			throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");		
 	}
 }

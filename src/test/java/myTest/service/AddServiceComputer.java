@@ -22,17 +22,17 @@ import bddTest.MyBDDTest;
 
 public class AddServiceComputer {
 	
-	private ServiceComputer serviceComputer;
+	private static ServiceComputer serviceComputer;
 
 	@Before 
-	public void initBDD()
+	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
 		serviceComputer = ServiceComputer.getInstance();
 	}
 	
 	@After
-	public void destroyTest()
+	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
 	}

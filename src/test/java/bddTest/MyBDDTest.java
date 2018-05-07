@@ -32,16 +32,15 @@ public class MyBDDTest {
     }
     
     /**
-     * Initializes the HSQL Database with tables and entries
+     * Initializes the Database with tables and entries
      */
     public void init() {
-        try (    Connection connexion = daoFactory.getConnection()) {
+        try (Connection connexion = daoFactory.getConnection();
+    		 Statement statement = connexion.createStatement();) {
             
             String[] tablesStrings = transferDataFromFile("bdd/1-SCHEMA.sql");
             String[] entriesStrings = transferDataFromFile("bdd/3-ENTRIES.sql");
 
-            Statement statement = connexion.createStatement();
-            
             executeScript(tablesStrings, statement);
             executeScript(entriesStrings, statement);
             
@@ -54,8 +53,9 @@ public class MyBDDTest {
      * Destroys the tables previously added
      */
     public void destroy() {
-        try (Connection connexion = daoFactory.getConnection()) {
-            Statement statement = connexion.createStatement();
+        try (Connection connexion = daoFactory.getConnection();
+             Statement statement = connexion.createStatement();)
+        {
             
             statement.executeUpdate(DROP_COMPUTER);
             statement.executeUpdate(DROP_COMPANY);

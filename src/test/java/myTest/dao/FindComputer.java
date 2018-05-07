@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
@@ -23,19 +23,19 @@ import bddTest.MyBDDTest;
 
 public class FindComputer {
 	
-	private ComputerDao computerDao;
-	private ServiceComputer serviceComputer;
+	private static ComputerDao computerDao;
+	private static ServiceComputer serviceComputer;
 	
-	@Before 
-	public void initBDD()
+	@BeforeClass
+	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
 		computerDao = DaoFactory.getInstance().getComputerDao();
 		serviceComputer = ServiceComputer.getInstance();
 	}
 	
-	@After
-	public void destroyTest()
+	@AfterClass
+	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
 	}

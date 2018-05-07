@@ -11,16 +11,14 @@ public class DaoFactory {
 	private static DaoFactory daoFactory;
 	private static CompanyDao companyDao;
 	private static ComputerDao computerDao;
-	private String url;
-	private String username;
-	private String password;
 	private HikariDataSource dataSource;
 	
 	public DaoFactory(String url, String username, String password) {
 		super();
-		this.url = url;
-		this.username = username;
-		this.password = password;
+		dataSource = new HikariDataSource();
+		dataSource.setJdbcUrl(url);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
 	}
 	
 	public static DaoFactory getInstance() {
@@ -40,13 +38,6 @@ public class DaoFactory {
 
 
     public Connection getConnection() throws SQLException {
-    	
-    	dataSource = new HikariDataSource();
-		dataSource.setJdbcUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		
-    	
 		return dataSource.getConnection();
 
     }

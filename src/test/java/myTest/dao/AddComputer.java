@@ -6,8 +6,9 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.time.format.DateTimeParseException;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,20 +26,25 @@ import bddTest.MyBDDTest;
 
 public class AddComputer {
 	
-	private ComputerDao computerDao;
+	private static ComputerDao computerDao;
 
 	private Logger logger;
 	
-	@Before 
-	public void initBDD()
-	{
+	@BeforeClass
+	public static void initBDD() {
 		MyBDDTest.getInstance().init();
 		computerDao = DaoFactory.getInstance().getComputerDao();
+		
+	}
+	
+	@Before
+	public void init()
+	{
 		logger = LoggerFactory.getLogger(AddComputer.class);
 	}
 	
-	@After
-	public void destroyTest()
+	@AfterClass
+	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
 	}

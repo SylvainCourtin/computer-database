@@ -27,7 +27,6 @@ public class CompanyDaoImpl implements CompanyDao {
 			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPANY_INSERT,false,company.getName());
 			)
 		{
-
 			preparedStatement.executeUpdate();
 			
 		}catch (SQLException e) {
@@ -39,7 +38,6 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Override
 	public List<Company> getList(int limite, int offset) {
 		List<Company> companies = new ArrayList<>();
-		
 		try(
 			Connection connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPANY_SELECT_LIMIT,
@@ -49,7 +47,6 @@ public class CompanyDaoImpl implements CompanyDao {
 
 			while(result.next())
 			{
-				
 				companies.add(MapperCompany.fromParameters(
 						result.getLong("id"),
 						result.getString("name")));

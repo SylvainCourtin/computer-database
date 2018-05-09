@@ -17,12 +17,12 @@ public class ServiceCompany{
 	{
 		if(serviceCompany == null)
 		{
-			return new ServiceCompany();
+			serviceCompany = new ServiceCompany();
 		}
 		return serviceCompany;
 	}
 
-	public ServiceCompany() {
+	private ServiceCompany() {
 		companyDao = DaoFactory.getInstance().getCompanyDao();
 		DaoFactory.getInstance().getComputerDao();
 	}

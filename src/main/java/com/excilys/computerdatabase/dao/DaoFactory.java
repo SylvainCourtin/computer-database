@@ -13,15 +13,7 @@ public class DaoFactory {
 	private static ComputerDao computerDao;
 	private HikariDataSource dataSource;
 	
-	public DaoFactory(String url, String username, String password) {
-		super();
-		dataSource = new HikariDataSource();
-		dataSource.setJdbcUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-	}
-	
-	public DaoFactory(String url, String username, String password, String driver) {
+	private DaoFactory(String url, String username, String password, String driver) {
 		super();
 		dataSource = new HikariDataSource();
 		dataSource.setJdbcUrl(url);
@@ -31,14 +23,11 @@ public class DaoFactory {
 	}
 	
 	public static DaoFactory getInstance() {
-		
-		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
-		
+
         if(daoFactory == null)
         {
-        	
+        	ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
         	DaoFactory instance = new DaoFactory(propertiesFile.getUrl(), propertiesFile.getLogin(), propertiesFile.getPassword(), propertiesFile.getDriver());
-
             return instance;
         }
         
@@ -62,18 +51,16 @@ public class DaoFactory {
     public CompanyDao getCompanyDao() {
 
     	if(companyDao == null)
-    		return new CompanyDaoImpl(this);
-    	else
-    		return companyDao;
+    		companyDao = CompanyDaoImpl.getInstance(this);
+    	return companyDao;
 
     }
     
     public ComputerDao getComputerDao()
     {
     	if(computerDao == null)
-    		return new ComputerDaoImpl(this);
-    	else
-    		return computerDao;
+    		computerDao = ComputerDaoImpl.getInstance(this);
+    	return computerDao;
     }
 
 }

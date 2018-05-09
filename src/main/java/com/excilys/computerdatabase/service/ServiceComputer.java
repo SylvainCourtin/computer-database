@@ -24,23 +24,12 @@ public class ServiceComputer {
 	public static ServiceComputer getInstance()
 	{
 		if(serviceComputer == null)
-			return new ServiceComputer();
-		else
-			return serviceComputer;
+			serviceComputer = new ServiceComputer();
+		return serviceComputer;
 	}
 	
-	public ServiceComputer() {
+	private ServiceComputer() {
 		computerDao = DaoFactory.getInstance().getComputerDao();
-	}
-	
-	/**
-	 * Create service for a specific DB (like for the test)
-	 * @param url
-	 * @param username
-	 * @param password
-	 */
-	public ServiceComputer(String url, String username, String password) {
-		computerDao = new DaoFactory(url,username,password).getComputerDao();
 	}
 	
 	/**

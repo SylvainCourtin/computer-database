@@ -20,9 +20,20 @@ import com.excilys.computerdatabase.utils.MyUtils;
 public class ComputerDaoImpl implements ComputerDao {
 	
 	private DaoFactory daoFactory;
+	private static ComputerDao computerDao;
+	public static long count=0;
+	
+	public static ComputerDao getInstance(DaoFactory daoFactory)
+	{
+		if(computerDao == null)
+			computerDao = new ComputerDaoImpl(daoFactory);
+		return computerDao;
+	}
 
-	public ComputerDaoImpl(DaoFactory daoFactory) {
+	private ComputerDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
+		count++;
+		System.out.println(count);
 	}
 
 	@Override
@@ -106,7 +117,6 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public List<Computer> getListLike(int limite, int offset, String sLike) {
 		List<Computer> computers = new ArrayList<>();
-		
 		try(Connection connection = daoFactory.getConnection();
 			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,
 					false,"%"+sLike+"%", limite, offset);

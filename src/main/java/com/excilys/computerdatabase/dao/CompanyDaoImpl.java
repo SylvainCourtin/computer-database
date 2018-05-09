@@ -21,9 +21,16 @@ public class CompanyDaoImpl implements CompanyDao {
 	
 	private DaoFactory daoFactory;
 	private Logger logger;
+	private static CompanyDao companyDao;
 	
+	public static CompanyDao getInstance(DaoFactory daoFactory)
+	{
+		if(companyDao == null)
+			companyDao = new CompanyDaoImpl(daoFactory);
+		return companyDao;
+	}
 
-	public CompanyDaoImpl(DaoFactory daoFactory) {
+	private CompanyDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 		logger = LoggerFactory.getLogger(this.getClass());
 	}

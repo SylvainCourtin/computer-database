@@ -22,6 +22,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <org.apache.maven.plugins>3.0.0</org.apache.maven.plugins>
     <org.seleniumhq.selenium>3.11.0</org.seleniumhq.selenium>
     <com.zaxxer>2.7.8</com.zaxxer>
+     <jsp-api>2.0</jsp-api>
 </properties>
   
   <dependencies>
@@ -50,10 +51,16 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	    <artifactId>slf4j-jdk14</artifactId>
 	    <version>${org.slf4j}</version>
 	</dependency>
-		<dependency>
+	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
 	    <version>${javax.servlet.api}</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jsp-api</artifactId>
+	    <version>${jsp-api}</version>
+	    <scope>provided</scope>
 	</dependency>
      <dependency>
          <groupId>javax.servlet</groupId>

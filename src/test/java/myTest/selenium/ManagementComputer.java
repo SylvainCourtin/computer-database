@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -19,18 +20,21 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.computerdatabase.utils.MyUtils;
+
 import bddTest.MyBDDTest;
 
 
 public class ManagementComputer {
 	private WebDriver driver;
-	private Logger logger;
+	private Logger logger = LoggerFactory.getLogger(ManagementComputer.class);
 	
 	@BeforeClass
 	public static void init()
 	{
 		MyBDDTest.getInstance().init();
-		System.setProperty("webdriver.gecko.driver", "/home/courtin/Documents/training-java/computer-database/src/main/resources/selenium/geckodriver");
+		//If of executable => chmod 777 on this driver (yes in target)
+		System.setProperty("webdriver.gecko.driver", ClassLoader.getSystemClassLoader().getResource("selenium/geckodriver").getFile());
 	}
 	
 	@AfterClass
@@ -43,7 +47,6 @@ public class ManagementComputer {
 	public void initBrowser()
 	{
 		driver = new FirefoxDriver();
-		logger = LoggerFactory.getLogger(ManagementComputer.class);
 	}
 	
 	@After
@@ -64,18 +67,28 @@ public class ManagementComputer {
 				break;
 			}
 		}
-		Thread.sleep(2000L);
+		Thread.sleep(500L);
 		String nameTestComputer = "Cheese !";
 		driver.findElement(By.id("computerName")).sendKeys(nameTestComputer);
-		driver.findElement(By.id("introduced")).sendKeys("10102010");
-		driver.findElement(By.id("discontinued")).sendKeys("10102012");
+		JavascriptExecutor js;
+		String dateIntroduced = "2011-10-10";
+		String dateDiscontinued ="2012-10-10" ;
+		if (driver instanceof JavascriptExecutor) {
+		    js = (JavascriptExecutor)driver;
+		    if(driver.findElement(By.id("introduced")).isEnabled())
+		    	js.executeScript("return document.getElementById('introduced').value='"+dateIntroduced+"';");
+		    if(driver.findElement(By.id("discontinued")).isEnabled())
+		    	js.executeScript("return document.getElementById('discontinued').value='"+dateDiscontinued+"';");
+		}
 		Select selectCompanies  = new Select(driver.findElement(By.id("companyId")));
 		selectCompanies.selectByVisibleText("ASUS");
 		
 		driver.findElement(By.id("act")).click();
-		Thread.sleep(2000L);
-
-		WebElement line = search(nameTestComputer, webElements);
+		
+		Thread.sleep(500L);
+		WebElement line = search(nameTestComputer, 
+				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateIntroduced)), 
+				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateDiscontinued)));
 		
 		delete(line);
 	}
@@ -92,12 +105,11 @@ public class ManagementComputer {
 				break;
 			}
 		}
-		Thread.sleep(2000L);
+		Thread.sleep(500L);
 		String nameTestComputer = "";
 		driver.findElement(By.id("computerName")).sendKeys(nameTestComputer);
 		
 		driver.findElement(By.id("act")).click();
-		Thread.sleep(2000L);
 		
 		if(!(driver.findElement(By.tagName("h1")) != null && 
 				driver.findElement(By.tagName("h1")).getText().contains("Add Computer")))
@@ -118,31 +130,82 @@ public class ManagementComputer {
 				break;
 			}
 		}
-		Thread.sleep(2000L);
+		Thread.sleep(500L);
 		String nameTestComputer = "ERROR ";
 		driver.findElement(By.id("computerName")).sendKeys(nameTestComputer);
-		driver.findElement(By.id("introduced")).sendKeys("10102010");
-		driver.findElement(By.id("discontinued")).sendKeys("10102000");
-		
-		
+		String dateIntroduced = "2012-10-10";
+		String dateDiscontinued ="2011-10-10";
+		JavascriptExecutor js;
+		if (driver instanceof JavascriptExecutor) {
+		    js = (JavascriptExecutor)driver;
+		    if(driver.findElement(By.id("introduced")).isEnabled())
+		    	js.executeScript("return document.getElementById('introduced').value='"+dateIntroduced+"';");
+		    if(driver.findElement(By.id("discontinued")).isEnabled())
+		    	js.executeScript("return document.getElementById('discontinued').value='"+dateDiscontinued+"';");
+		}
+		Thread.sleep(500L);
 		try
 		{
-			driver.findElement(By.id("act")).click();
-			fail("The button is unclickable");
+			if(driver.findElement(By.id("act")).isEnabled())
+			{
+				driver.findElement(By.id("act")).click();
+				if(!driver.findElement(By.id("main")).getText().contains("Error"))
+					fail("The button should be unclickable because the date didn't match");
+			}
 		}
 		catch (Exception e) {
-			logger.debug("We catch the exception expected : " + e.getMessage());
+			logger.warn("We catch the exception expected : " + e.getMessage());
 		}
 	}
 	
-	private WebElement search(String nameTestComputer, List<WebElement> webElements) throws InterruptedException
+	@Test
+	public void testChargeManySearch() throws InterruptedException
 	{
+		driver.get("http://localhost:8080/computerdatabase/");
+		List<WebElement> webElements = driver.findElements(By.tagName("a"));
+		for (WebElement element : webElements) {
+			if(element.getText().contains("computers"))
+			{
+				element.click();
+				break;
+			}
+		}
+
+		for (char c = 'a'; c < 'z'; c++) {
+			Thread.sleep(100L);
+			WebElement searchBox = driver.findElement(By.id("searchbox"));
+			searchBox.clear();
+			searchBox.sendKeys(""+c);
+			searchBox.sendKeys(Keys.RETURN);
+			Thread.sleep(300L);
+			int nbPage = Integer.parseInt(driver.findElement(By.id("selectPage")).getAttribute("max"));
+			for(int i = 1; i < nbPage; i++)
+			{
+				Thread.sleep(100L);
+				driver.findElement(By.id("selectPage")).sendKeys(Keys.ARROW_UP);
+				driver.findElement(By.id("selectPage")).sendKeys(Keys.RETURN);
+			}
+			
+		}
+	}
+	
+	/**
+	 * 
+	 * @param nameTestComputer
+	 * @param webElements
+	 * @param contains List of string you want to find for this computer (like date or company), the date sould be like dd/MM/yyyy
+	 * @return
+	 * @throws InterruptedException
+	 */
+	private WebElement search(String nameTestComputer, String...contains ) throws InterruptedException
+	{
+		
 		WebElement searchBox = driver.findElement(By.id("searchbox"));
 		searchBox.sendKeys(nameTestComputer);
 		searchBox.sendKeys(Keys.RETURN);
 		
-		Thread.sleep(2000L);
-		webElements = driver.findElements(By.tagName("tr"));
+		Thread.sleep(500L);
+		List<WebElement> webElements = driver.findElements(By.tagName("tr"));
 		logger.debug("number of line", webElements.size());
 		WebElement line = null;
 		boolean asBeingAdded =false;
@@ -156,6 +219,11 @@ public class ManagementComputer {
 		}
 		if(!asBeingAdded)
 			fail("The search of the new computer failed");
+		for (String elem : contains) {
+			logger.debug("find ?"+elem);
+			if(!line.getText().contains(elem))
+				fail("Success added but the elem :"+elem+" was not been add");
+		}
 		return line;
 	}
 	
@@ -176,109 +244,5 @@ public class ManagementComputer {
 		}
 		
 	}
-	
-	private void selectDate(String sDate, WebElement selectDate)
-	{
-		/*
-		  //button to open calendar
 
-        WebElement selectDate = driver.findElement(By.xpath("//span[@aria-controls='datetimepicker_dateview']"));
-        
-    selectDate.click();
-
-    //button to move next in calendar
-
-    WebElement nextLink = driver.findElement(By.xpath("//div[@id='datetimepicker_dateview']//div[@class='k-header']//a[contains(@class,'k-nav-next')]"));
-
-    //button to click in center of calendar header
-
-    WebElement midLink = driver.findElement(By.xpath("//div[@id='datetimepicker_dateview']//div[@class='k-header']//a[contains(@class,'k-nav-fast')]"));
-
-    //button to move previous month in calendar
-
-    WebElement previousLink = driver.findElement(By.xpath("//div[@id='datetimepicker_dateview']//div[@class='k-header']//a[contains(@class,'k-nav-prev')]")); 
-
-        //Split the date time to get only the date part
-
-        String date_dd_MM_yyyy[] = (dateTime.split(" ")[0]).split("/");
-
-        //get the year difference between current year and year to set in calander
-
-        int yearDiff = Integer.parseInt(date_dd_MM_yyyy[2])- Calendar.getInstance().get(Calendar.YEAR);
-
-        midLink.click();
-
-        if(yearDiff!=0){
-
-            //if you have to move next year
-
-            if(yearDiff>0){
-
-                for(int i=0;i< yearDiff;i++){
-
-                    System.out.println("Year Diff->"+i);
-
-                    nextLink.click();
-
-                }
-
-            }
-
-            //if you have to move previous year
-
-            else if(yearDiff<0){
-
-                for(int i=0;i< (yearDiff*(-1));i++){
-
-                    System.out.println("Year Diff->"+i);
-
-                    previousLink.click();
-
-                }
-
-            }
-
-        }
-        
-        Thread.sleep(1000);
-
-        //Get all months from calendar to select correct one
-
-        List<WebElement> list_AllMonthToBook = driver.findElements(By.xpath("//div[@id='datetimepicker_dateview']//table//tbody//td[not(contains(@class,'k-other-month'))]"));
-        
-        list_AllMonthToBook.get(Integer.parseInt(date_dd_MM_yyyy[1])-1).click();
-        
-        Thread.sleep(1000);
-
-        //get all dates from calendar to select correct one
-
-        List<WebElement> list_AllDateToBook = driver.findElements(By.xpath("//div[@id='datetimepicker_dateview']//table//tbody//td[not(contains(@class,'k-other-month'))]"));
-        
-        list_AllDateToBook.get(Integer.parseInt(date_dd_MM_yyyy[0])-1).click();
-        
-        ///FOR TIME
-
-        WebElement selectTime = driver.findElement(By.xpath("//span[@aria-controls='datetimepicker_timeview']"));
-
-        //click time picker button
-
-        selectTime.click();
-
-        //get list of times
-
-        List<WebElement> allTime = driver.findElements(By.xpath("//div[@data-role='popup'][contains(@style,'display: block')]//ul//li[@role='option']"));
-      
-        dateTime = dateTime.split(" ")[1]+" "+dateTime.split(" ")[2];
-
-     //select correct time
-
-        for (WebElement webElement : allTime) {
-
-            if(webElement.getText().equalsIgnoreCase(dateTime))
-
-            {
-
-                webElement.click();
-		 */
-	}
 }

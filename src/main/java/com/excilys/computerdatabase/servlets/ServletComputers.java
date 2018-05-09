@@ -311,7 +311,7 @@ public class ServletComputers extends HttpServlet {
 	{
 		String filter = "";
 		if(request.getParameter("search") != null)
-			filter = request.getParameter("search");
+			filter = request.getParameter("search").trim();
 		long numberOfComputer = facade.getNumberRowComputerLike(filter);
 		int res = 0;
 		if(numberOfComputer%MyConstants.NUMBER_LIST_PER_PAGE > 0)

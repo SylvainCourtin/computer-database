@@ -32,8 +32,6 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	private ComputerDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
-		count++;
-		System.out.println(count);
 	}
 
 	@Override

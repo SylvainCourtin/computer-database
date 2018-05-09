@@ -70,25 +70,21 @@ public class ManagementComputer {
 		Thread.sleep(500L);
 		String nameTestComputer = "Cheese !";
 		driver.findElement(By.id("computerName")).sendKeys(nameTestComputer);
-		JavascriptExecutor js;
 		String dateIntroduced = "2011-10-10";
 		String dateDiscontinued ="2012-10-10" ;
-		if (driver instanceof JavascriptExecutor) {
-		    js = (JavascriptExecutor)driver;
-		    if(driver.findElement(By.id("introduced")).isEnabled())
-		    	js.executeScript("return document.getElementById('introduced').value='"+dateIntroduced+"';");
-		    if(driver.findElement(By.id("discontinued")).isEnabled())
-		    	js.executeScript("return document.getElementById('discontinued').value='"+dateDiscontinued+"';");
-		}
+		String nameEntreprise = "ASUS";
+		changeDate("introduced", dateIntroduced);
+		changeDate("discontinued", dateDiscontinued);
 		Select selectCompanies  = new Select(driver.findElement(By.id("companyId")));
-		selectCompanies.selectByVisibleText("ASUS");
+		selectCompanies.selectByVisibleText(nameEntreprise);
 		
 		driver.findElement(By.id("act")).click();
 		
 		Thread.sleep(500L);
 		WebElement line = search(nameTestComputer, 
 				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateIntroduced)), 
-				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateDiscontinued)));
+				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateDiscontinued)),
+				nameEntreprise);
 		
 		delete(line);
 	}
@@ -135,14 +131,8 @@ public class ManagementComputer {
 		driver.findElement(By.id("computerName")).sendKeys(nameTestComputer);
 		String dateIntroduced = "2012-10-10";
 		String dateDiscontinued ="2011-10-10";
-		JavascriptExecutor js;
-		if (driver instanceof JavascriptExecutor) {
-		    js = (JavascriptExecutor)driver;
-		    if(driver.findElement(By.id("introduced")).isEnabled())
-		    	js.executeScript("return document.getElementById('introduced').value='"+dateIntroduced+"';");
-		    if(driver.findElement(By.id("discontinued")).isEnabled())
-		    	js.executeScript("return document.getElementById('discontinued').value='"+dateDiscontinued+"';");
-		}
+		changeDate("introduced", dateIntroduced);
+		changeDate("discontinued", dateDiscontinued);
 		Thread.sleep(500L);
 		try
 		{
@@ -159,6 +149,45 @@ public class ManagementComputer {
 	}
 	
 	@Test
+	public void testEdit() throws InterruptedException 
+	{
+		//Try edit the computer "ACE"
+		String computer = "ACE";
+		driver.get("http://localhost:8080/computerdatabase/");
+		List<WebElement> webElements = driver.findElements(By.tagName("a"));
+		for (WebElement element : webElements) {
+			if(element.getText().contains("computers"))
+			{
+				element.click();
+				break;
+			}
+		}
+		Thread.sleep(300L);
+		WebElement line = search(computer);
+		Thread.sleep(300L);
+		try {
+			line.findElement(By.tagName("a")).click();
+			Thread.sleep(300L);
+			String introduced="2000-01-01";
+			String discontinued="2003-05-11";
+			pageUpdate(introduced,discontinued);
+			Thread.sleep(300L);
+			line = search(computer, MyUtils.formatDateToString(MyUtils.stringToDateInv(introduced)), MyUtils.formatDateToString(MyUtils.stringToDateInv(discontinued)));
+			Thread.sleep(1000L);
+			if(!driver.findElement(By.name("div.alert.alert-success")).getText().contains("Success updated"))
+				fail("Fail updated");
+		}catch (Exception e) {
+			logger.warn("We catch the exception expected : " + e.getMessage());
+			fail("Didn't expected exception "+e.getMessage());
+		}
+		
+	}
+	
+	/**
+	 * Take to much time
+	 * @throws InterruptedException
+	 */
+	//@Test
 	public void testChargeManySearch() throws InterruptedException
 	{
 		driver.get("http://localhost:8080/computerdatabase/");
@@ -189,6 +218,8 @@ public class ManagementComputer {
 		}
 	}
 	
+	/*-------------------------------------------------UTILS-------------------------------------------------------------------------*/
+	
 	/**
 	 * 
 	 * @param nameTestComputer
@@ -211,20 +242,34 @@ public class ManagementComputer {
 		boolean asBeingAdded =false;
 		for (WebElement webElement : webElements) {
 			logger.debug(webElement.getText());
-			if(webElement.getText().contains(nameTestComputer))
+			if(webElement.findElement(By.tagName("a")).getText().equals(nameTestComputer))
 			{
 				line = webElement;
 				asBeingAdded = true;
 			}
 		}
 		if(!asBeingAdded)
-			fail("The search of the new computer failed");
+			fail("The search of the computer failed");
 		for (String elem : contains) {
 			logger.debug("find ?"+elem);
 			if(!line.getText().contains(elem))
 				fail("Success added but the elem :"+elem+" was not been add");
 		}
 		return line;
+	}
+	
+	private void pageUpdate(String introduced, String discontinued)
+	{
+		changeDate("introduced", introduced);
+		changeDate("discontinued", discontinued);
+		Select selectCompanies  = new Select(driver.findElement(By.id("companyId")));
+		if(selectCompanies.getFirstSelectedOption().getText().contains("ASUS"))
+			selectCompanies.selectByVisibleText("--");
+		else
+			selectCompanies.selectByVisibleText("ASUS");
+		
+		driver.findElement(By.id("act")).click();
+
 	}
 	
 	private void delete(WebElement line) throws InterruptedException
@@ -243,6 +288,20 @@ public class ManagementComputer {
 			fail("No exception expected");
 		}
 		
+	}
+	/**
+	 * 
+	 * @param idTag
+	 * @param sDate yyyy-MM-dd
+	 */
+	private void changeDate(String idTag, String sDate)
+	{
+		JavascriptExecutor js;
+		if (driver instanceof JavascriptExecutor) {
+		    js = (JavascriptExecutor)driver;
+		    if(driver.findElement(By.id(idTag)).isEnabled())
+		    	js.executeScript("return document.getElementById('"+idTag+"').value='"+sDate+"';");
+		}
 	}
 
 }

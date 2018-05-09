@@ -32,7 +32,7 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name*</label>
-                                <input type="text" required="required" class="form-control" id="computerName" name="computerName" value="${computer.computerBasicView.name}" placeholder="Computer name">
+                                <input type="text" maxlength="30" required="required" class="form-control" id="computerName" name="computerName" value="${computer.computerBasicView.name}" placeholder="Computer name">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date : <tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></label>

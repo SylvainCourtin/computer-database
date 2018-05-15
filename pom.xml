@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   
   <groupId>com.excilys</groupId>
   <artifactId>computerdatabase</artifactId>
-  <version>0.2.3</version>
+  <version>0.3.0-SNAPSHOT</version>
   
   <packaging>war</packaging>
   <name>computer-database</name>
@@ -22,7 +22,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <org.apache.maven.plugins>3.0.0</org.apache.maven.plugins>
     <org.seleniumhq.selenium>3.11.0</org.seleniumhq.selenium>
     <com.zaxxer>2.7.8</com.zaxxer>
-     <jsp-api>2.0</jsp-api>
+    <jsp-api>2.0</jsp-api>
+    <srpingframework>5.0.6.RELEASE</srpingframework>
 </properties>
   
   <dependencies>
@@ -78,6 +79,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	    <version>${com.zaxxer}</version>
 	    <scope>compile</scope>
 	</dependency>
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${srpingframework}</version>
+    </dependency>
   </dependencies>
   
   <reporting>

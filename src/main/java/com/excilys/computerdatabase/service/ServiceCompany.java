@@ -3,11 +3,14 @@ package com.excilys.computerdatabase.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 
+@Service
 public class ServiceCompany{
 	
 	private CompanyDao companyDao;

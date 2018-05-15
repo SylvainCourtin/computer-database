@@ -193,18 +193,6 @@ public class ComputerDaoImpl implements ComputerDao {
 					computer.getId());
 				) 
 			{				
-				
-				/*
-				preparedStatement.setString(1, computer.getName());
-				preparedStatement.setDate(2, MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()));
-				preparedStatement.setDate(3, MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()));
-				if(computer.getManufacturerCompany() != null)
-					preparedStatement.setLong(4, computer.getManufacturerCompany().getId());
-				else 
-					preparedStatement.setString(4, null);
-				//Where id=?
-				preparedStatement.setLong(5, computer.getId());
-				*/
 				if (preparedStatement.executeUpdate() > 0)
 					isUpdate = true;	
 			}

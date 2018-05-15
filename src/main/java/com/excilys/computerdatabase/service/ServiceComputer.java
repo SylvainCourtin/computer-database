@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.dtos.CompanyDTO;
@@ -15,6 +17,7 @@ import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
 
+@Service
 public class ServiceComputer {
 	
 	private ComputerDao computerDao;

@@ -1,8 +1,10 @@
 package com.excilys.computerdatabase.models;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Company {
-	
-	
+
 	private long id;
 	private String name;
 	

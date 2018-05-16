@@ -67,7 +67,7 @@ public class ManagementComputer {
 				break;
 			}
 		}
-		Thread.sleep(500L);
+		Thread.sleep(600L);
 		String nameTestComputer = "Cheese !";
 		driver.findElement(By.id("computerName")).sendKeys(nameTestComputer);
 		String dateIntroduced = "2011-10-10";

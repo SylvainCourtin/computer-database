@@ -2,16 +2,19 @@ package com.excilys.computerdatabase.mappers;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
 
 public class MapperCompany {
 	
-	@Autowired
-	private static ServiceCompany serviceCompany;
+	private static ApplicationContext context = 
+	          new AnnotationConfigApplicationContext(Application.class);
+	private static ServiceCompany serviceCompany = (ServiceCompany) context.getBean("serviceCompany");;
 
 	public static Company fromParameters(long id, String name)
 	{

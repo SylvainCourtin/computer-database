@@ -171,11 +171,10 @@ public class ManagementComputer {
 			String introduced="2000-01-01";
 			String discontinued="2003-05-11";
 			pageUpdate(introduced,discontinued);
-			Thread.sleep(300L);
-			line = search(computer, MyUtils.formatDateToString(MyUtils.stringToDateInv(introduced)), MyUtils.formatDateToString(MyUtils.stringToDateInv(discontinued)));
-			Thread.sleep(1000L);
-			if(!driver.findElement(By.name("div.alert.alert-success")).getText().contains("Success updated"))
+			Thread.sleep(2000L);
+			if(!driver.findElement(By.className("alert-success")).getText().contains("Success updated"))
 				fail("Fail updated");
+			line = search(computer, MyUtils.formatDateToString(MyUtils.stringToDateInv(introduced)), MyUtils.formatDateToString(MyUtils.stringToDateInv(discontinued)));
 		}catch (Exception e) {
 			logger.warn("We catch the exception expected : " + e.getMessage());
 			fail("Didn't expected exception "+e.getMessage());

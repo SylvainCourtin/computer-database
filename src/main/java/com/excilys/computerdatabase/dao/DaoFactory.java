@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.computerdatabase.utils.ReadPropertiesFile;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Repository
@@ -16,18 +15,8 @@ public class DaoFactory {
 	private CompanyDao companyDao;
 	@Autowired
 	private ComputerDao computerDao;
+	@Autowired
 	private HikariDataSource dataSource;
-	
-	public DaoFactory()
-	{
-		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
-		dataSource = new HikariDataSource();
-		dataSource.setJdbcUrl(propertiesFile.getUrl());
-		dataSource.setUsername(propertiesFile.getLogin());
-		dataSource.setPassword(propertiesFile.getPassword());
-		dataSource.setDriverClassName(propertiesFile.getDriver());	
-	}
-
 
     public Connection getConnection() throws SQLException {
 		return dataSource.getConnection();

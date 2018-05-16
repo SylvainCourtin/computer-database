@@ -12,6 +12,8 @@ import com.excilys.computerdatabase.dao.ComputerDaoImpl;
 import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
+import com.excilys.computerdatabase.utils.ReadPropertiesFile;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan
@@ -50,5 +52,17 @@ public class Application {
 	public ServiceCompany getServiceCompany()
 	{
 		return new ServiceCompany(getCompanyDao());
-	}	
+	}
+	@Bean
+	public HikariDataSource getDataSource()
+	{
+		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
+		HikariDataSource dataSource = new HikariDataSource();
+		dataSource.setJdbcUrl(propertiesFile.getUrl());
+		dataSource.setUsername(propertiesFile.getLogin());
+		dataSource.setPassword(propertiesFile.getPassword());
+		dataSource.setDriverClassName(propertiesFile.getDriver());
+		
+		return dataSource;
+	}
 }

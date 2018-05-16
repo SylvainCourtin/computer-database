@@ -15,7 +15,7 @@ public class ViewCompany {
 	private ServiceCompany serviceCompany;
 	private Scanner scanner = new Scanner(System.in);
 	public ViewCompany() {
-		serviceCompany = ServiceCompany.getInstance();
+		//serviceCompany = ServiceCompany.getInstance();
 	}
 	
 	/**

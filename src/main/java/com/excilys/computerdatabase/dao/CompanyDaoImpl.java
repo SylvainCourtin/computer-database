@@ -11,26 +11,20 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.utils.MyConstants;
 
+@Repository
 public class CompanyDaoImpl implements CompanyDao {
 	
 	private DaoFactory daoFactory;
 	private Logger logger;
-	private static CompanyDao companyDao;
 	
-	public static CompanyDao getInstance(DaoFactory daoFactory)
-	{
-		if(companyDao == null)
-			companyDao = new CompanyDaoImpl(daoFactory);
-		return companyDao;
-	}
-
-	private CompanyDaoImpl(DaoFactory daoFactory) {
+	public CompanyDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 		logger = LoggerFactory.getLogger(this.getClass());
 	}

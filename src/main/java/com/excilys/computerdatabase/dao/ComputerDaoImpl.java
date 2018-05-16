@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.mappers.MapperComputer;
@@ -17,20 +19,12 @@ import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
 import com.excilys.computerdatabase.utils.MyUtils;
 
+@Repository
 public class ComputerDaoImpl implements ComputerDao {
 	
 	private DaoFactory daoFactory;
-	private static ComputerDao computerDao;
-	public static long count=0;
-	
-	public static ComputerDao getInstance(DaoFactory daoFactory)
-	{
-		if(computerDao == null)
-			computerDao = new ComputerDaoImpl(daoFactory);
-		return computerDao;
-	}
 
-	private ComputerDaoImpl(DaoFactory daoFactory) {
+	public ComputerDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 

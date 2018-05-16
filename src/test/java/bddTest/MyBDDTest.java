@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.computerdatabase.dao.DaoFactory;
 
 /**
@@ -20,7 +22,8 @@ public class MyBDDTest {
     private static final String DROP_COMPUTER = "DROP TABLE computer";
     private static final String DROP_COMPANY = "DROP TABLE company";
     
-    private DaoFactory daoFactory = DaoFactory.getInstance();
+    @Autowired
+    private DaoFactory daoFactory;
     
     private static MyBDDTest instance;
     

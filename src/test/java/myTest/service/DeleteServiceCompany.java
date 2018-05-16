@@ -9,21 +9,26 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.service.ServiceCompany;
-
 import bddTest.MyBDDTest;
 
 public class DeleteServiceCompany {
 
 	private Logger logger;
 	private static ServiceCompany serviceCompany;
+	private static ApplicationContext context;
 	
 	@BeforeClass
 	public static void initBDD() {
 		MyBDDTest.getInstance().init();
-		serviceCompany = ServiceCompany.getInstance();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		serviceCompany = (ServiceCompany) context.getBean("serviceCompany");
 		
 	}
 	

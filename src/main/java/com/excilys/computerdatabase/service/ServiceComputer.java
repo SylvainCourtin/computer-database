@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
@@ -20,19 +21,12 @@ import com.excilys.computerdatabase.validators.ValidatorComputer;
 @Service
 public class ServiceComputer {
 	
+	@Autowired
 	private ComputerDao computerDao;
 	
-	private static ServiceComputer serviceComputer;
-	
-	public static ServiceComputer getInstance()
+	public ServiceComputer(ComputerDao computerDao)
 	{
-		if(serviceComputer == null)
-			serviceComputer = new ServiceComputer();
-		return serviceComputer;
-	}
-	
-	private ServiceComputer() {
-		computerDao = DaoFactory.getInstance().getComputerDao();
+		this.computerDao = computerDao;
 	}
 	
 	/**

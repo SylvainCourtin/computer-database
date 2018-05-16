@@ -10,6 +10,10 @@ import java.time.format.DateTimeParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
@@ -23,12 +27,17 @@ import bddTest.MyBDDTest;
 public class AddServiceComputer {
 	
 	private static ServiceComputer serviceComputer;
+	private static ServiceCompany serviceCompany;
+	private static ApplicationContext context;
 
 	@BeforeClass
 	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
-		serviceComputer = ServiceComputer.getInstance();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		serviceComputer = (ServiceComputer) context.getBean("serviceComputer");
+		serviceCompany = (ServiceCompany) context.getBean("serviceCompany");
 	}
 	
 	@AfterClass
@@ -53,7 +62,7 @@ public class AddServiceComputer {
 			assertThat(serviceComputer.addComputer(new Computer("ilMarcheDate3", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("16-01-2001"), null)), 
 					not(equalTo(-1L)));
 			
-			assertThat(serviceComputer.addComputer(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), ServiceCompany.getInstance().getCompany(1).get())), 
+			assertThat(serviceComputer.addComputer(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), serviceCompany.getCompany(1).get())), 
 					not(equalTo(-1L)));
 			
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
@@ -101,7 +110,7 @@ public class AddServiceComputer {
 			
 			//------------------------------------------Test avec une company--------------------------------------------
 			
-			computer = new Computer("ilMarcheDate2", null, null, ServiceCompany.getInstance().getCompany(1).get());
+			computer = new Computer("ilMarcheDate2", null, null, serviceCompany.getCompany(1).get());
 			
 			assertThat(id = serviceComputer.addComputer(computer), 
 					not(equalTo(-1L)));

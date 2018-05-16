@@ -23,7 +23,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <org.seleniumhq.selenium>3.11.0</org.seleniumhq.selenium>
     <com.zaxxer>2.7.8</com.zaxxer>
     <jsp-api>2.0</jsp-api>
-    <srpingframework>5.0.6.RELEASE</srpingframework>
+    <springframework>5.0.6.RELEASE</springframework>
 </properties>
   
   <dependencies>
@@ -82,8 +82,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	<dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
-        <version>${srpingframework}</version>
+        <version>${springframework}</version>
     </dependency>
+    <dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<version>${springframework}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>${springframework}</version>
+	</dependency>
   </dependencies>
   
   <reporting>

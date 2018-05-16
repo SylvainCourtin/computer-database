@@ -20,7 +20,7 @@ public class ViewComputer {
 	private Scanner scanner = new Scanner(System.in);
 	
 	public ViewComputer() {
-		serviceComputer = ServiceComputer.getInstance();
+		//serviceComputer = ServiceComputer.getInstance();
 	}
 	
 	/**

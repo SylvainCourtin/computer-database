@@ -9,9 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.CompanyDao;
-import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 
 import bddTest.MyBDDTest;
@@ -20,11 +22,14 @@ public class DeleteCompany {
 	
 	private Logger logger;
 	private static CompanyDao companyDao;
+	private static ApplicationContext context;
 	
 	@BeforeClass
 	public static void initBDD() {
 		MyBDDTest.getInstance().init();
-		companyDao = DaoFactory.getInstance().getCompanyDao();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		companyDao = (CompanyDao) context.getBean("companyDao");
 		
 	}
 	

@@ -12,14 +12,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
+import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.ComputerDao;
-import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.utils.MyUtils;
 
 import bddTest.MyBDDTest;
@@ -27,13 +29,18 @@ import bddTest.MyBDDTest;
 public class AddComputer {
 	
 	private static ComputerDao computerDao;
+	private static CompanyDao companyDao;
+	private static ApplicationContext context;
 
 	private Logger logger;
 	
 	@BeforeClass
 	public static void initBDD() {
 		MyBDDTest.getInstance().init();
-		computerDao = DaoFactory.getInstance().getComputerDao();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		computerDao = (ComputerDao) context.getBean("computerDao");
+		companyDao =  (CompanyDao) context.getBean("companyDao");
 		
 	}
 	
@@ -47,6 +54,7 @@ public class AddComputer {
 	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
+		
 	}
 	
 	@Test
@@ -62,7 +70,7 @@ public class AddComputer {
 			assertThat(computerDao.add(new Computer("ilMarcheDate3", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("16-01-2001"), null)), 
 					not(equalTo(-1L)));
 			
-			assertThat(computerDao.add(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), ServiceCompany.getInstance().getCompany(1).get())), 
+			assertThat(computerDao.add(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), companyDao.getCompany(1).get())), 
 					not(equalTo(-1L)));
 			
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
@@ -112,7 +120,7 @@ public class AddComputer {
 			
 			//------------------------------------------Test avec une company--------------------------------------------
 			
-			computer = new Computer("ilMarcheDate2", null, null, ServiceCompany.getInstance().getCompany(1).get());
+			computer = new Computer("ilMarcheDate2", null, null, companyDao.getCompany(1).get());
 			
 			assertThat(id = computerDao.add(computer), 
 					not(equalTo(-1L)));

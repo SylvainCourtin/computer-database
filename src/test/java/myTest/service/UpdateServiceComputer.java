@@ -9,7 +9,10 @@ import java.time.format.DateTimeParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Computer;
@@ -21,12 +24,15 @@ import bddTest.MyBDDTest;
 public class UpdateServiceComputer {
 	
 	private static ServiceComputer serviceComputer;
+	private static ApplicationContext context;
 
 	@BeforeClass
 	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
-		serviceComputer = ServiceComputer.getInstance();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		serviceComputer = (ServiceComputer) context.getBean("serviceComputer");
 	}
 	
 	@AfterClass

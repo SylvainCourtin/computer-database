@@ -3,36 +3,30 @@ package com.excilys.computerdatabase.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.computerdatabase.utils.ReadPropertiesFile;
 import com.zaxxer.hikari.HikariDataSource;
 
+@Repository
 public class DaoFactory {
 	
-	private static DaoFactory daoFactory;
-	private static CompanyDao companyDao;
-	private static ComputerDao computerDao;
+	@Autowired
+	private CompanyDao companyDao;
+	@Autowired
+	private ComputerDao computerDao;
 	private HikariDataSource dataSource;
 	
-	private DaoFactory(String url, String username, String password, String driver) {
-		super();
+	public DaoFactory()
+	{
+		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
 		dataSource = new HikariDataSource();
-		dataSource.setJdbcUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		dataSource.setDriverClassName(driver);
+		dataSource.setJdbcUrl(propertiesFile.getUrl());
+		dataSource.setUsername(propertiesFile.getLogin());
+		dataSource.setPassword(propertiesFile.getPassword());
+		dataSource.setDriverClassName(propertiesFile.getDriver());	
 	}
-	
-	public static DaoFactory getInstance() {
-
-        if(daoFactory == null)
-        {
-        	ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
-        	DaoFactory instance = new DaoFactory(propertiesFile.getUrl(), propertiesFile.getLogin(), propertiesFile.getPassword(), propertiesFile.getDriver());
-            return instance;
-        }
-        
-        return daoFactory;
-    }
 
 
     public Connection getConnection() throws SQLException {
@@ -49,17 +43,11 @@ public class DaoFactory {
     /*------------------------------ Récupération du Dao ------------------------------ */
 
     public CompanyDao getCompanyDao() {
-
-    	if(companyDao == null)
-    		companyDao = CompanyDaoImpl.getInstance(this);
     	return companyDao;
 
     }
     
-    public ComputerDao getComputerDao()
-    {
-    	if(computerDao == null)
-    		computerDao = ComputerDaoImpl.getInstance(this);
+    public ComputerDao getComputerDao(){
     	return computerDao;
     }
 

@@ -2,21 +2,16 @@ package com.excilys.computerdatabase.models;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.utils.MyUtils;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
 
-@Component
 public class Computer {
 
 	private long id;
 	private String name;
 	private LocalDate dateIntroduced;
 	private LocalDate dateDiscontinued;
-	@Autowired(required = false)
 	private Company manufacturerCompany;
 	
 	

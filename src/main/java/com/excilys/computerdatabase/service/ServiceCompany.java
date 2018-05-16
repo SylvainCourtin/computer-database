@@ -3,31 +3,22 @@ package com.excilys.computerdatabase.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.computerdatabase.dao.CompanyDao;
-import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 
 @Service
 public class ServiceCompany{
 	
+	@Autowired
 	private CompanyDao companyDao;
-	private static ServiceCompany serviceCompany;
 	
-	public static ServiceCompany getInstance()
+	public ServiceCompany(CompanyDao companyDao)
 	{
-		if(serviceCompany == null)
-		{
-			serviceCompany = new ServiceCompany();
-		}
-		return serviceCompany;
-	}
-
-	private ServiceCompany() {
-		companyDao = DaoFactory.getInstance().getCompanyDao();
-		DaoFactory.getInstance().getComputerDao();
+		this.companyDao = companyDao;
 	}
 	
 	public long getNumberRowComputer()

@@ -10,9 +10,11 @@ import java.util.Optional;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
-import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Computer;
@@ -25,13 +27,17 @@ public class FindComputer {
 	
 	private static ComputerDao computerDao;
 	private static ServiceComputer serviceComputer;
+	private static ApplicationContext context;
 	
 	@BeforeClass
 	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
-		computerDao = DaoFactory.getInstance().getComputerDao();
-		serviceComputer = ServiceComputer.getInstance();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		serviceComputer = (ServiceComputer) context.getBean("serviceComputer");
+		computerDao = (ComputerDao) context.getBean("computerDao");
+		
 	}
 	
 	@AfterClass

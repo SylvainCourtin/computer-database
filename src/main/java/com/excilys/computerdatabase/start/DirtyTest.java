@@ -42,8 +42,8 @@ public class DirtyTest {
 		try {
 			
 			
-			CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
-			ComputerDao computerDao =DaoFactory.getInstance().getComputerDao();
+			/*CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+			ComputerDao computerDao =DaoFactory.getInstance().getComputerDao();*/
 			
 			/*Computer c1 = new Computer("c1", cal1.getTime(), cal2.getTime(), null);
 			Computer c2 = new Computer("c2", cal3.getTime(), cal4.getTime(), comp1);

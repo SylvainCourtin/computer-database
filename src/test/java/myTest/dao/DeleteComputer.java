@@ -12,9 +12,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
-import com.excilys.computerdatabase.dao.DaoFactory;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Computer;
@@ -25,13 +27,16 @@ import bddTest.MyBDDTest;
 public class DeleteComputer {
 	
 	private static ComputerDao computerDao;
+	private static ApplicationContext context;
 	
 	private Logger logger;
 	
 	@BeforeClass
 	public static void initBDD() {
 		MyBDDTest.getInstance().init();
-		computerDao = DaoFactory.getInstance().getComputerDao();
+		context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		computerDao = (ComputerDao) context.getBean("computerDao");
 	}
 	
 	@Before

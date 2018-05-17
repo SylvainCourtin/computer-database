@@ -4,14 +4,12 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,10 +21,9 @@ import bddTest.MyBDDTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=Application.class)
-@Configuration
 public class DeleteCompany {
 	
-	private Logger logger;
+	private Logger logger = LoggerFactory.getLogger(getClass());;
 	@Autowired
 	private CompanyDao companyDao;
 	
@@ -36,18 +33,18 @@ public class DeleteCompany {
 		
 	}
 	
-	@Before
-	public void init()
-	{
-		logger = LoggerFactory.getLogger(getClass());
-	}
-	
 	@AfterClass
 	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
 	}
-
+	
+	@Test
+	public void verifyBeans()
+	{
+		assertNotNull(companyDao);
+	}
+	
 	@Test
 	public void testDeleteSuccess() {
 		//On récupère l'id 1 qui est apple inc. dans notre bdd

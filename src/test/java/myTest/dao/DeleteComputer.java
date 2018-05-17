@@ -1,20 +1,19 @@
 package myTest.dao;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.time.format.DateTimeParseException;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -29,29 +28,28 @@ import bddTest.MyBDDTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=Application.class)
-@Configuration
 public class DeleteComputer {
 	
 	@Autowired
 	private ComputerDao computerDao;
 	
-	private Logger logger;
+	private Logger logger = LoggerFactory.getLogger(getClass());;
 	
 	@BeforeClass
 	public static void initBDD() {
 		MyBDDTest.getInstance().init();
 	}
 	
-	@Before
-	public void init()
-	{
-		logger = LoggerFactory.getLogger(getClass());
-	}
-	
 	@AfterClass
 	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
+	}
+	
+	@Test
+	public void verifyBeans()
+	{
+		assertNotNull(computerDao);
 	}
 
 	@Test

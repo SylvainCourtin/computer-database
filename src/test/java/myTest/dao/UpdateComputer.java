@@ -3,6 +3,7 @@ package myTest.dao;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -13,7 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,7 +28,6 @@ import bddTest.MyBDDTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=Application.class)
-@Configuration
 public class UpdateComputer {
 	
 	@Autowired
@@ -44,6 +43,12 @@ public class UpdateComputer {
 	public static void destroyTest()
 	{
 		MyBDDTest.getInstance().destroy();
+	}
+	
+	@Test
+	public void verifyBeans()
+	{
+		assertNotNull(computerDao);
 	}
 	
 	@Test

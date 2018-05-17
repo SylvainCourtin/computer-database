@@ -8,14 +8,12 @@ import static org.hamcrest.CoreMatchers.*;
 import java.time.format.DateTimeParseException;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -32,7 +30,6 @@ import bddTest.MyBDDTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=Application.class)
-@Configuration
 public class AddComputer {
 	
 	@Autowired
@@ -40,18 +37,12 @@ public class AddComputer {
 	@Autowired
 	private CompanyDao companyDao;
 
-	private Logger logger;
+	private Logger logger = LoggerFactory.getLogger(getClass());;
 	
 	@BeforeClass
 	public static void initBDD() {
 		MyBDDTest.getInstance().init();
 		
-	}
-	
-	@Before
-	public void init()
-	{
-		logger = LoggerFactory.getLogger(AddComputer.class);
 	}
 	
 	@AfterClass

@@ -175,6 +175,7 @@ public class ManagementComputer {
 			if(!driver.findElement(By.className("alert-success")).getText().contains("Success updated"))
 				fail("Fail updated");
 			line = search(computer, MyUtils.formatDateToString(MyUtils.stringToDateInv(introduced)), MyUtils.formatDateToString(MyUtils.stringToDateInv(discontinued)));
+
 		}catch (Exception e) {
 			logger.warn("We catch the exception expected : " + e.getMessage());
 			fail("Didn't expected exception "+e.getMessage());
@@ -198,7 +199,7 @@ public class ManagementComputer {
 				break;
 			}
 		}
-
+		Thread.sleep(100L);
 		for (char c = 'a'; c < 'z'; c++) {
 			Thread.sleep(100L);
 			WebElement searchBox = driver.findElement(By.id("searchbox"));

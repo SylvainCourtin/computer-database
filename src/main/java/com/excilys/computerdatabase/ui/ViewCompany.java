@@ -5,6 +5,7 @@ import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAG
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.context.ApplicationContext;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
@@ -14,8 +15,8 @@ public class ViewCompany {
 	
 	private ServiceCompany serviceCompany;
 	private Scanner scanner = new Scanner(System.in);
-	public ViewCompany() {
-		//serviceCompany = ServiceCompany.getInstance();
+	public ViewCompany(ApplicationContext context) {
+		serviceCompany = (ServiceCompany) context.getBean("serviceCompany");
 	}
 	
 	/**

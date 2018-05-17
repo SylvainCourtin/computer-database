@@ -5,6 +5,10 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
@@ -12,17 +16,23 @@ import com.excilys.computerdatabase.models.Computer;
 public final class Cli {
 	
 	private Scanner scanner = new Scanner(System.in);
-	private ViewCompany company = new ViewCompany();
-	private ViewComputer computer = new ViewComputer();
+	private ViewCompany company;
+	private ViewComputer computer;
 	
-	public static Cli getInstance()
-	{
-		return new Cli();
+	private Cli(ApplicationContext context) {
+		company = new ViewCompany(context);
+		computer = new ViewComputer(context);
 	}
 	
 	
-	//affichage du menu principale
-	public MenuCli displayAction()
+	/**
+	 * Affiche le menu principal
+	 * @return
+	 * @throws ArrayIndexOutOfBoundsException
+	 * @throws InputMismatchException
+	 * @throws NumberFormatException
+	 */
+	public MenuCli displayAction() throws ArrayIndexOutOfBoundsException, InputMismatchException, NumberFormatException
 	{
 		
 		System.out.println("Selection your option ? ");
@@ -36,46 +46,51 @@ public final class Cli {
 		System.out.println("-7 Delete a company -");
 		System.out.println("-8 Exit -");
 		System.out.println("----------------------------");
-		MenuCli menucli = null;
-		try {
-			menucli = MenuCli.values()[scanner.nextInt()-1];
-		} catch (InputMismatchException | ArrayIndexOutOfBoundsException  e) {
-			System.out.println("Oops wrong value try again");
-		}
 		
-		return menucli;
+		String sValues = scanner.nextLine();
+		Long values = Long.valueOf(sValues);
+		if(values > MenuCli.values().length || values < 0)
+			throw new ArrayIndexOutOfBoundsException("No menu corresponding at this number");
+		else
+			return MenuCli.values()[values.intValue()-1];
 	}
 	//effectue l'affichage et le choix des options
 	public boolean doAction()
 	{
-		MenuCli option = displayAction();
-		if(option != null)
-		{
-			switch(option) {
-			case GET_ALL_COMPUTERS:
-				computer.showList();
-				break;
-			case GET_ALL_COMPANIES:
-				company.showList();
-				break;
-			case SHOW_ONE_COMPUTER:
-				displayOneComputer(requestIdComputer());
-				break;
-			case ADD_COMPUTER:
-				requestNewComputer();
-				break;
-			case UPDATE_COMPUTER:
-				requestUpdateComputer();
-				break;
-			case DELETE_COMPUTER:
-				requestDeleteComputer(requestIdComputer());
-				break;
-			case DELETE_COMPANY:
-				requestDeleteCompany();
-				break;
-			default:
-				return false;
+		try {
+			MenuCli option = displayAction();
+			if(option != null)
+			{
+				switch(option) {
+				case GET_ALL_COMPUTERS:
+					computer.showList();
+					break;
+				case GET_ALL_COMPANIES:
+					company.showList();
+					break;
+				case SHOW_ONE_COMPUTER:
+					displayOneComputer(requestIdComputer());
+					break;
+				case ADD_COMPUTER:
+					requestNewComputer();
+					break;
+				case UPDATE_COMPUTER:
+					requestUpdateComputer();
+					break;
+				case DELETE_COMPUTER:
+					requestDeleteComputer(requestIdComputer());
+					break;
+				case DELETE_COMPANY:
+					requestDeleteCompany();
+					break;
+				case QUIT:
+					return false;
+				}
 			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println(e.getMessage());
+		}catch (InputMismatchException | NumberFormatException e) {
+			System.out.println("Oops wrong value try again");
 		}
 		return true;
 	}
@@ -85,7 +100,8 @@ public final class Cli {
 		System.out.println("\n\n\n----------------------------");
 		System.out.println("Computer id ?");
 		System.out.print("= ");
-		return scanner.nextLong();
+		String sValues = scanner.nextLine();
+		return Long.valueOf(sValues);
 		
 	}
 	//affiche les infos pour un seul computer
@@ -220,10 +236,13 @@ public final class Cli {
 	}
 
 	public static void main(String... args) {
+		ApplicationContext context = 
+		          new AnnotationConfigApplicationContext(Application.class);
+		Cli cli = new Cli(context);
 		System.out.println("---------Welcome on computer-database---------");
 		do {
 			
-		}while(Cli.getInstance().doAction());
+		}while(cli.doAction());
 		System.out.println("---------Disconnected---------");
 	}
 }

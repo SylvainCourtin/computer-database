@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.context.ApplicationContext;
+
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
@@ -19,8 +21,8 @@ public class ViewComputer {
 	private ServiceComputer serviceComputer;
 	private Scanner scanner = new Scanner(System.in);
 	
-	public ViewComputer() {
-		//serviceComputer = ServiceComputer.getInstance();
+	public ViewComputer(ApplicationContext context) {
+		serviceComputer = (ServiceComputer) context.getBean("serviceComputer");
 	}
 	
 	/**

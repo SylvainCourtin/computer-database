@@ -36,11 +36,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
 	    <version>${junit}</version>
+	    <scope>test</scope>
 	</dependency>
 	<dependency>
 	    <groupId>org.mockito</groupId>
 	    <artifactId>mockito-core</artifactId>
 	    <version>${org.mockito}</version>
+	    <scope>test</scope>
 	</dependency>
 	<dependency>
 	    <groupId>org.slf4j</groupId>
@@ -72,6 +74,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<groupId>org.seleniumhq.selenium</groupId>
 		<artifactId>selenium-java</artifactId>
 		<version>${org.seleniumhq.selenium}</version>
+		<scope>test</scope>
 	</dependency>
 	<dependency>
 	    <groupId>com.zaxxer</groupId>

@@ -1,4 +1,4 @@
-package myTest.selenium;
+package com.excilys.computerdatabase.myTest.selenium;
 
 import static org.junit.Assert.fail;
 
@@ -20,9 +20,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.utils.MyUtils;
-
-import bddTest.MyBDDTest;
 
 
 public class ManagementComputer {

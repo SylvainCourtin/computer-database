@@ -1,4 +1,4 @@
-package bddTest;
+package com.excilys.computerdatabase.bddTest;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

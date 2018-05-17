@@ -1,4 +1,4 @@
-package myTest.service;
+package com.excilys.computerdatabase.myTest.dao;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertNotNull;
@@ -11,29 +11,31 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
+import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
-
-import bddTest.MyBDDTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=Application.class)
-public class UpdateServiceComputer {
+public class DeleteComputer {
 	
 	@Autowired
-	private ServiceComputer serviceComputer;
-
+	private ComputerDao computerDao;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());;
+	
 	@BeforeClass
-	public static void initBDD()
-	{
+	public static void initBDD() {
 		MyBDDTest.getInstance().init();
 	}
 	
@@ -46,53 +48,39 @@ public class UpdateServiceComputer {
 	@Test
 	public void verifyBeans()
 	{
-		assertNotNull(serviceComputer);
+		assertNotNull(computerDao);
 	}
-	
+
 	@Test
-	public void testUpdateComputer()
+	public void testDeleteComputer()
 	{
 		try {
 			Computer computer = new Computer("ilMarche", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), null);
 			long id;
-			assertThat(id = serviceComputer.addComputer(computer), 
+			assertThat(id = computerDao.add(computer), 
 					not(equalTo(-1L)));
 			
 			computer.setId(id);
-			//On fait les modifications
-			Computer oldComputer = computer;
-			computer.setName("OtherName");
-			computer.setDateIntroduced(MyUtils.stringToDate("12-12-1999"));
-			assertThat(serviceComputer.updateComputer(oldComputer,computer), 
+			assertThat(computerDao.delete(computer), 
 					is(true));
 			
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
 			fail("No exception expected");
+			logger.debug("echec testDeleteComputer "+e.getMessage());
 		}
 	}
 	
 	@Test
-	public void testEchecChangeDateUpdateComputer()
+	public void testEchecDeleteComputer()
 	{
 		try {
-			Computer computer = new Computer("YouCantUpdateMe", MyUtils.stringToDate("12-12-1999"), MyUtils.stringToDate("null"), null);
-			long id;
-			assertThat(id = serviceComputer.addComputer(computer), 
-					not(equalTo(-1L)));
-			
-			computer.setId(id);
-			//On fait les modifications
-			Computer oldComputer = computer;
-			computer.setName("FailUpdateCauseDate");
-			computer.setDateDiscontinued(MyUtils.stringToDate("12-12-1998"));
-			assertThat(serviceComputer.updateComputer(oldComputer,computer), 
+			Computer computer = new Computer(-1,"ilMarchePAS", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), null);
+			assertThat(computerDao.delete(computer), 
 					is(false));
-			fail("Exception DateDiscontinuedIntroducedException expecting");
-		} catch (DateTimeParseException | CompanyDoesNotExistException e) {
-			fail("No ParseException or CompanyDoesNotExistException exception expected");
-		}catch(DateDiscontinuedIntroducedException e)
-		{
-			assert(true);
+			
+		} catch (DateTimeParseException e) {
+			fail("No exception expected");
 		}
 	}
+
 }

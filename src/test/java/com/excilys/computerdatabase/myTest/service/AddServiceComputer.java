@@ -1,4 +1,4 @@
-package myTest.service;
+package com.excilys.computerdatabase.myTest.service;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
@@ -24,8 +25,6 @@ import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
-
-import bddTest.MyBDDTest;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

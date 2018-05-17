@@ -1,4 +1,4 @@
-package myTest.service;
+package com.excilys.computerdatabase.myTest.dao;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -13,29 +13,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
+import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
-import com.excilys.computerdatabase.service.ServiceCompany;
-import bddTest.MyBDDTest;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=Application.class)
-public class DeleteServiceCompany {
-
+public class DeleteCompany {
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());;
 	@Autowired
-	private ServiceCompany serviceCompany;
+	private CompanyDao companyDao;
 	
 	@BeforeClass
 	public static void initBDD() {
-		MyBDDTest.getInstance().init();		
-	}
-	
-	@Test
-	public void verifyBeans()
-	{
-		assertNotNull(serviceCompany);
+		MyBDDTest.getInstance().init();
+		
 	}
 	
 	@AfterClass
@@ -43,39 +37,44 @@ public class DeleteServiceCompany {
 	{
 		MyBDDTest.getInstance().destroy();
 	}
-
+	
+	@Test
+	public void verifyBeans()
+	{
+		assertNotNull(companyDao);
+	}
+	
 	@Test
 	public void testDeleteSuccess() {
 		//On récupère l'id 1 qui est apple inc. dans notre bdd
 		long id=1;
-		assertThat(serviceCompany.getCompany(id).isPresent(), 
+		assertThat(companyDao.getCompany(id).isPresent(), 
 				is(true));
 		
 		try {
-			assertThat(serviceCompany.deleteCompanyAndAllComputerRelatedToThisCompany(id),
+			assertThat(companyDao.deleteCompany(id),
 					is(true));
 		} catch (CompanyDoesNotExistException e) {
 			logger.debug(e.getMessage());
 			fail("Didn't expected the exception CompanyDoesNotExistException");
 		}
-		
-		assertThat(serviceCompany.getCompany(id).isPresent(), 
+
+		assertThat(companyDao.getCompany(id).isPresent(), 
 				is(false));
 	}
 	
 	@Test
 	public void testDeleteFail() {
-		//On récupère l'id 600 qui n'existe pas
-		long id=600;
-		assertThat(serviceCompany.getCompany(id).isPresent(), 
+
+		long id=1700;//doesn't exist
+		assertThat(companyDao.getCompany(id).isPresent(), 
 				is(false));
 		
 		try {
-			assertThat(serviceCompany.deleteCompanyAndAllComputerRelatedToThisCompany(id),
+			assertThat(companyDao.deleteCompany(id),
 					is(false));
 			fail("Expected exception");
 		} catch (CompanyDoesNotExistException e) {
-			logger.debug(e.getMessage());
 		}
 	}
 

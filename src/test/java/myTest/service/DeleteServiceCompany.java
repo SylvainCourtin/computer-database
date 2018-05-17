@@ -7,29 +7,32 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import bddTest.MyBDDTest;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=Application.class)
+@Configuration
 public class DeleteServiceCompany {
 
 	private Logger logger;
-	private static ServiceCompany serviceCompany;
-	private static ApplicationContext context;
+	@Autowired
+	private ServiceCompany serviceCompany;
 	
 	@BeforeClass
 	public static void initBDD() {
-		MyBDDTest.getInstance().init();
-		context = 
-		          new AnnotationConfigApplicationContext(Application.class);
-		serviceCompany = (ServiceCompany) context.getBean("serviceCompany");
-		
+		MyBDDTest.getInstance().init();		
 	}
 	
 	@Before

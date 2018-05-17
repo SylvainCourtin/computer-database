@@ -9,8 +9,11 @@ import java.time.format.DateTimeParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -21,18 +24,18 @@ import com.excilys.computerdatabase.utils.MyUtils;
 
 import bddTest.MyBDDTest;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=Application.class)
+@Configuration
 public class UpdateServiceComputer {
 	
-	private static ServiceComputer serviceComputer;
-	private static ApplicationContext context;
+	@Autowired
+	private ServiceComputer serviceComputer;
 
 	@BeforeClass
 	public static void initBDD()
 	{
 		MyBDDTest.getInstance().init();
-		context = 
-		          new AnnotationConfigApplicationContext(Application.class);
-		serviceComputer = (ServiceComputer) context.getBean("serviceComputer");
 	}
 	
 	@AfterClass

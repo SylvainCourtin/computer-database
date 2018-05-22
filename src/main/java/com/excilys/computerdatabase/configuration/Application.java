@@ -17,6 +17,7 @@ import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.ReadPropertiesFile;
+import com.excilys.computerdatabase.validators.ValidatorComputer;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
@@ -27,14 +28,14 @@ public class Application {
 	@Scope("singleton")
 	public CompanyDao getCompanyDao()
 	{
-		return new CompanyDaoImpl(getDataSource(getDataSource()));
+		return new CompanyDaoImpl(new JdbcTemplate(getDataSource()));
 	}
 	
 	@Bean("computerDao")
 	@Scope("singleton")
 	public ComputerDao getComputerDao()
 	{
-		return new ComputerDaoImpl(getDataSource(getDataSource()));
+		return new ComputerDaoImpl(new JdbcTemplate(getDataSource()));
 	}
 	
 	@Bean("serviceComputer")
@@ -50,9 +51,10 @@ public class Application {
 	{
 		return new ServiceCompany(getCompanyDao());
 	}
+	
 	@Bean
 	@Scope("singleton")
-	public HikariDataSource getDataSource()
+	public DataSource getDataSource()
 	{
 		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
 		HikariDataSource dataSource = new HikariDataSource();
@@ -62,13 +64,6 @@ public class Application {
 		dataSource.setDriverClassName(propertiesFile.getDriver());
 		
 		return dataSource;
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public JdbcTemplate getDataSource(DataSource dataSource)
-	{
-		return new JdbcTemplate(dataSource);		
 	}
 	
 	@Bean
@@ -83,5 +78,12 @@ public class Application {
 	public MapperComputer getMapperComputer()
 	{
 		return new MapperComputer();		
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public ValidatorComputer getValidatorComputer()
+	{
+		return new ValidatorComputer();
 	}
 }

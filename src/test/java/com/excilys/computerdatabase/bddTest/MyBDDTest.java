@@ -7,8 +7,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.DaoFactory;
@@ -26,7 +29,7 @@ public class MyBDDTest {
     
     private ApplicationContext context = 
 	          new AnnotationConfigApplicationContext(Application.class);
-    private DaoFactory daoFactory = (DaoFactory) context.getBean("daoFactory");
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate((DataSource) context.getBean("dataSource"));
     
     private static MyBDDTest instance;
     
@@ -59,6 +62,8 @@ public class MyBDDTest {
      * Destroys the tables previously added
      */
     public void destroy() {
+    	
+    	
         try (Connection connexion = daoFactory.getConnection();
              Statement statement = connexion.createStatement();)
         {

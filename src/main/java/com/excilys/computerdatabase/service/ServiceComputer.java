@@ -116,9 +116,7 @@ public class ServiceComputer {
 	 * @return if the adding is successfull
 	 */
 	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
-
-		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
-		
+		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));		
 	}
 	
 	/**

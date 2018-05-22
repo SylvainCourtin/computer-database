@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
@@ -21,7 +22,6 @@ public class CompanyDaoImpl implements CompanyDao {
 	
 	private Logger logger = LoggerFactory.getLogger(CompanyDaoImpl.class);
 	
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private MapperCompany mapperCompany;
@@ -37,8 +37,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			companies = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPANY_SELECT_LIMIT,mapperCompany, limite,offset);
 		}catch (EmptyResultDataAccessException e) {
 			logger.debug(e.getMessage());
-			e.printStackTrace();
-			
+			e.printStackTrace();	
 		}
 		return companies;
 	}
@@ -64,33 +63,17 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 	
 	@Override
+	@Transactional(rollbackFor= {Exception.class})
 	public boolean deleteCompany(long id) throws CompanyDoesNotExistException {
 		boolean isDelete = false;
-		/*if(getCompany(id).isPresent())
+		if(getCompany(id).isPresent())
 		{
-			try (Connection connection = daoFactory.getConnection();)
-			{
-				connection.setAutoCommit(false);
-				try(PreparedStatement preparedStatementDeleteCompany = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPANY_DELETE,false, id);
-					PreparedStatement preparedStatementDeleteAllComputer = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,false,id))
-				{
-					if(preparedStatementDeleteAllComputer.executeUpdate() > 0)
-						if(preparedStatementDeleteCompany.executeUpdate() > 0)
-							isDelete = true;
-					connection.commit();
-				}catch(SQLException e) {
-					logger.warn("In dao.CompanyDaoImpl method deleteCompany : ", e.getMessage());
-					isDelete = false;
-					connection.rollback();
-				}
-				connection.setAutoCommit(true);
-			}catch (SQLException e) {
-				logger.warn("In dao.CompanyDaoImpl method deleteCompany : ", e.getMessage());
-				isDelete = false;
-			}
+			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPANY_DELETE,id);
+			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,id);
+			isDelete = true;
 		}
 		else
-			throw new CompanyDoesNotExistException();*/
+			throw new CompanyDoesNotExistException();
 		return isDelete;
 	}
 }

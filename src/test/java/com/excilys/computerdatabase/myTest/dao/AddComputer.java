@@ -21,8 +21,6 @@ import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.ComputerDao;
-import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
-import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
@@ -169,13 +167,8 @@ public class AddComputer {
 		try {
 			assertThat(computerDao.add(new Computer("failCompany", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
 					equalTo(-1L));
-			fail("expecting exception");
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException e) {
+		} catch (DateTimeParseException e) {
 			fail("No exception DateDiscontinuedIntroducedException or ParseException expected");
-		}
-		catch( CompanyDoesNotExistException e)
-		{
-			assert(true);
 		}
 	}
 

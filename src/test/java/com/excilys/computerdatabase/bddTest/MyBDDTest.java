@@ -3,7 +3,6 @@ package com.excilys.computerdatabase.bddTest;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.excilys.computerdatabase.configuration.Application;
-import com.excilys.computerdatabase.dao.DaoFactory;
 
 /**
  * Cette classe permet d'effectuer une reset de la bdd de test nommé  computer-database-db-test sur mysql
@@ -24,8 +22,8 @@ import com.excilys.computerdatabase.dao.DaoFactory;
  *	User with all privilige : admincdb, qwerty1234
  */
 public class MyBDDTest {
-    private static final String DROP_COMPUTER = "DROP TABLE computer";
-    private static final String DROP_COMPANY = "DROP TABLE company";
+    private static final String DROP_COMPUTER = "DROP TABLE computer;";
+    private static final String DROP_COMPANY = "DROP TABLE company;";
     
     private ApplicationContext context = 
 	          new AnnotationConfigApplicationContext(Application.class);
@@ -44,36 +42,21 @@ public class MyBDDTest {
      * Initializes the Database with tables and entries
      */
     public void init() {
-        try (Connection connexion = daoFactory.getConnection();
-    		 Statement statement = connexion.createStatement();) {
-            
-            String[] tablesStrings = transferDataFromFile("bdd/1-SCHEMA.sql");
-            String[] entriesStrings = transferDataFromFile("bdd/3-ENTRIES.sql");
+ 
+        String[] tablesStrings = transferDataFromFile("bdd/1-SCHEMA.sql");
+        String[] entriesStrings = transferDataFromFile("bdd/3-ENTRIES.sql");
 
-            executeScript(tablesStrings, statement);
-            executeScript(entriesStrings, statement);
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        executeScript(tablesStrings);
+        executeScript(entriesStrings);
+
     }
     
     /**
      * Destroys the tables previously added
      */
     public void destroy() {
-    	
-    	
-        try (Connection connexion = daoFactory.getConnection();
-             Statement statement = connexion.createStatement();)
-        {
-            
-            statement.executeUpdate(DROP_COMPUTER);
-            statement.executeUpdate(DROP_COMPANY);
-           
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            jdbcTemplate.update(DROP_COMPUTER);
+            jdbcTemplate.update(DROP_COMPANY);
     }
     
     /**
@@ -109,10 +92,10 @@ public class MyBDDTest {
      * @param statement a {@link Statement} connected to the database executing the SQL queries
      * @throws SQLException
      */
-    private void executeScript(String[] sqlLines, Statement statement) throws SQLException {
+    private void executeScript(String[] sqlLines) {
         for (int i = 0; i < sqlLines.length; i++)
             if (!sqlLines[i].trim().equals("")) {
-                statement.executeUpdate(sqlLines[i] + ";");
+                jdbcTemplate.update(sqlLines[i] + ";");
             }
     }
 }

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Company;
+import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
 @Component
@@ -54,5 +56,23 @@ public class ValidatorComputer {
 	{
 		if(company != null)
 			companyExist(company.getId());
+	}
+	
+	/**
+	 * Check if the computer is valid to be insert in the bdd
+	 * @param computer
+	 * @throws CompanyDoesNotExistException
+	 * @throws DateDiscontinuedIntroducedException
+	 * @throws NoNameComputerException
+	 */
+	public void validInsertComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException
+	{
+		if(computer.getName() != null && !computer.getName().equals(""))
+		{
+			companyExist(computer.getManufacturerCompany());
+			dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
+		}
+		else
+			throw new NoNameComputerException();
 	}
 }

@@ -52,7 +52,7 @@ public class Application {
 		return new ServiceCompany(getCompanyDao());
 	}
 	
-	@Bean
+	@Bean("dataSource")
 	@Scope("singleton")
 	public DataSource getDataSource()
 	{

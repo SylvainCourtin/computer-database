@@ -44,26 +44,19 @@ public class ComputerDaoImpl implements ComputerDao {
 		if(computer.getName() != null && !computer.getName().equals(""))
 		{
 			KeyHolder keyHolder = new GeneratedKeyHolder();
-			jdbcTemplate.update( new PreparedStatementCreator() {
-				@Override
-				public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-					Long idCompany = null;
-					if(computer.getManufacturerCompany() != null)
-						idCompany = computer.getManufacturerCompany().getId();
-					PreparedStatement ps = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_INSERT, true,
-							computer.getName(),
-							MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
-							MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-							idCompany);
-					return ps;
+			final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
+			
+			jdbcTemplate.update((Connection connection) -> { return initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_INSERT, true,
+					computer.getName(),
+					MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
+					MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
+					idCompany);
 				}
-			}, keyHolder);
+			, keyHolder);
 			idRes = keyHolder.getKey().longValue();
 		}
 		else
 			logger.debug("The name is empty !");
-
-		
 		return idRes;
 	}
 

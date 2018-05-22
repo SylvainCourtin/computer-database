@@ -36,8 +36,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		try {
 			companies = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPANY_SELECT_LIMIT,mapperCompany, limite,offset);
 		}catch (EmptyResultDataAccessException e) {
-			logger.debug(e.getMessage());
-			e.printStackTrace();	
+			logger.debug(e.getMessage());	
 		}
 		return companies;
 	}
@@ -50,8 +49,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			company = jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPANY_SELECT+"WHERE id="+id+" ORDER BY name DESC ;", mapperCompany);
 		}catch (EmptyResultDataAccessException e) {
 			logger.debug(e.getMessage());
-			e.printStackTrace();
-			
+			company = null;
 		}
 		
 		return Optional.ofNullable(company);
@@ -63,13 +61,13 @@ public class CompanyDaoImpl implements CompanyDao {
 	}
 	
 	@Override
-	@Transactional(rollbackFor= {Exception.class})
+	@Transactional(rollbackFor= {Throwable.class}, noRollbackFor= {CompanyDoesNotExistException.class})
 	public boolean deleteCompany(long id) throws CompanyDoesNotExistException {
 		boolean isDelete = false;
 		if(getCompany(id).isPresent())
 		{
-			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPANY_DELETE,id);
 			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,id);
+			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPANY_DELETE,id);
 			isDelete = true;
 		}
 		else

@@ -74,7 +74,7 @@ public class AddComputer {
 			assertThat(computerDao.add(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), companyDao.getCompany(1).get())), 
 					not(equalTo(-1L)));
 			
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		} catch (Exception e) {
 			fail("No exception expected");
 		}
 	}
@@ -130,7 +130,7 @@ public class AddComputer {
 			
 			assertThat(computerDao.getComputer(id).get(), equalTo(computer));
 			
-		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		 }catch (Exception e) {
 			 fail("No exception expected");
 		}
 	}
@@ -140,15 +140,14 @@ public class AddComputer {
 	{
 		try {
 			Computer computer = new Computer("faildate", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("15-01-1999"), null);
-			fail("Exception expected");
 			assertThat(computerDao.add(computer), 
 					equalTo(-1L));
-		} catch (DateTimeParseException | CompanyDoesNotExistException e) {
-			fail("ParseException or CompanyDoesNotExistException wasn't expected");
+			fail("Exception expected");
+			
+		} catch (DateTimeParseException e) {
+			fail("ParseException wasn't expected");
 		}
-		catch(DateDiscontinuedIntroducedException e){
-			assert(true);
-		}
+		
 	}
 	
 	@Test
@@ -159,7 +158,7 @@ public class AddComputer {
 			
 			assertThat(computerDao.add(computer), 
 					equalTo(-1L));
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		} catch (Exception e) {
 			fail("Not expected exception");
 		}
 	}

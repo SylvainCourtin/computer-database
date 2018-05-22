@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -143,7 +142,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	
 	@Override
 	public long getNumberComputerRelatedToThisCompany(long idCompany) {
-		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPANY_COUNT, Long.class, idCompany);
+		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY, Long.class, idCompany);
 	}
 	
 	/**

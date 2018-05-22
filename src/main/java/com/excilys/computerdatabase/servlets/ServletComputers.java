@@ -44,6 +44,8 @@ public class ServletComputers extends HttpServlet {
 	private ServiceComputer facade;
 	@Autowired
 	private ServiceCompany serviceCompany;
+	@Autowired
+	private MapperCompany mapperCompany;
 	private Logger logger;
 	
 	@Override
@@ -130,7 +132,7 @@ public class ServletComputers extends HttpServlet {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
-		Optional<CompanyDTO> optCompany = MapperCompany.fromIdCompanyDTO(id_company);
+		Optional<CompanyDTO> optCompany = mapperCompany.fromIdCompanyDTO(id_company);
 		CompanyDTO company = null;
 		if(optCompany.isPresent())
 			company = optCompany.get();
@@ -197,7 +199,7 @@ public class ServletComputers extends HttpServlet {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		int id_company = Integer.valueOf(request.getParameter("companyId"));
-		Optional<CompanyDTO> optCompany = MapperCompany.fromIdCompanyDTO(id_company);
+		Optional<CompanyDTO> optCompany = mapperCompany.fromIdCompanyDTO(id_company);
 		CompanyDTO company = null;
 		if(optCompany.isPresent())
 			company = optCompany.get();
@@ -364,7 +366,7 @@ public class ServletComputers extends HttpServlet {
 		List<CompanyDTO> companies = new ArrayList<>();
 		for(Company company : serviceCompany.getCompanies(100, 0))
 		{
-			companies.add(MapperCompany.companyToDTO(company));
+			companies.add(mapperCompany.companyToDTO(company));
 		}
 		
 		request.setAttribute("companies", companies);
@@ -387,7 +389,7 @@ public class ServletComputers extends HttpServlet {
 			List<CompanyDTO> companies = new ArrayList<>();
 			for(Company company :serviceCompany.getCompanies(100, 0))
 			{
-				companies.add(MapperCompany.companyToDTO(company));
+				companies.add(mapperCompany.companyToDTO(company));
 			}
 			
 			Optional<ComputerDTO> computer = facade.getComputerDTO(IdComputer);

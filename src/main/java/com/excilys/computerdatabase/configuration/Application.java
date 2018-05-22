@@ -1,15 +1,19 @@
 package com.excilys.computerdatabase.configuration;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.CompanyDaoImpl;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.dao.ComputerDaoImpl;
-import com.excilys.computerdatabase.dao.DaoFactory;
+import com.excilys.computerdatabase.mappers.MapperCompany;
+import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.ReadPropertiesFile;
@@ -19,25 +23,18 @@ import com.zaxxer.hikari.HikariDataSource;
 @ComponentScan
 public class Application {
 	
-	@Bean("daoFactory")
-	@Scope("singleton")
-	public DaoFactory getDaoFactory()
-	{
-		return new DaoFactory();
-	}
-	
 	@Bean("companyDao")
 	@Scope("singleton")
 	public CompanyDao getCompanyDao()
 	{
-		return new CompanyDaoImpl(getDaoFactory());
+		return new CompanyDaoImpl(getDataSource(getDataSource()));
 	}
 	
 	@Bean("computerDao")
 	@Scope("singleton")
 	public ComputerDao getComputerDao()
 	{
-		return new ComputerDaoImpl(getDaoFactory());
+		return new ComputerDaoImpl(getDataSource(getDataSource()));
 	}
 	
 	@Bean("serviceComputer")
@@ -54,6 +51,7 @@ public class Application {
 		return new ServiceCompany(getCompanyDao());
 	}
 	@Bean
+	@Scope("singleton")
 	public HikariDataSource getDataSource()
 	{
 		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
@@ -64,5 +62,26 @@ public class Application {
 		dataSource.setDriverClassName(propertiesFile.getDriver());
 		
 		return dataSource;
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public JdbcTemplate getDataSource(DataSource dataSource)
+	{
+		return new JdbcTemplate(dataSource);		
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public MapperCompany getMapperCompany()
+	{
+		return new MapperCompany();		
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public MapperComputer getMapperComputer()
+	{
+		return new MapperComputer();		
 	}
 }

@@ -1,20 +1,17 @@
 package com.excilys.computerdatabase.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
-import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.mappers.MapperComputer;
-import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
 import com.excilys.computerdatabase.utils.MyUtils;
@@ -22,19 +19,24 @@ import com.excilys.computerdatabase.utils.MyUtils;
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 	
-	private DaoFactory daoFactory;
+	private Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private MapperComputer mapperComputer;
 
-	public ComputerDaoImpl(DaoFactory daoFactory) {
-		this.daoFactory = daoFactory;
+	public ComputerDaoImpl(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
-	public long add(Computer computer) throws CompanyDoesNotExistException {
+	public long add(Computer computer){
 		
 		long idRes = -1;
 		
 		if(computer.getName() != null && !computer.getName().equals(""))
-		{
+		{/*
 			Long companyId = companyExist(computer.getManufacturerCompany());
 			
 			try(Connection connection = daoFactory.getConnection();
@@ -56,95 +58,46 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			}catch (SQLException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 
 		
 		return idRes;
-	}
-	
-	/**
-	 * Créer une list de computer grace au résultat  
-	 * @param result result of the query
-	 * @return list<Computer>
-	 * @throws SQLException
-	 */
-	private List<Computer> getList(ResultSet result) throws SQLException
-	{
-		List<Computer> computers = new ArrayList<>();
-		
-		while(result.next())
-		{
-			Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
-
-			computers.add(MapperComputer.fromParameters(
-					result.getLong("computer.id"),
-					result.getString("computer.name"),
-					result.getDate("computer.introduced"),
-					result.getDate("computer.discontinued"),
-					company));
-		}
-		
-		return computers;
 	}
 
 	@Override
 	public List<Computer> getList(int limite, int offset) {
 		List<Computer> computers = new ArrayList<>();
 		
-		try(Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT,
-					false, limite, offset);	
-			ResultSet result = preparedStatement.executeQuery();) {
-
-			computers = getList(result);
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
+		try {
+			computers = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT,mapperComputer, limite,offset);
+		}catch (EmptyResultDataAccessException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();	
 		}
-		
 		return computers;
 	}
 	
 	@Override
 	public List<Computer> getListLike(int limite, int offset, String sLike) {
-		List<Computer> computers = new ArrayList<>();
-		try(Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,
-					false,"%"+sLike+"%", limite, offset);
-			ResultSet result = preparedStatement.executeQuery();) 
-		{
-			computers = getList(result);
-		}catch (SQLException e) {
-			e.printStackTrace();
+		List<Computer> computers = new ArrayList<>();		
+		try {
+			computers = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,mapperComputer,"%"+sLike+"%", limite,offset);
+		}catch (EmptyResultDataAccessException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();	
 		}
-		
 		return computers;
 	}
 
 	@Override
 	public Optional<Computer> getComputer(long id) {
 		Computer computer = null;
-		try(Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY,
-					false,id);
-			ResultSet result = preparedStatement.executeQuery();
-			)
-		{
-			while(result.next())
-			{
-				Company company = MapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
-	
-				computer = MapperComputer.fromParameters(
-						result.getLong("computer.id"),
-						result.getString("computer.name"),
-						result.getDate("computer.introduced"),
-						result.getDate("computer.discontinued"),
-						company);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		try {
+			computer = jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,mapperComputer,id);
+		}catch (EmptyResultDataAccessException e) {
+			logger.debug(e.getMessage());
+			e.printStackTrace();	
 		}
 		return Optional.ofNullable(computer);
 	}
@@ -158,41 +111,28 @@ public class ComputerDaoImpl implements ComputerDao {
 	public boolean delete(long id)
 	{
 		boolean isDelete = false;
-		try (Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_DELETE,false, id);
-			)
-		{
-			if (preparedStatement.executeUpdate() > 0)
-					isDelete = true;
+		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE, id);
+		if (res > 0)
+				isDelete = true;
 			
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
 		return isDelete;
 	}
 
 	@Override
-	public boolean update(Computer computer) throws CompanyDoesNotExistException {
+	public boolean update(Computer computer) {
 		boolean isUpdate = false;
 		if(computer.getName() != null && !computer.getName().equals(""))
 		{
-			Long companyId = companyExist(computer.getManufacturerCompany());
+			Long companyId = computer.getManufacturerCompany().getId();
 			
-			try(Connection connection = daoFactory.getConnection();
-				PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_UPDATE,false, 
+			int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
 					computer.getName(),
 					MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
 					MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
 					companyId,
-					computer.getId());
-				) 
-			{				
-				if (preparedStatement.executeUpdate() > 0)
-					isUpdate = true;	
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
+					computer.getId() );			
+			if (res > 0)
+				isUpdate = true;	
 		}
 		
 		return isUpdate;
@@ -201,101 +141,16 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Override
 	public long getNumberElement() {
-		long nbElement = 0;
-		try(Connection connection = daoFactory.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT);
-			) 
-		{
-			while(result.next())
-			{
-				nbElement = result.getLong(MyConstants.COUNT);
-			}
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return nbElement;
+		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT, Long.class);
 	}
 
 	@Override
 	public long getNumberElementLike(String sLike) {
-		long nbElement = 0;
-		try(Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE,false,"%"+sLike+"%");
-			ResultSet result = preparedStatement.executeQuery();
-			) 
-		{			
-			while(result.next())
-			{
-				nbElement = result.getLong(MyConstants.COUNT);
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return nbElement;
+		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE, Long.class, sLike);
 	}
 	
 	@Override
-	public long getNumberComputerRelatedToThisCompany(long idCompany) throws CompanyDoesNotExistException {
-		long nbElement = 0;
-		companyExist(idCompany);
-		try(Connection connection = daoFactory.getConnection();
-			PreparedStatement preparedStatement = initPreparedStatementWithParameters(connection,MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY,false,idCompany);
-			ResultSet result = preparedStatement.executeQuery();
-			) 
-		{			
-			while(result.next())
-			{
-				nbElement = result.getLong(MyConstants.COUNT_COMPUTER);
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return nbElement;
-	}
-
-	
-	
-	/**
-	 * Prepare et initialise la requete
-	 * @param connection
-	 * @param sql
-	 * @param isReturnKey
-	 * @param objects List of args of this request. Should be in the good order
-	 * @return
-	 * @throws SQLException
-	 */
-	private static PreparedStatement initPreparedStatementWithParameters(Connection connection, String sql, boolean isReturnKey, Object...objects) throws SQLException
-	{
-		PreparedStatement preparedStatement = connection.prepareStatement(sql, isReturnKey ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
-		int params = 1;
-		for (Object object : objects) {
-			preparedStatement.setObject(params, object);
-			params++;
-		}
-		return preparedStatement;
-	}
-	/**
-	 * Return the id of this company
-	 * @param company
-	 * @return id of this company or null if doesn't exist
-	 * @throws CompanyDoesNotExistException 
-	 */
-	private Long companyExist(Company company) throws CompanyDoesNotExistException
-	{
-		if(company != null)
-			if(!daoFactory.getCompanyDao().getCompany(company.getId()).isPresent())
-				throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");
-			else
-				return company.getId();
-		else
-			return null;
-	}
-	
-	private void companyExist(long idCompany) throws CompanyDoesNotExistException
-	{
-		if(!daoFactory.getCompanyDao().getCompany(idCompany).isPresent())
-			throw new CompanyDoesNotExistException("This computer got an company who doesn't exist in the bdd, please add this company before adding this computer");		
+	public long getNumberComputerRelatedToThisCompany(long idCompany) {
+		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPANY_COUNT, Long.class, idCompany);
 	}
 }

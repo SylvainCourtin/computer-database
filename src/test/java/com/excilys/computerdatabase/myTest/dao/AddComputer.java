@@ -36,7 +36,7 @@ public class AddComputer {
 	@Autowired
 	private CompanyDao companyDao;
 
-	private Logger logger = LoggerFactory.getLogger(getClass());;
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@BeforeClass
 	public static void initBDD() {

@@ -7,8 +7,7 @@ import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 
 public interface CompanyDao {
-	
-	public void add(Company company);
+
 	public List<Company> getList(int limite, int offset);
 	public Optional<Company> getCompany(long id);
 	public long getNumberElement();

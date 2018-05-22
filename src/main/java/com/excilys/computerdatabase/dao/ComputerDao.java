@@ -8,7 +8,7 @@ import com.excilys.computerdatabase.models.Computer;
 
 public interface ComputerDao {
 
-	public long add(Computer computer) throws CompanyDoesNotExistException;
+	public long add(Computer computer);
 	public List<Computer> getList(int limite, int offset);
 	/**
 	 * Give element with the computer's name is like sLike
@@ -21,7 +21,7 @@ public interface ComputerDao {
 	public Optional<Computer> getComputer(long id);
 	public boolean delete(Computer computer);
 	public boolean delete(long id);
-	public boolean update(Computer computer) throws CompanyDoesNotExistException;
+	public boolean update(Computer computer);
 	public long getNumberElement();
 	/**
 	 * Give number of element  with the computer's name is like sLike
@@ -36,7 +36,7 @@ public interface ComputerDao {
 	 * @return Return the number of row in the bdd linked with this company
 	 * @throws CompanyDoesNotExistException 
 	 */
-	public long getNumberComputerRelatedToThisCompany(long idCompany) throws CompanyDoesNotExistException;
+	public long getNumberComputerRelatedToThisCompany(long idCompany);
 	
 	
 }

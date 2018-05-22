@@ -1,22 +1,24 @@
 package com.excilys.computerdatabase.mappers;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
-import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
 
-public class MapperCompany {
+@Component
+public class MapperCompany implements RowMapper<Company> {
 	
-	private static ApplicationContext context = 
-	          new AnnotationConfigApplicationContext(Application.class);
-	private static ServiceCompany serviceCompany = (ServiceCompany) context.getBean("serviceCompany");;
+	@Autowired
+	private ServiceCompany serviceCompany;
 
-	public static Company fromParameters(long id, String name)
+	public Company fromParameters(long id, String name)
 	{
 		Company company = null;
 		if(id > 0)
@@ -24,12 +26,12 @@ public class MapperCompany {
 		return company;
 	}
 	
-	public static CompanyDTO companyToDTO(Company company)
+	public CompanyDTO companyToDTO(Company company)
 	{
 		return new CompanyDTO(company);
 	}
 	
-	public static Optional<Company> fromIdCompany(long id)
+	public Optional<Company> fromIdCompany(long id)
 	{
 		if(id > 0)
 		{
@@ -38,7 +40,7 @@ public class MapperCompany {
 		return Optional.empty();
 	}
 	
-	public static Optional<CompanyDTO> fromIdCompanyDTO(long id)
+	public Optional<CompanyDTO> fromIdCompanyDTO(long id)
 	{
 		if(id > 0)
 		{
@@ -47,6 +49,11 @@ public class MapperCompany {
 				return Optional.ofNullable(companyToDTO(company.get()));
 		}
 		return Optional.empty();
+	}
+
+	@Override
+	public Company mapRow(ResultSet resultSet, int rownum) throws SQLException {
+		return fromParameters(resultSet.getLong("id"), resultSet.getString("name"));
 	}
 	
 }

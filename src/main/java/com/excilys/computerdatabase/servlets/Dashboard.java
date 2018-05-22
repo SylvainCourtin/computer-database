@@ -34,6 +34,8 @@ public class Dashboard extends HttpServlet {
 	private ServiceCompany facadeCompany;
 	@Autowired
 	private ServiceComputer facadeComputer;
+	@Autowired
+	private MapperCompany mapperCompany;
 	
        
 	@Override
@@ -167,7 +169,7 @@ public class Dashboard extends HttpServlet {
 		}
 		for(Company company : facadeCompany.getCompanies(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(page-1)))
 		{
-			companies.add(MapperCompany.companyToDTO(company));
+			companies.add(mapperCompany.companyToDTO(company));
 		}
 		//Envoie des paramètres 
 		request.setAttribute("companies", companies);
@@ -189,7 +191,7 @@ public class Dashboard extends HttpServlet {
 		List<CompanyDTO> companies = new ArrayList<>();
 		for(Company company : facadeCompany.getCompanies(100, 0))
 		{
-			companies.add(MapperCompany.companyToDTO(company));
+			companies.add(mapperCompany.companyToDTO(company));
 		}
 		
 		request.setAttribute("companies", companies);

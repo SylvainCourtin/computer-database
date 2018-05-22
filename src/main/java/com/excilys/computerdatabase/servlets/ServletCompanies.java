@@ -25,6 +25,8 @@ public class ServletCompanies extends HttpServlet {
 	
 	@Autowired
 	private ServiceCompany facade;
+	@Autowired
+	private MapperCompany mapperCompany;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -84,7 +86,7 @@ public class ServletCompanies extends HttpServlet {
 		}
 		for(Company company : facade.getCompanies(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(page-1)))
 		{
-			companies.add(MapperCompany.companyToDTO(company));
+			companies.add(mapperCompany.companyToDTO(company));
 		}
 		//Envoie des paramètres 
 		request.setAttribute("companies", companies);

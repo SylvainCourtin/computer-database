@@ -2,9 +2,7 @@ package com.excilys.computerdatabase.models;
 
 import java.time.LocalDate;
 
-import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.utils.MyUtils;
-import com.excilys.computerdatabase.validators.ValidatorComputer;
 
 public class Computer {
 
@@ -18,10 +16,10 @@ public class Computer {
 	public Computer() {
 	}	
 	
-	public Computer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException {
+	public Computer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany){
 		this.name = name;
-		if(dateIntroduced != null && dateDiscontinued != null)
-			ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+		/*if(dateIntroduced != null && dateDiscontinued != null)
+			ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);*/
 		this.dateIntroduced = dateIntroduced;
 		this.dateDiscontinued = dateDiscontinued;
 		this.manufacturerCompany = manufacturerCompany;
@@ -47,12 +45,10 @@ public class Computer {
 		return dateIntroduced;
 	}
 	
-	public void setDateDiscontinued(LocalDate dateDiscontinued) throws DateDiscontinuedIntroducedException {
-		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+	public void setDateDiscontinued(LocalDate dateDiscontinued){
 		this.dateDiscontinued = dateDiscontinued;
 	}
-	public void setDateIntroduced(LocalDate dateIntroduced) throws DateDiscontinuedIntroducedException {
-		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(dateIntroduced, dateDiscontinued);
+	public void setDateIntroduced(LocalDate dateIntroduced){
 		this.dateIntroduced = dateIntroduced;
 	}
 	public void setName(String name) {

@@ -22,6 +22,8 @@ public class ServiceComputer {
 	
 	@Autowired
 	private ComputerDao computerDao;
+	@Autowired 
+	private ValidatorComputer validatorComputer;
 	
 	public ServiceComputer(ComputerDao computerDao)
 	{
@@ -100,7 +102,8 @@ public class ServiceComputer {
 	 * @throws DateDiscontinuedIntroducedException
 	 */
 	public long addComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException {
-		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
+		validatorComputer.dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
+		validatorComputer.companyExist(computer.getManufacturerCompany());
 		return computerDao.add(computer);
 	}
 	
@@ -113,6 +116,7 @@ public class ServiceComputer {
 	 * @return if the adding is successfull
 	 */
 	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));
 		
 	}
@@ -143,7 +147,8 @@ public class ServiceComputer {
 	 * @throws CompanyDoesNotExistException
 	 */
 	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
-		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(newComputer.getDateIntroduced(), newComputer.getDateDiscontinued());
+		validatorComputer.dateDiscontinuedGreaterThanIntroduced(newComputer.getDateIntroduced(), newComputer.getDateDiscontinued());
+		validatorComputer.companyExist(newComputer.getManufacturerCompany());
 		newComputer.setId(oldComputer.getId());
 		return computerDao.update(newComputer);
 	}
@@ -160,9 +165,10 @@ public class ServiceComputer {
 	 * @return
 	 */
 	public boolean updateComputer(long id, String name, LocalDate introduced,LocalDate discontinued, CompanyDTO manufacturerCompany)throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
-		ValidatorComputer.dateDiscontinuedGreaterThanIntroduced(introduced, discontinued);
+		validatorComputer.dateDiscontinuedGreaterThanIntroduced(introduced, discontinued);
 		Company company = null;
 		if(manufacturerCompany != null)
+			validatorComputer.companyExist(manufacturerCompany.getCompanyBasicView().getId());
 			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());
 		return computerDao.update((new Computer(id,name, introduced, discontinued, company)));
 	}

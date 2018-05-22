@@ -103,6 +103,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<version>${springframework}</version>
 		<scope>test</scope>
 	</dependency>
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>${springframework}</version>
+	</dependency>
   </dependencies>
   
   <reporting>

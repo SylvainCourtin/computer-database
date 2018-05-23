@@ -21,7 +21,7 @@ import com.excilys.computerdatabase.validators.ValidatorComputer;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = "com.excilys.computerdatabase")
 public class Application {
 	
 	@Bean("companyDao")
@@ -64,6 +64,13 @@ public class Application {
 		dataSource.setDriverClassName(propertiesFile.getDriver());
 		
 		return dataSource;
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public JdbcTemplate getJdbcTemplate(DataSource dataSource)
+	{
+		return new JdbcTemplate(dataSource);
 	}
 	
 	@Bean

@@ -71,7 +71,6 @@
 				<c:if test="${not empty companies}">
 					<input id="selectPage" type="number" min=1 max="${numberOfPages}" value="${page}" name="page" placeholder="${page}"/>/<c:out value="${numberOfPages}" ></c:out>
 				</c:if>
-				<input type="hidden" name="search" value="${search}"/>
 			</form>
        	</div>
 	</div>

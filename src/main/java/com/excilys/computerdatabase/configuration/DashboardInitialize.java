@@ -16,7 +16,7 @@ public class DashboardInitialize extends AbstractAnnotationConfigDispatcherServl
 
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] { "/", "/dashboard", "/computer", "/company" };
+		return new String[] { "/", "/dashboard", "/computer", "/companies" };
 	}
 
 }

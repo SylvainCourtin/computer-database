@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dao.CompanyDaoImpl;
 import com.excilys.computerdatabase.dao.ComputerDao;
@@ -21,7 +20,10 @@ import com.excilys.computerdatabase.validators.ValidatorComputer;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.excilys.computerdatabase")
+@ComponentScan(basePackages = {"com.excilys.computerdatabase.dao", 
+		"com.excilys.computerdatabase.mappers", 
+		"com.excilys.computerdatabase.service", 
+		"com.excilys.computerdatabase.validators"})
 public class Application {
 	
 	@Bean("companyDao")

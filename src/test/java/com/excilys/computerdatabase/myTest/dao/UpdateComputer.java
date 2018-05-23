@@ -22,6 +22,7 @@ import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyUtils;
 
@@ -66,7 +67,7 @@ public class UpdateComputer {
 			assertThat(computerDao.update(computer), 
 					is(true));
 			
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			fail("No exception expected");
 		}
 	}
@@ -87,7 +88,7 @@ public class UpdateComputer {
 			assertThat(computerDao.update(computer), 
 					is(false));
 			
-		} catch (DateTimeParseException | CompanyDoesNotExistException e) {
+		} catch (DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			fail("No ParseException or CompanyDoesNotExistException exception expected");
 		}catch(DateDiscontinuedIntroducedException e)
 		{

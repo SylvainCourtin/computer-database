@@ -20,6 +20,7 @@ import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.utils.MyUtils;
@@ -78,7 +79,7 @@ public class FindComputer {
 			
 			
 			
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			fail("No exception expected");
 		}
 	}

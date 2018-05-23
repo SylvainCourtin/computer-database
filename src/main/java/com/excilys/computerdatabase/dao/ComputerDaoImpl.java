@@ -115,14 +115,13 @@ public class ComputerDaoImpl implements ComputerDao {
 	public boolean update(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException {
 		boolean isUpdate = false;
 		validatorComputer.validInsertComputer(computer);
-		
-		Long companyId = computer.getManufacturerCompany().getId();
+		final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
 		
 		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
 				computer.getName(),
 				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
 				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-				companyId,
+				idCompany,
 				computer.getId() );			
 		if (res > 0)
 			isUpdate = true;	

@@ -20,6 +20,7 @@ import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceCompany;
@@ -74,7 +75,7 @@ public class AddServiceComputer {
 			assertThat(serviceComputer.addComputer(new Computer("ilMarcheDate4", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), serviceCompany.getCompany(1).get())), 
 					not(equalTo(-1L)));
 			
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			fail("No exception expected");
 		}
 	}
@@ -128,7 +129,7 @@ public class AddServiceComputer {
 			
 			assertThat(serviceComputer.getComputer(id).get(), equalTo(computer));
 			
-		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
+		 }catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			 fail("No exception expected");
 		}
 	}
@@ -138,10 +139,10 @@ public class AddServiceComputer {
 	{
 		try {
 			Computer computer = new Computer("faildate", MyUtils.stringToDate("16-01-2000"), MyUtils.stringToDate("15-01-1999"), null);
-			fail("Exception expected");
 			assertThat(serviceComputer.addComputer(computer), 
 					equalTo(-1L));
-		} catch (DateTimeParseException | CompanyDoesNotExistException e) {
+			fail("Exception expected");
+		} catch (DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			fail("ParseException or CompanyDoesNotExistException wasn't expected");
 		}
 		catch(DateDiscontinuedIntroducedException e){
@@ -154,11 +155,14 @@ public class AddServiceComputer {
 	{
 		try {
 			Computer computer = new Computer(null, MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), null);
-			
 			assertThat(serviceComputer.addComputer(computer), 
-					equalTo(-1L));
+					equalTo(-1L)); 
+			fail("expected NoNameComputerException exception");
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException e) {
-			fail("Not expected exception");
+			fail("Not expected this exception");
+		}
+		catch (NoNameComputerException e) {
+			assert(true);
 		}
 	}
 	
@@ -169,7 +173,7 @@ public class AddServiceComputer {
 			assertThat(serviceComputer.addComputer(new Computer("failCompany", MyUtils.stringToDate("null"), MyUtils.stringToDate("null"), new Company(1000, "marchepas"))), 
 					equalTo(-1L));
 			fail("expecting exception");
-		} catch (DateDiscontinuedIntroducedException | DateTimeParseException e) {
+		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | NoNameComputerException e) {
 			fail("No exception DateDiscontinuedIntroducedException or ParseException expected");
 		}
 		catch( CompanyDoesNotExistException e)

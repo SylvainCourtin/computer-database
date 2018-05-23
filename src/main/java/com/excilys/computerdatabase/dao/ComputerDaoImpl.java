@@ -16,10 +16,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
+import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
 import com.excilys.computerdatabase.utils.MyUtils;
+import com.excilys.computerdatabase.validators.ValidatorComputer;
 import com.mysql.cj.api.jdbc.Statement;
 
 @Repository
@@ -30,32 +34,30 @@ public class ComputerDaoImpl implements ComputerDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private MapperComputer mapperComputer;
+	@Autowired
+	private ValidatorComputer validatorComputer;
 
 	public ComputerDaoImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
-	public long add(Computer computer){
+	public long add(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException{
 		
 		long idRes = -1;
+		validatorComputer.validInsertComputer(computer);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
 		
-		if(computer.getName() != null && !computer.getName().equals(""))
-		{
-			KeyHolder keyHolder = new GeneratedKeyHolder();
-			final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
-			
-			jdbcTemplate.update((Connection connection) -> { return initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_INSERT, true,
-					computer.getName(),
-					MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
-					MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-					idCompany);
-				}
-			, keyHolder);
-			idRes = keyHolder.getKey().longValue();
-		}
-		else
-			logger.debug("The name is empty !");
+		jdbcTemplate.update((Connection connection) -> { return initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_INSERT, true,
+				computer.getName(),
+				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
+				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
+				idCompany);
+			}
+		, keyHolder);
+		idRes = keyHolder.getKey().longValue();
+
 		return idRes;
 	}
 
@@ -110,21 +112,21 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public boolean update(Computer computer) {
+	public boolean update(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException {
 		boolean isUpdate = false;
-		if(computer.getName() != null && !computer.getName().equals(""))
-		{
-			Long companyId = computer.getManufacturerCompany().getId();
-			
-			int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
-					computer.getName(),
-					MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
-					MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-					companyId,
-					computer.getId() );			
-			if (res > 0)
-				isUpdate = true;	
-		}
+		validatorComputer.validInsertComputer(computer);
+		
+		Long companyId = computer.getManufacturerCompany().getId();
+		
+		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
+				computer.getName(),
+				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
+				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
+				companyId,
+				computer.getId() );			
+		if (res > 0)
+			isUpdate = true;	
+		
 		
 		return isUpdate;
 		

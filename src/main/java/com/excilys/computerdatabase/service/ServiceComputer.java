@@ -12,6 +12,7 @@ import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.dtos.ComputerDTO;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
@@ -100,8 +101,9 @@ public class ServiceComputer {
 	 * @return Id of this new computer
 	 * @throws CompanyDoesNotExistException
 	 * @throws DateDiscontinuedIntroducedException
+	 * @throws NoNameComputerException 
 	 */
-	public long addComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException {
+	public long addComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException {
 		validatorComputer.dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
 		validatorComputer.companyExist(computer.getManufacturerCompany());
 		return computerDao.add(computer);
@@ -114,8 +116,9 @@ public class ServiceComputer {
 	 * @param dateDiscontinued can be null
 	 * @param manufacturerCompany can be null
 	 * @return if the adding is successfull
+	 * @throws NoNameComputerException 
 	 */
-	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, Company manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException, NoNameComputerException {
 		return addComputer((new Computer(name, dateIntroduced, dateDiscontinued, manufacturerCompany)));		
 	}
 	
@@ -128,8 +131,9 @@ public class ServiceComputer {
 	 * @return if the adding is successfull
 	 * @throws DateDiscontinuedIntroducedException
 	 * @throws CompanyDoesNotExistException
+	 * @throws NoNameComputerException 
 	 */
-	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, CompanyDTO manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public long addComputer(String name, LocalDate dateIntroduced, LocalDate dateDiscontinued, CompanyDTO manufacturerCompany) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException, NoNameComputerException {
 		Company company = null;
 		if(manufacturerCompany != null)
 			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());
@@ -143,8 +147,9 @@ public class ServiceComputer {
 	 * @return
 	 * @throws DateDiscontinuedIntroducedException
 	 * @throws CompanyDoesNotExistException
+	 * @throws NoNameComputerException 
 	 */
-	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException, NoNameComputerException {
 		validatorComputer.dateDiscontinuedGreaterThanIntroduced(newComputer.getDateIntroduced(), newComputer.getDateDiscontinued());
 		validatorComputer.companyExist(newComputer.getManufacturerCompany());
 		newComputer.setId(oldComputer.getId());
@@ -161,8 +166,9 @@ public class ServiceComputer {
 	 * @throws DateDiscontinuedIntroducedException
 	 * @throws CompanyDoesNotExistException
 	 * @return
+	 * @throws NoNameComputerException 
 	 */
-	public boolean updateComputer(long id, String name, LocalDate introduced,LocalDate discontinued, CompanyDTO manufacturerCompany)throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException {
+	public boolean updateComputer(long id, String name, LocalDate introduced,LocalDate discontinued, CompanyDTO manufacturerCompany)throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException, NoNameComputerException {
 		validatorComputer.dateDiscontinuedGreaterThanIntroduced(introduced, discontinued);
 		Company company = null;
 		if(manufacturerCompany != null)

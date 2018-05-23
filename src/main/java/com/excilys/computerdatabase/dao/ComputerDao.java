@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
+import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Computer;
 
 public interface ComputerDao {
 
-	public long add(Computer computer);
+	public long add(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException;
 	public List<Computer> getList(int limite, int offset);
 	/**
 	 * Give element with the computer's name is like sLike
@@ -21,7 +23,7 @@ public interface ComputerDao {
 	public Optional<Computer> getComputer(long id);
 	public boolean delete(Computer computer);
 	public boolean delete(long id);
-	public boolean update(Computer computer);
+	public boolean update(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException;
 	public long getNumberElement();
 	/**
 	 * Give number of element  with the computer's name is like sLike

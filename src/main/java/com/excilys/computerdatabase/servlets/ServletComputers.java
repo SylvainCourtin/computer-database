@@ -24,6 +24,7 @@ import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.dtos.ComputerDTO;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Company;
@@ -167,17 +168,13 @@ public class ServletComputers extends HttpServlet {
 				dispatchAddComputers(request, response);
 				
 			}
-		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
-			// TODO Gestion erreur
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException | NoNameComputerException e) {
 			if(e instanceof DateDiscontinuedIntroducedException)
-			{
-				//TODO afficher combo de date non possible
 				logger.debug("Invalid date, Introduced > Discontinued");
-			}
-			else
-			{
+			else if(e instanceof CompanyDoesNotExistException)
 				logger.debug("Company didn't exist");
-			}
+			else
+				logger.debug("The computer got an empty name");
 			request.setAttribute("result", "Fail, "+e.getMessage());
 			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
@@ -233,15 +230,13 @@ public class ServletComputers extends HttpServlet {
 				dispatchGetComputers(request, response);
 				
 			}
-		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException | NoNameComputerException e) {
 			if(e instanceof DateDiscontinuedIntroducedException)
-			{
 				logger.debug("Invalid date, Introduced > Discontinued");
-			}
-			else
-			{
+			else if(e instanceof CompanyDoesNotExistException)
 				logger.debug("Company didn't exist");
-			}
+			else
+				logger.debug("The computer got an empty name");
 			request.setAttribute("result", "Fail, "+e.getMessage());
 			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 			

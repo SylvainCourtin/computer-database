@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
+import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceComputer;
@@ -90,7 +91,7 @@ public class ViewComputer {
 		try {
 			return serviceComputer.addComputer(name, dateIntroduced, dateDiscontinued, company );
 				
-		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException | NoNameComputerException e) {
 			System.out.println(e.getMessage());
 			System.err.println("Action cancel");
 		}
@@ -110,7 +111,7 @@ public class ViewComputer {
 		try {
 			return serviceComputer.updateComputer(oldComputer, new Computer(name, dateIntroduced, dateDiscontinued, company ));
 				
-		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException e) {
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException | NoNameComputerException e) {
 			System.out.println(e.getMessage());
 			System.err.println("Action cancel");
 		}

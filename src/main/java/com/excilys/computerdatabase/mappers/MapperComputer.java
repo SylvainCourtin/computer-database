@@ -23,6 +23,19 @@ public class MapperComputer implements RowMapper<Computer> {
 	{
 		return new Computer(id, name, introduced, discontinued,company);
 	}
+	public Computer fromParameters(ComputerDTO computerDTO)
+	{
+		Company company = computerDTO.getCompanyBasicView() == null ? null :
+				mapperCompany.fromParameters(
+				computerDTO.getCompanyBasicView().getId(), 
+				computerDTO.getCompanyBasicView().getName());
+		
+		return fromParameters(computerDTO.getComputerBasicView().getId(), 
+				computerDTO.getComputerBasicView().getName(), 
+				computerDTO.getComputerBasicView().getIntroduced(), 
+				computerDTO.getComputerBasicView().getDiscontinued(),
+				company);
+	}
 	
 	public static ComputerDTO computerToDTO(Computer computer)
 	{

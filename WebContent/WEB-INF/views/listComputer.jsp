@@ -53,7 +53,7 @@
 	               </c:if>
                 </div>
                 	<div class="pull-right">
-                    	<a class="btn btn-success" id="add" href="#" onclick='active("add")'>Add Computer</a> 
+                    	<a class="btn btn-success" id="add" href="computer/add">Add Computer</a> 
                     	<a class="btn btn-default" id="edit" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 	</div>
             	</div>
@@ -95,7 +95,7 @@
 	                        <input type="hidden" id="actIdComputer" name="computer" value="">
 	                    </form>
 	                    </td>
-						<td><a href="#" onclick='goTo("edit", "${computer.computerBasicView.id}")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
+						<td><a href="computer/edit" onclick='goTo("edit", "${computer.computerBasicView.id}")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
 						<td><tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></td>
 						<td><tagdate:display localDate="${computer.computerBasicView.discontinued}"></tagdate:display></td>
 						<td><c:out value="${computer.companyBasicView.name}"></c:out></td>
@@ -139,7 +139,7 @@
 	</div>
 </footer>
 
-<form action="computer" method="POST" id="action">
+<form action="computer" method="GET" id="action">
 	<input type="hidden" name="act" id="act" value="">
 </form>
 

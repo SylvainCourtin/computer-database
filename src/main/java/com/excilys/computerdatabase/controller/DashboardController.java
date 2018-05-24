@@ -21,9 +21,11 @@ public class DashboardController {
 			}
 			else if(act.equals("computers"))
 			{
+				return "redirect:/computer";
 			}
 			else if(act.equals("add"))
 			{
+				return "redirect:/computer/add";
 			}
 		}
 		return RefPage.PAGE_INDEX;

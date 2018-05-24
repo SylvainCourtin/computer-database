@@ -73,7 +73,7 @@
                         <div class="actions pull-right">
                            <button type="submit" name="act" id="act" value="validEdit" class="btn btn-primary">Edit</button>
                             or
-                            <a href="dashboard" class="btn btn-default">Cancel</a>
+                            <a href="computer" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

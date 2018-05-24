@@ -6,6 +6,10 @@ public class CompanyBasicView {
 	
 	private long id;
 	private String name;
+	
+	public CompanyBasicView()
+	{
+	}
 
 	public CompanyBasicView(Company company) {
 		id = company.getId();
@@ -24,4 +28,14 @@ public class CompanyBasicView {
 	public String getName() {
 		return name;
 	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

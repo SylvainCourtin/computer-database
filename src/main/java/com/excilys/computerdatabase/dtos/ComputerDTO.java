@@ -11,6 +11,11 @@ public class ComputerDTO {
 	
 	private CompanyBasicView companyBasicView;
 	
+	public ComputerDTO() {
+		computerBasicView = new ComputerBasicView();
+		companyBasicView= new CompanyBasicView();
+	}
+	
 	/**
 	 * @param computer computer pour la vue
 	 */
@@ -80,7 +85,5 @@ public class ComputerDTO {
 	public CompanyBasicView getCompanyBasicView() {
 		return companyBasicView;
 	}
-	
-	
 
 }

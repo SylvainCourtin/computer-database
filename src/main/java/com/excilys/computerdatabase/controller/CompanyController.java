@@ -34,7 +34,6 @@ public class CompanyController {
 	@RequestMapping(method = RequestMethod.GET, params="page")
 	public String getCompanies(ModelMap model, @RequestParam("page") int page)
 	{
-		System.out.println(page);
 		return dispatchGetCompanies(model, page);
 	}
 	
@@ -69,7 +68,7 @@ public class CompanyController {
 		model.addAttribute("page", newPage);
 		model.addAttribute("numberOfPages", numberOfPages);
 		model.addAttribute("numberOfCompanies", numberOfCompanies);		
-		return RefPage.FILE_VIEWS+RefPage.PAGE_LISTCOMPANY;
+		return RefPage.PAGE_LISTCOMPANY;
 	}
 	
 	

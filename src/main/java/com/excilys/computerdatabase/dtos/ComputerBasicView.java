@@ -2,14 +2,21 @@ package com.excilys.computerdatabase.dtos;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.excilys.computerdatabase.models.Computer;
 
 public class ComputerBasicView {
 	
 	private long id;
 	private String name;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate introduced;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate discontinued;
+	
+	public ComputerBasicView() {
+	}
 
 	public ComputerBasicView(Computer computer) {
 		id = computer.getId();
@@ -45,4 +52,18 @@ public class ComputerBasicView {
 	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setIntroduced(LocalDate introduced) {
+		this.introduced = introduced;
+	}
+
+	public void setDiscontinued(LocalDate discontinued) {
+		this.discontinued = discontinued;
+	}
+	
+	
 }

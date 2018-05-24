@@ -106,7 +106,10 @@ public class ComputerController {
 	}
 	
 	/**
-	 * Action effectuant l'ajout d'un nouveau computer
+	 * @param modelAndView
+	 * @param redirectAttributesModelMap
+	 * @param computerDTO
+	 * @return
 	 */
 	public ModelAndView actionAddComputer(ModelAndView modelAndView, RedirectAttributesModelMap redirectAttributesModelMap, ComputerDTO computerDTO)
 	{		
@@ -144,48 +147,22 @@ public class ComputerController {
 		return modelAndView;
 	}
 	
-	/**
-	 * Met à jour un computer
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-//	protected void actionUpdateComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	
+//	protected void actionUpdateComputer(ModelAndView modelAndView, RedirectAttributesModelMap redirectAttributesModelMap, ComputerDTO computerDTO, long id)
 //	{
-//		int idComputer = Integer.valueOf(request.getParameter("id"));
+//		logger.debug("call method actionUpdateComputer");
 //		
-//		String name = request.getParameter("computerName");
-//		LocalDate dateIntroduced = null;
-//		LocalDate dateDiscontinued = null;
-//		int id_company = Integer.valueOf(request.getParameter("companyId"));
-//		Optional<CompanyDTO> optCompany = mapperCompany.fromIdCompanyDTO(id_company);
-//		CompanyDTO company = null;
-//		if(optCompany.isPresent())
-//			company = optCompany.get();
-//		try 
-//		{
-//			if(request.getParameter("introduced") != null && !request.getParameter("introduced").equals(""))
-//				dateIntroduced = MyUtils.stringToDateInv(request.getParameter("introduced"));
-//			
-//			if(request.getParameter("discontinued") != null && !request.getParameter("discontinued").equals(""))
-//				dateDiscontinued = MyUtils.stringToDateInv(request.getParameter("discontinued"));
-//			
-//			
-//		} catch (DateTimeParseException e) {
-//			request.setAttribute("result", "Fail. The date didn't match correctly");
-//			dispatchGetComputers(request, response);
-//			logger.debug("Wrong format date");
-//		}
+//		if(computerDTO.getCompanyBasicView().getId() == 0)
+//			computerDTO.setCompanyBasicView(null);
+//		Computer newComputer = mapperComputer.fromParameters(computerDTO);
 //		
 //		try 
 //		{
-//			if(facade.updateComputer(idComputer,name, dateIntroduced, dateDiscontinued, company))
+//			if(facade.updateComputer(mapperComputer.fromParameters(computerDTO)) )
 //			{
 //				logger.debug("Success updated");
-//				request.setAttribute("result", "Success updated.");
-//				//On renvoit l'utilisateur sur la page de la liste des computers
-//				dispatchGetComputers(request,response);
+//				redirectAttributesModelMap.addFlashAttribute("result", "Success Updated.");
+//				modelAndView.setViewName("redirect:/computer");
 //			}
 //			else
 //			{
@@ -205,7 +182,7 @@ public class ComputerController {
 //			
 //		}
 //	}
-	
+//	
 	/**
 	 * Efface une liste de computer, les idées sont coté sous la forme "23,12,29,299, ..." chaque Id est séparé par une virgule
 	 * @param request

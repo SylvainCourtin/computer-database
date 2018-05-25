@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,13 +45,25 @@ public class ComputerController {
 	private MapperComputer mapperComputer;
 	private Logger logger = LoggerFactory.getLogger(ComputerController.class);
 	
+	/**
+	 * 
+	 * @param model
+	 * @param idComputer
+	 * @return
+	 */
 	@GetMapping(value = "/edit", params= {"id"})
 	public ModelAndView pageEdit(ModelMap model, @RequestParam("id") long idComputer)
 	{
 		logger.debug("call method actionEdit");
 		return dispatchUpdateComputer( idComputer);
 	}
-	
+	/**
+	 * 
+	 * @param redirectAttributesModelMap
+	 * @param computerDTO
+	 * @param idComputer
+	 * @return
+	 */
 	@PostMapping(value = "/edit")
 	public ModelAndView pageEdit(RedirectAttributesModelMap redirectAttributesModelMap, @ModelAttribute("computer") ComputerDTO computerDTO, @RequestParam("id") long idComputer)
 	{
@@ -79,21 +92,36 @@ public class ComputerController {
 		ModelAndView modelAndView = new ModelAndView(RefPage.PAGE_ADDCOMPUTER);
 		return actionAddComputer(modelAndView,redirectAttributesModelMap,computerDTO);
 	}
-	
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getComputer(ModelMap model)
 	{
 		logger.debug("call method getComputer");
 		return dispatchGetComputers(model, 0, null);
 	}
-	
+	/**
+	 * 
+	 * @param model
+	 * @param search
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, params= {"search"})
 	public String getComputer(ModelMap model, @RequestParam("search") String search)
 	{
 		logger.debug("call method getComputer");
 		return dispatchGetComputers(model, 0, search);
 	}
-	
+	/**
+	 * 
+	 * @param model
+	 * @param page
+	 * @param search
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, params= {"page", "search"})
 	public String getComputer(ModelMap model, @RequestParam("page") int page, @RequestParam("search") String search)
 	{
@@ -101,6 +129,21 @@ public class ComputerController {
 		return dispatchGetComputers(model, page, search);
 	}
 	
+	@GetMapping(params= {"act", "selection"})
+	public String deleteComputer(ModelMap modelMap, @RequestParam("act") String act, @RequestParam("selection") String selectionIdCompany)
+	{
+		logger.debug("call method deleteComputer");
+		if(null != act && "delete".equals(act))
+			return actionDeleteComputer(modelMap,selectionIdCompany);
+		else
+			return dispatchGetComputers(modelMap, 0, null);
+	}
+	
+	
+	/**
+	 * Default page
+	 * @return
+	 */
 	@GetMapping(value="*")
 	public String redirect()
 	{
@@ -200,57 +243,51 @@ public class ComputerController {
 		}
 		return modelAndView;
 	}	
-	/**
-	 * Efface une liste de computer, les idées sont coté sous la forme "23,12,29,299, ..." chaque Id est séparé par une virgule
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-//	protected void actionDeleteComputer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-//	{
-//		String stringIdComputerSeparateByComma = request.getParameter("selection");
-//		StringBuilder message = new StringBuilder("");
-//		short nbSuccess = 0;
-//		short nbFail = 0;
-//		
-//		try{
-//			List<String> listStringIdComputer = Arrays.asList(stringIdComputerSeparateByComma.split(","));
-//			for (String sId : listStringIdComputer) {
-//				
-//				int idComputer = Integer.parseInt(sId);
-//				
-//
-//				if(facade.deleteComputer(idComputer))
-//					nbSuccess++;
-//				else
-//					nbFail++;
-//			}
-//			message.append("Computers deleted - ");
-//			//On affiche le message
-//			if(nbFail == 0)
-//			{
-//				message.append("Success : ");
-//				message.append(nbSuccess);
-//			}
-//			else
-//			{
-//				message.append("Fail : ");
-//				message.append(nbFail);
-//				message.append("\t");
-//				message.append("Success : ");
-//				message.append(nbSuccess);
-//			}
-//			request.setAttribute("result", message.toString());
-//			logger.debug("Success delete");
-//			dispatchGetComputers(request,response);
-//	
-//		}catch (Exception e) {
-//			logger.debug("Fail delete");
-//			request.setAttribute("result", "Error ! "+e.getMessage());
-//			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-//		}
-//	}
+
+	private String actionDeleteComputer(ModelMap modelMap, String stringIdComputerSeparateByComma)
+	{
+		StringBuilder message = new StringBuilder("");
+		short nbSuccess = 0;
+		short nbFail = 0;
+		
+		try{
+			List<String> listStringIdComputer = Arrays.asList(stringIdComputerSeparateByComma.split(","));
+			for (String sId : listStringIdComputer) {
+				
+				int idComputer = Integer.parseInt(sId);
+				
+
+				if(facade.deleteComputer(idComputer))
+					nbSuccess++;
+				else
+					nbFail++;
+			}
+			message.append("Computers deleted - ");
+			//On affiche le message
+			if(nbFail == 0)
+			{
+				message.append("Success : ");
+				message.append(nbSuccess);
+			}
+			else
+			{
+				message.append("Fail : ");
+				message.append(nbFail);
+				message.append("\t");
+				message.append("Success : ");
+				message.append(nbSuccess);
+			}
+			modelMap.addAttribute("result", message.toString());
+			logger.debug("Success delete");
+			return dispatchGetComputers(modelMap,0,null);
+	
+		}catch (Exception e) {
+			logger.debug("Fail delete");
+			modelMap.addAttribute("result", "Error ! "+e.getMessage());
+			return RefPage.PAGE_500;
+
+		}
+	}
 
 	/* **************************************************************************
 	 *

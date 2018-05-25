@@ -171,8 +171,11 @@ public class ManagementComputer {
 			String discontinued="2003-05-11";
 			pageUpdate(introduced,discontinued);
 			Thread.sleep(2000L);
-			if(!driver.findElement(By.className("alert-success")).getText().contains("Success updated"))
+			if(!driver.findElement(By.className("alert-success")).getText().contains("Success"))
+			{
+				logger.debug(driver.findElement(By.className("alert-success")).getText());
 				fail("Fail updated");
+			}
 			line = search(computer, MyUtils.formatDateToString(MyUtils.stringToDateInv(introduced)), MyUtils.formatDateToString(MyUtils.stringToDateInv(discontinued)));
 
 		}catch (Exception e) {
@@ -183,7 +186,7 @@ public class ManagementComputer {
 	}
 	
 	/**
-	 * Take to much time
+	 * *****************************************************************Take to much time
 	 * @throws InterruptedException
 	 */
 	//@Test

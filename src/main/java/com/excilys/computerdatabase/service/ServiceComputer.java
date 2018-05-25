@@ -172,8 +172,10 @@ public class ServiceComputer {
 		validatorComputer.dateDiscontinuedGreaterThanIntroduced(introduced, discontinued);
 		Company company = null;
 		if(manufacturerCompany != null)
+		{
 			validatorComputer.companyExist(manufacturerCompany.getCompanyBasicView().getId());
 			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());
+		}
 		return computerDao.update((new Computer(id,name, introduced, discontinued, company)));
 	}
 	

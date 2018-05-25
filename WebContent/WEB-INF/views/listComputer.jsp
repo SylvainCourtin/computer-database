@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="tagdate" uri="tagdate" %>
 <!DOCTYPE html>
 <html>
@@ -17,7 +18,7 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container ">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard"> <spring:message code="page.title" /> </a>
 		</div>
 </header>
 

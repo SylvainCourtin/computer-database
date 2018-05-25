@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<h2 class="navbar-brand">Application - Computer Database</h2>
+			<h2 class="navbar-brand"><spring:message code="page.title" /> </h2>
 		</div>
 	</header>
 	<section id="main">

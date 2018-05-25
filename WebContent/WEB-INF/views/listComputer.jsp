@@ -95,7 +95,7 @@
 	                        <input type="hidden" id="actIdComputer" name="computer" value="">
 	                    </form>
 	                    </td>
-						<td><a href="computer/edit" onclick='goTo("edit", "${computer.computerBasicView.id}")'><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
+						<td><a href="computer/edit?id=${computer.computerBasicView.id}"><c:out value="${computer.computerBasicView.name}"></c:out></a></td>
 						<td><tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></td>
 						<td><tagdate:display localDate="${computer.computerBasicView.discontinued}"></tagdate:display></td>
 						<td><c:out value="${computer.companyBasicView.name}"></c:out></td>

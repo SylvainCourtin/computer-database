@@ -44,16 +44,18 @@ public class ComputerController {
 	private MapperComputer mapperComputer;
 	private Logger logger = LoggerFactory.getLogger(ComputerController.class);
 	
-	@GetMapping(value = "/edit", params= {"act", "computer"})
-	public ModelAndView actionEdit(ModelMap model, @RequestParam("act") String act, @RequestParam("computer") long idComputer)
+	@GetMapping(value = "/edit", params= {"id"})
+	public ModelAndView pageEdit(ModelMap model, @RequestParam("id") long idComputer)
 	{
-		if(act != null)
-		{
-			logger.debug("call method actionEdit");
-			if(act.equals("edit"))
-				return new ModelAndView(dispatchUpdateComputer(model, idComputer));
-		}
-		return new ModelAndView( dispatchGetComputers(model, 0, null));
+		logger.debug("call method actionEdit");
+		return dispatchUpdateComputer( idComputer);
+	}
+	
+	@PostMapping(value = "/edit")
+	public ModelAndView pageEdit(RedirectAttributesModelMap redirectAttributesModelMap, @ModelAttribute("computer") ComputerDTO computerDTO, @RequestParam("id") long idComputer)
+	{
+		ModelAndView modelAndView = new ModelAndView(RefPage.PAGE_EDITCOMPUTER);
+		return actionUpdateComputer(modelAndView, redirectAttributesModelMap, computerDTO, idComputer);
 	}
 	/**
 	 * @param model
@@ -63,7 +65,7 @@ public class ComputerController {
 	public ModelAndView pageAdd(ModelMap model)
 	{
 		logger.debug("call method pageAdd");
-		return dispatchAddComputers(model);
+		return dispatchAddComputers();
 	}
 	/**
 	 * Adding the new computer
@@ -111,7 +113,7 @@ public class ComputerController {
 	 * @param computerDTO
 	 * @return
 	 */
-	public ModelAndView actionAddComputer(ModelAndView modelAndView, RedirectAttributesModelMap redirectAttributesModelMap, ComputerDTO computerDTO)
+	private ModelAndView actionAddComputer(ModelAndView modelAndView, RedirectAttributesModelMap redirectAttributesModelMap, ComputerDTO computerDTO)
 	{		
 		logger.debug("call method actionAddComputer");
 		if(computerDTO.getCompanyBasicView().getId() == 0)
@@ -147,42 +149,57 @@ public class ComputerController {
 		return modelAndView;
 	}
 	
-	
-//	protected void actionUpdateComputer(ModelAndView modelAndView, RedirectAttributesModelMap redirectAttributesModelMap, ComputerDTO computerDTO, long id)
-//	{
-//		logger.debug("call method actionUpdateComputer");
-//		
-//		if(computerDTO.getCompanyBasicView().getId() == 0)
-//			computerDTO.setCompanyBasicView(null);
-//		Computer newComputer = mapperComputer.fromParameters(computerDTO);
-//		
-//		try 
-//		{
-//			if(facade.updateComputer(mapperComputer.fromParameters(computerDTO)) )
-//			{
-//				logger.debug("Success updated");
-//				redirectAttributesModelMap.addFlashAttribute("result", "Success Updated.");
-//				modelAndView.setViewName("redirect:/computer");
-//			}
-//			else
-//			{
-//				request.setAttribute("result", "Fail updated");
-//				dispatchGetComputers(request, response);
-//				
-//			}
-//		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException | NoNameComputerException e) {
-//			if(e instanceof DateDiscontinuedIntroducedException)
-//				logger.debug("Invalid date, Introduced > Discontinued");
-//			else if(e instanceof CompanyDoesNotExistException)
-//				logger.debug("Company didn't exist");
-//			else
-//				logger.debug("The computer got an empty name");
-//			request.setAttribute("result", "Fail, "+e.getMessage());
-//			request.getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-//			
-//		}
-//	}
-//	
+	/**
+	 * 
+	 * @param modelAndView
+	 * @param redirectAttributesModelMap
+	 * @param computerDTO
+	 * @param idComputer
+	 * @return
+	 */
+	private ModelAndView actionUpdateComputer(ModelAndView modelAndView, RedirectAttributesModelMap redirectAttributesModelMap, ComputerDTO computerDTO, long idComputer)
+	{
+		logger.debug("call method actionUpdateComputer");
+		Optional<CompanyDTO> optCompany = Optional.empty();
+		if(computerDTO.getCompanyBasicView().getId() == 0)
+			computerDTO.setCompanyBasicView(null);
+		else
+			optCompany = mapperCompany.fromIdCompanyDTO(computerDTO.getCompanyBasicView().getId());
+		CompanyDTO company = null;
+		if(optCompany.isPresent())
+			company = optCompany.get();
+		
+		
+		try 
+		{
+			if(facade.updateComputer(
+					idComputer,
+					computerDTO.getComputerBasicView().getName(), 
+					computerDTO.getComputerBasicView().getIntroduced(), 
+					computerDTO.getComputerBasicView().getDiscontinued(),
+					company))
+			{
+				logger.debug("Success updated");
+				redirectAttributesModelMap.addFlashAttribute("result", "Success Updated.");
+				modelAndView.setViewName("redirect:/computer");
+			}
+			else
+			{
+				redirectAttributesModelMap.addFlashAttribute("result", "Fail updated");
+				modelAndView.setViewName("redirect:/computer");	
+			}
+		} catch (DateDiscontinuedIntroducedException | CompanyDoesNotExistException | NoNameComputerException e) {
+			if(e instanceof DateDiscontinuedIntroducedException)
+				logger.debug("Invalid date, Introduced > Discontinued");
+			else if(e instanceof CompanyDoesNotExistException)
+				logger.debug("Company didn't exist");
+			else
+				logger.debug("The computer got an empty name");
+			redirectAttributesModelMap.addFlashAttribute("result", "Fail, "+e.getMessage());
+			modelAndView.setViewName(RefPage.PAGE_500);
+		}
+		return modelAndView;
+	}	
 	/**
 	 * Efface une liste de computer, les idées sont coté sous la forme "23,12,29,299, ..." chaque Id est séparé par une virgule
 	 * @param request
@@ -291,7 +308,7 @@ public class ComputerController {
 	 * Redirige vers une page formulaire ajouter un computer
 	 * @param model
 	 */
-	private ModelAndView dispatchAddComputers(ModelMap model)
+	private ModelAndView dispatchAddComputers()
 	{
 		List<CompanyDTO> companiesDTO = new ArrayList<>();
 		serviceCompany.getCompanies(100, 0).forEach(company -> companiesDTO.add(mapperCompany.companyToDTO(company)));
@@ -305,8 +322,9 @@ public class ComputerController {
 	/**
 	 * Redirige vers une page formulaire pour mettre à jour un computer
 	 */
-	private String dispatchUpdateComputer(ModelMap model, long idComputer)
+	private ModelAndView dispatchUpdateComputer(long idComputer)
 	{
+		
 		if(idComputer > 0)
 		{				
 			List<CompanyDTO> companiesDTO = new ArrayList<>();
@@ -315,18 +333,21 @@ public class ComputerController {
 			Optional<ComputerDTO> computer = facade.getComputerDTO(idComputer);
 			if(computer.isPresent())
 			{
-				model.addAttribute("computer", computer.get());
-				model.addAttribute("companies", companiesDTO);
-				return RefPage.PAGE_EDITCOMPUTER;
+				ModelAndView modelAndView =  new ModelAndView(RefPage.PAGE_EDITCOMPUTER,"computer", new ComputerDTO());
+				modelAndView.addObject("computer", computer.get());
+				modelAndView.addObject("companies", companiesDTO);
+				return modelAndView;
 			} else {
-				model.addAttribute("result", "Error, you try to edit something has been deleted");
-				return RefPage.PAGE_500;
+				ModelAndView modelAndView =  new ModelAndView(RefPage.PAGE_500);
+				modelAndView.addObject("result", "Error, you try to edit something has been deleted");
+				return modelAndView;
 			}	
 		}
 		else
 		{
-			model.addAttribute("result", "Error, nothing was selected to being edit");
-			return RefPage.PAGE_500;
+			ModelAndView modelAndView =  new ModelAndView(RefPage.PAGE_500);
+			modelAndView.addObject("result", "Error, nothing was selected to being edit");
+			return modelAndView;
 		}
 			
 	}

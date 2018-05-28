@@ -21,7 +21,7 @@
 	<section id="main">
 		<div class="container">	
 			<div class="alert alert-danger">
-				Error 500: An error has occured!
+				<spring:message code="error.e500" />
 				<br/>
 				<c:if test="${not empty result}">
 	               	<div class="form-group">

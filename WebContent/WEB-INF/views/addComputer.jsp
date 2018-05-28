@@ -19,28 +19,28 @@
             <a class="navbar-brand" href="dashboard"> <spring:message code="page.title" /> </a>
         </div>
     </header>
-
     <section id="main">
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
+                    <h1><spring:message code="computer.add.title" /></h1>
                     <form:form method="POST" modelAttribute="computer">
                         <fieldset>
                             <div class="form-group">
-                                <form:label path="computerBasicView.name" for="computerName">Computer name*</form:label>
-                                <form:input path="computerBasicView.name" type="text" required="required" class="form-control" id="computerName" name="computerName" placeholder="Computer name"/>
+                                <form:label path="computerBasicView.name" for="computerName"><spring:message code="computer.name" />*</form:label>
+                                <spring:message code="computer.name" var="placeHolder_nameComputer"/>
+                                <form:input path="computerBasicView.name" type="text" required="required" class="form-control" id="computerName" name="computerName" placeholder="${placeHolder_nameComputer}"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="computerBasicView.introduced" for="introduced">Introduced date</form:label>
+                                <form:label path="computerBasicView.introduced" for="introduced"><spring:message code="computer.introduced" /></form:label>
                                 <form:input path="computerBasicView.introduced" type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" onchange="compare();"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="computerBasicView.discontinued" for="discontinued">Discontinued date</form:label>
+                                <form:label path="computerBasicView.discontinued" for="discontinued"><spring:message code="computer.discontinued" /></form:label>
                                 <form:input path="computerBasicView.discontinued" type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" onchange="compare();"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="companyBasicView.id" for="companyId">Company</form:label>
+                                <form:label path="companyBasicView.id" for="companyId"><spring:message code="company" /></form:label>
                                 <form:select class="form-control" name="companyId" id="companyId" path="companyBasicView.id" >
                                     <form:option value="0">--</form:option>
                                     <c:forEach var="company" items="${companies}">
@@ -57,14 +57,14 @@
                             </c:if>
                             <div style="display:none;" id="wrongOrderDate" class="form-group">
                            		<div class="alert alert-warning">
-                           			<strong>The date introduced must be before discontinued</strong>
+                           			<strong><spring:message code="warning.date" /></strong>
                            		</div>
                            	</div>               
                         </fieldset>
                         <div class="actions pull-right">
-                            <button id="act" type="submit" class="btn btn-primary">Add</button>
-                            or
-                            <a href="../computer" class="btn btn-default">Cancel</a>
+                            <button id="act" type="submit" class="btn btn-primary"><spring:message code="button.add" /></button>
+                            <spring:message code="or" />
+                            <a href="../computer" class="btn btn-default"><spring:message code="button.cancel" /></a>
                         </div>
                     </form:form>
                 </div>

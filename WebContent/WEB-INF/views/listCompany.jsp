@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>All companies</title>
+<title><spring:message code="company.title" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -23,7 +23,7 @@
 <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${numberOfCompanies} companies found"></c:out>
+                <c:out value="${numberOfCompanies} "></c:out> <spring:message code="company.found" />
             </h1>
        </div>
        <c:if test="${not empty companies}">
@@ -32,10 +32,10 @@
             <thead>
            	<tr>
                 <th>
-                    Company ID
+                    <spring:message code="company.id" />
                 </th>
                 <th>
-                   	Company Name
+                   	<spring:message code="company.name" />
                 </th>
            </tr>
            </thead>

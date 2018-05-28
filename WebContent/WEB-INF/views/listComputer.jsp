@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>All Computer</title>
+<title><spring:message code="computer.title" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -25,14 +25,14 @@
 <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${numberOfComputer} computers found"></c:out>
+                <c:out value="${numberOfComputer} "></c:out><spring:message code="computer.found" />
             </h1>
             
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="computer" method="GET" class="form-inline">
-                        <input type="search" id="searchbox" name="search" value="${search}" class="form-control" placeholder="Search name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                        <input type="search" id="searchbox" name="search" value="${search}" class="form-control" placeholder="<spring:message code="computer.search" />" />
+                        <input type="submit" id="searchsubmit" value="<spring:message code="computer.filter" />"
                         class="btn btn-primary" />
                     </form>
                     <c:if test="${not empty result}">
@@ -54,8 +54,8 @@
 	               </c:if>
                 </div>
                 	<div class="pull-right">
-                    	<a class="btn btn-success" id="add" href="computer/add">Add Computer</a> 
-                    	<a class="btn btn-default" id="edit" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    	<a class="btn btn-success" id="add" href="computer/add"><spring:message code="button.add.computer" /></a> 
+                    	<a class="btn btn-default" id="edit" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="button.edit" /></a>
                 	</div>
             	</div>
        	 	</div>
@@ -80,10 +80,10 @@
 	                            </a>
 	                    </span>
 	                </th>
-	                <th>Computer Name</th>
-	                <th>Date introduced</th>
-	                <th>Date discontinued</th>
-	                <th>Company Name</th>
+	                <th><spring:message code="computer.name" /></th>
+	                <th><spring:message code="computer.introduced" /></th>
+	                <th><spring:message code="computer.discontinued" /></th>
+	                <th><spring:message code="company.name" /></th>
 	            </tr>
 	            </thead>
 	            <tbody id="results">
@@ -108,7 +108,7 @@
 			</c:if>
 			<c:if test="${empty computers}">
 			<div class="container" style="margin-top: 10px;">
-				<i>No result corresponding to <c:out value="${search}"></c:out></i>
+				<i><spring:message code="computer.notFound" /> <c:out value="${search}"></c:out></i>
 			</div>
 			</c:if>
 </section>
@@ -171,10 +171,12 @@
 		document.getElementById("act_computer").value = name_action;
 		document.getElementById("action_computer").submit();
 	}
-	
+	var strings = new Array();
+	strings['computer.confirmation.delete'] = "<spring:message code='computer.confirmation.delete' javaScriptEscape='true'/>";
 </script>
 <script  src="static/js/jquery.min.js"></script>
 <script  src="static/js/bootstrap.min.js"></script>
-<script  src="static/js/dashboard.js"></script>
+<script  src="static/js/dashboard.js">
+</script>
 </body>
 </html>

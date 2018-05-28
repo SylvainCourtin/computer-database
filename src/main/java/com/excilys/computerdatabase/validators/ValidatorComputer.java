@@ -73,6 +73,6 @@ public class ValidatorComputer {
 			dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
 		}
 		else
-			throw new NoNameComputerException();
+			throw new NoNameComputerException("No Name");
 	}
 }

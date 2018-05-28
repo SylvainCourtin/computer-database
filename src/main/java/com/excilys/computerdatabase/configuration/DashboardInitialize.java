@@ -1,5 +1,7 @@
 package com.excilys.computerdatabase.configuration;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class DashboardInitialize extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -19,4 +21,10 @@ public class DashboardInitialize extends AbstractAnnotationConfigDispatcherServl
 		return new String[] { "/", "/dashboard", "/computer", "/computer/add", "/computer/edit", "/companies" };
 	}
 
+	@Override
+	protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+		final DispatcherServlet dispatcherServlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
+		dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+		return dispatcherServlet;
+	}
 }

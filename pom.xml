@@ -24,6 +24,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <com.zaxxer>2.7.8</com.zaxxer>
     <jsp-api>2.0</jsp-api>
     <springframework>5.0.6.RELEASE</springframework>
+    <hibernate>6.0.10.Final</hibernate>
 </properties>
   
   <dependencies>
@@ -112,6 +113,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
         <version>${springframework}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.hibernate.validator</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate}</version>
     </dependency>
   </dependencies>
   

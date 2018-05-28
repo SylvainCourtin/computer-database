@@ -2,6 +2,9 @@ package com.excilys.computerdatabase.dtos;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.excilys.computerdatabase.models.Computer;
@@ -9,6 +12,8 @@ import com.excilys.computerdatabase.models.Computer;
 public class ComputerBasicView {
 	
 	private long id;
+	@NotNull
+	@Size(min=2, max=60)
 	private String name;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate introduced;

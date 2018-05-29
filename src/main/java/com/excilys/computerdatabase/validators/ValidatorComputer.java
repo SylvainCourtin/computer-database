@@ -67,7 +67,7 @@ public class ValidatorComputer {
 	 */
 	public void validInsertComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException
 	{
-		if(computer.getName() != null && !computer.getName().equals(""))
+		if(computer.getName() != null && !computer.getName().trim().equals(""))
 		{
 			companyExist(computer.getManufacturerCompany());
 			dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());

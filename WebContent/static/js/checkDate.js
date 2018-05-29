@@ -4,10 +4,29 @@
 
 function compare()
 {
+    var name = document.getElementById("computerName").value;
+    
+    if(name.trim() == '')
+    {
+    	$("#noName").hide();
+    	$("#act").attr("disabled",true);
+    }
+    else
+    {
+    	$("#noName").hide();
+    	checkDate();
+    }
+    	
+    
+    
+    
+}
+
+function checkDate()
+{
     var introduced = document.getElementById("introduced").value;
     var discontinued = document.getElementById("discontinued").value;
-    
-    try {
+	try {
 	    if(introduced != null && discontinued != null && (new Date(introduced).getTime() > new Date(discontinued).getTime()) )
 	    {
 	    	$("#act").attr("disabled",true);
@@ -23,5 +42,4 @@ function compare()
     {
     	$("#act").attr("disabled",true);
     }
-    
 }

@@ -36,7 +36,12 @@
                             <div class="form-group">
                                 <form:label path="computerBasicView.name" for="computerName"><spring:message code="computer.name" />*</form:label>
                                 <spring:message code="computer.name" var="placeHolder_nameComputer"/>
-                                <form:input path="computerBasicView.name" type="text" maxlength="30" required="required" class="form-control" id="computerName" name="computerName" value="${computer.computerBasicView.name}" placeholder="${placeHolder_nameComputer}"/>
+                                <form:input path="computerBasicView.name" type="text" maxlength="30" required="required" class="form-control" id="computerName" name="computerName" onchange="compare();" value="${computer.computerBasicView.name}" placeholder="${placeHolder_nameComputer}"/>
+                                <div style="display:none;" id="noName" class="form-group">
+	                           		<div class="alert alert-warning">
+	                           			<strong><spring:message code="warning.name" /></strong>
+	                           		</div>
+                           		</div>
                             </div>
                             <div class="form-group">
                                 <form:label path="computerBasicView.introduced" for="introduced"><spring:message code="computer.introduced" /> : <tagdate:display localDate="${computer.computerBasicView.introduced}"></tagdate:display></form:label>

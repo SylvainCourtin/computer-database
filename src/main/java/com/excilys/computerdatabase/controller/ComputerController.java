@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +47,7 @@ public class ComputerController implements WebMvcConfigurer {
 	@Autowired
 	private MapperComputer mapperComputer;
 	private Logger logger = LoggerFactory.getLogger(ComputerController.class);
-	
+
 	/**
 	 * 
 	 * @param model
@@ -86,18 +88,26 @@ public class ComputerController implements WebMvcConfigurer {
 	}
 	/**
 	 * Adding the new computer
-	 * @param model
+	 * @param redirectAttributesModelMap
 	 * @param computerDTO
+	 * @param bindingResult
 	 * @return
-	 * @throws NoNameComputerException 
-	 * @throws DateDiscontinuedIntroducedException 
-	 * @throws CompanyDoesNotExistException 
+	 * @throws CompanyDoesNotExistException
+	 * @throws DateDiscontinuedIntroducedException
+	 * @throws NoNameComputerException
 	 */
 	@PostMapping(value = "/add")
-	public ModelAndView pageAdd(RedirectAttributesModelMap redirectAttributesModelMap, @ModelAttribute("computer") ComputerDTO computerDTO) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException
+	public ModelAndView pageAdd(RedirectAttributesModelMap redirectAttributesModelMap, @ModelAttribute("computer") @Validated ComputerDTO computerDTO, BindingResult bindingResult) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException
 	{
+		
 		ModelAndView modelAndView = new ModelAndView(RefPage.PAGE_ADDCOMPUTER);
-		return actionAddComputer(modelAndView,redirectAttributesModelMap,computerDTO);
+		if(bindingResult.hasErrors())
+		{
+			modelAndView.addObject("result", "Name empty");
+			return modelAndView;
+		}
+		else
+			return actionAddComputer(modelAndView,redirectAttributesModelMap,computerDTO);
 	}
 	/**
 	 * 

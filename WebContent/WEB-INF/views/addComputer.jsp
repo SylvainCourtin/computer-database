@@ -29,7 +29,12 @@
                             <div class="form-group">
                                 <form:label path="computerBasicView.name" for="computerName"><spring:message code="computer.name" />*</form:label>
                                 <spring:message code="computer.name" var="placeHolder_nameComputer"/>
-                                <form:input path="computerBasicView.name" type="text" required="required" class="form-control" id="computerName" name="computerName" placeholder="${placeHolder_nameComputer}"/>
+                                <form:input path="computerBasicView.name" type="text" required="required" class="form-control" id="computerName" name="computerName" onchange="compare();" placeholder="${placeHolder_nameComputer}"/>
+                                <div style="display:none;" id="noName" class="form-group">
+	                           		<div class="alert alert-warning">
+	                           			<strong><spring:message code="warning.name" /></strong>
+	                           		</div>
+                           		</div> 
                             </div>
                             <div class="form-group">
                                 <form:label path="computerBasicView.introduced" for="introduced"><spring:message code="computer.introduced" /></form:label>
@@ -55,9 +60,10 @@
                             		</div>
                             	</div>
                             </c:if>
+
                             <div style="display:none;" id="wrongOrderDate" class="form-group">
                            		<div class="alert alert-warning">
-                           			<strong><spring:message code="warning.date" /></strong>
+                           			<strong><spring:message code="warning.date" />!</strong>
                            		</div>
                            	</div>               
                         </fieldset>

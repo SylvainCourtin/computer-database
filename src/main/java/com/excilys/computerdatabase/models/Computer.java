@@ -4,7 +4,10 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.excilys.computerdatabase.utils.MyUtils;
@@ -13,14 +16,16 @@ import com.excilys.computerdatabase.utils.MyUtils;
 public class Computer {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	private long id;
 	@Column
 	private String name;
-	@Column
+	@Column(name="introduced")
 	private LocalDate dateIntroduced;
-	@Column
+	@Column(name="discontinued")
 	private LocalDate dateDiscontinued;
 	@ManyToOne
+	@JoinColumn(name="company_id")
 	private Company manufacturerCompany;
 	
 	

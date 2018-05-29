@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Query;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,47 +32,45 @@ import com.excilys.computerdatabase.validators.ValidatorComputer;
 import com.mysql.cj.api.jdbc.Statement;
 
 @Repository
-public class ComputerDaoImpl implements ComputerDao {
+public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
-	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private MapperComputer mapperComputer;
 	@Autowired
 	private ValidatorComputer validatorComputer;
-
-	public ComputerDaoImpl(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	
+	public ComputerDaoImpl() {
+		super();
 	}
 
 	@Override
 	public long add(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException{
-		
-		long idRes = -1;
+		long id = -1;
 		validatorComputer.validInsertComputer(computer);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
-		
-		jdbcTemplate.update((Connection connection) -> { return initPreparedStatementWithParameters(connection, MyConstants.SQL_QUERY_COMPUTER_INSERT, true,
-				computer.getName(),
-				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
-				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-				idCompany);
-			}
-		, keyHolder);
-		idRes = keyHolder.getKey().longValue();
-
-		return idRes;
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			id = (Long) session.save(computer); //throws HibernateException
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug("error, rollback");
+			tx.rollback();
+		}
+		return id;
 	}
 
 	@Override
 	public List<Computer> getList(int limite, int offset) {
 		List<Computer> computers = new ArrayList<>();
-		
+		Session session = getCurrentSession();
 		try {
-			computers = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT,mapperComputer, limite,offset);
-		}catch (EmptyResultDataAccessException e) {
+			Query query = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT);
+			query.setParameter("limite", limite);
+			query.setParameter("offset", offset);
+			computers = query.getResultList();
+		}catch (HibernateException e) {
 			logger.debug(e.getMessage());	
 		}
 		return computers;
@@ -76,22 +79,22 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public List<Computer> getListLike(int limite, int offset, String sLike) {
 		List<Computer> computers = new ArrayList<>();		
-		try {
-			computers = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,mapperComputer,"%"+sLike+"%", limite,offset);
-		}catch (EmptyResultDataAccessException e) {
-			logger.debug(e.getMessage());	
-		}
+//		try {
+//			computers = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,mapperComputer,"%"+sLike+"%", limite,offset);
+//		}catch (EmptyResultDataAccessException e) {
+//			logger.debug(e.getMessage());	
+//		}
 		return computers;
 	}
 
 	@Override
 	public Optional<Computer> getComputer(long id) {
 		Computer computer = null;
-		try {
-			computer = jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY,mapperComputer,id);
-		}catch (EmptyResultDataAccessException e) {
-			logger.debug(e.getMessage());	
-		}
+//		try {
+//			computer = jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY,mapperComputer,id);
+//		}catch (EmptyResultDataAccessException e) {
+//			logger.debug(e.getMessage());	
+//		}
 		return Optional.ofNullable(computer);
 	}
 
@@ -104,10 +107,10 @@ public class ComputerDaoImpl implements ComputerDao {
 	public boolean delete(long id)
 	{
 		boolean isDelete = false;
-		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE, id);
-		if (res > 0)
-				isDelete = true;
-			
+//		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE, id);
+//		if (res > 0)
+//				isDelete = true;
+//			
 		return isDelete;
 	}
 
@@ -117,14 +120,14 @@ public class ComputerDaoImpl implements ComputerDao {
 		validatorComputer.validInsertComputer(computer);
 		final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
 		
-		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
-				computer.getName(),
-				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
-				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-				idCompany,
-				computer.getId() );			
-		if (res > 0)
-			isUpdate = true;	
+//		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
+//				computer.getName(),
+//				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
+//				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
+//				idCompany,
+//				computer.getId() );			
+//		if (res > 0)
+//			isUpdate = true;	
 		
 		
 		return isUpdate;
@@ -133,17 +136,20 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Override
 	public long getNumberElement() {
-		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT, Long.class);
+//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT, Long.class);
+		return 0;
 	}
 
 	@Override
 	public long getNumberElementLike(String sLike) {
-		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE, Long.class, "%"+sLike+"%");
+//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE, Long.class, "%"+sLike+"%");
+		return 0;
 	}
 	
 	@Override
 	public long getNumberComputerRelatedToThisCompany(long idCompany) {
-		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY, Long.class, idCompany);
+//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY, Long.class, idCompany);
+		return 0;
 	}
 	
 	/**

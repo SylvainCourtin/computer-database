@@ -2,6 +2,7 @@ package com.excilys.computerdatabase.configuration;
 
 import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,14 +31,14 @@ public class Application {
 	@Scope("singleton")
 	public CompanyDao getCompanyDao()
 	{
-		return new CompanyDaoImpl(new JdbcTemplate(getDataSource()));
+		return new CompanyDaoImpl();
 	}
 	
 	@Bean("computerDao")
 	@Scope("singleton")
 	public ComputerDao getComputerDao()
 	{
-		return new ComputerDaoImpl(new JdbcTemplate(getDataSource()));
+		return new ComputerDaoImpl();
 	}
 	
 	@Bean("serviceComputer")
@@ -94,5 +95,19 @@ public class Application {
 	public ValidatorComputer getValidatorComputer()
 	{
 		return new ValidatorComputer();
+	}
+	
+	@Bean("sessionFactory")
+	@Scope("singleton")
+	public SessionFactory getSessionFactory()
+	{
+		return getConfigurationHibernate().getFactory();
+	}
+	
+	@Bean
+	@Scope("singleton")
+	public ConfigurationHibernate getConfigurationHibernate()
+	{
+		return new ConfigurationHibernate();
 	}
 }

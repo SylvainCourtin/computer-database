@@ -1,13 +1,8 @@
 package com.excilys.computerdatabase.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.Query;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -15,29 +10,20 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedException;
 import com.excilys.computerdatabase.exception.NoNameComputerException;
-import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
-import com.excilys.computerdatabase.utils.MyUtils;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
-import com.mysql.cj.api.jdbc.Statement;
 
 @Repository
 public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	
-	@Autowired
-	private MapperComputer mapperComputer;
+
 	@Autowired
 	private ValidatorComputer validatorComputer;
 	
@@ -65,36 +51,51 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	public List<Computer> getList(int limite, int offset) {
 		List<Computer> computers = new ArrayList<>();
 		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
 		try {
-			Query query = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY_LIMIT);
-			query.setParameter("limite", limite);
-			query.setParameter("offset", offset);
-			computers = query.getResultList();
+			computers = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_ORDERBY, Computer.class)
+					.setMaxResults(limite)
+					.setFirstResult(offset)
+					.getResultList();
+			tx.commit();
 		}catch (HibernateException e) {
-			logger.debug(e.getMessage());	
+			logger.debug(e.getMessage());
+			tx.rollback();
 		}
 		return computers;
 	}
 	
 	@Override
 	public List<Computer> getListLike(int limite, int offset, String sLike) {
-		List<Computer> computers = new ArrayList<>();		
-//		try {
-//			computers = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_LEFT_JOIN_COMPANY_LIMIT,mapperComputer,"%"+sLike+"%", limite,offset);
-//		}catch (EmptyResultDataAccessException e) {
-//			logger.debug(e.getMessage());	
-//		}
+		List<Computer> computers = new ArrayList<>();
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			computers = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_ORDERBY, Computer.class)
+					.setMaxResults(limite)
+					.setFirstResult(offset)
+					.setParameter("like","%"+sLike+"%")
+					.getResultList();
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug(e.getMessage());
+			tx.rollback();
+		}
 		return computers;
 	}
 
 	@Override
 	public Optional<Computer> getComputer(long id) {
 		Computer computer = null;
-//		try {
-//			computer = jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_SELECT_LEFT_JOIN_COMPANY,mapperComputer,id);
-//		}catch (EmptyResultDataAccessException e) {
-//			logger.debug(e.getMessage());	
-//		}
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			computer = session.get(Computer.class, id);
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug(e.getMessage());
+			tx.rollback();
+		}
 		return Optional.ofNullable(computer);
 	}
 
@@ -107,10 +108,17 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	public boolean delete(long id)
 	{
 		boolean isDelete = false;
-//		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE, id);
-//		if (res > 0)
-//				isDelete = true;
-//			
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			isDelete = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE)
+					.setParameter("idComputer",id)
+					.executeUpdate() > 0;
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug(e.getMessage());
+			tx.rollback();
+		}		
 		return isDelete;
 	}
 
@@ -118,57 +126,67 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	public boolean update(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException {
 		boolean isUpdate = false;
 		validatorComputer.validInsertComputer(computer);
-		final Long idCompany = computer.getManufacturerCompany() != null ? computer.getManufacturerCompany().getId() : null;
-		
-//		int res = jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_UPDATE,
-//				computer.getName(),
-//				MyUtils.formatDateUtilToSQLDate(computer.getDateIntroduced()),
-//				MyUtils.formatDateUtilToSQLDate(computer.getDateDiscontinued()),
-//				idCompany,
-//				computer.getId() );			
-//		if (res > 0)
-//			isUpdate = true;	
-		
-		
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.saveOrUpdate(computer); //throws HibernateException
+			tx.commit();
+			isUpdate = true;
+		}catch (HibernateException e) {
+			isUpdate = false;
+			logger.debug(e.getMessage());
+			tx.rollback();
+		}
 		return isUpdate;
 		
 	}
 
 	@Override
 	public long getNumberElement() {
-//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT, Long.class);
-		return 0;
+		long nb = 0;
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT).getSingleResult();
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug(e.getMessage());
+			tx.rollback();
+		}
+		return nb;
 	}
 
 	@Override
 	public long getNumberElementLike(String sLike) {
-//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE, Long.class, "%"+sLike+"%");
-		return 0;
+		long nb = 0;
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE)
+					.setParameter("like", "%"+sLike+"%")
+					.getSingleResult();
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug(e.getMessage());
+			tx.rollback();
+		}
+		return nb;
 	}
 	
 	@Override
 	public long getNumberComputerRelatedToThisCompany(long idCompany) {
-//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY, Long.class, idCompany);
-		return 0;
-	}
-	
-	/**
-	 * Prepare et initialise la requete
-	 * @param connection
-	 * @param sql
-	 * @param isReturnKey
-	 * @param objects List of args of this request. Should be in the good order
-	 * @return
-	 * @throws SQLException
-	 */
-	private static PreparedStatement initPreparedStatementWithParameters(Connection connection, String sql, boolean isReturnKey, Object...objects) throws SQLException
-	{
-		PreparedStatement preparedStatement = connection.prepareStatement(sql, isReturnKey ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
-		int params = 1;
-		for (Object object : objects) {
-			preparedStatement.setObject(params, object);
-			params++;
+		long nb = 0;
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY)
+					.setParameter("idCompany", idCompany)
+					.getSingleResult();
+			tx.commit();
+		}catch (HibernateException e) {
+			logger.debug(e.getMessage());
+			tx.rollback();
 		}
-		return preparedStatement;
-}
+		return nb;
+	}
 }

@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.NoResultException;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
-import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.utils.MyConstants;
 
@@ -22,9 +21,6 @@ public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
 	
 	private Logger logger = LoggerFactory.getLogger(CompanyDaoImpl.class);
 	
-	@Autowired
-	private MapperCompany mapperCompany;
-	
 	public CompanyDaoImpl() {
 		super();
 	}
@@ -32,11 +28,21 @@ public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
 	@Override
 	public List<Company> getList(int limite, int offset) {
 		List<Company> companies = new ArrayList<>();
-//		try {
-//			companies = jdbcTemplate.query(MyConstants.SQL_QUERY_COMPANY_SELECT_LIMIT,mapperCompany, limite,offset);
-//		}catch (EmptyResultDataAccessException e) {
-//			logger.debug(e.getMessage());	
-//		}
+		
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			companies = session.createQuery(MyConstants.SQL_QUERY_COMPANY_SELECT_ORDERBY, Company.class)
+					.setMaxResults(limite)
+					.setFirstResult(offset)
+					.getResultList();
+			tx.commit();
+		}
+		catch(HibernateException | NoResultException e)
+		{
+			tx.rollback();
+			logger.debug(e.getMessage());
+		}	
 		return companies;
 	}
 	
@@ -44,34 +50,65 @@ public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
 	public Optional<Company> getCompany(long id)
 	{
 		Company company = null;
-//		try {
-//			company = jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPANY_SELECT+"WHERE id="+id+" ORDER BY name DESC ;", mapperCompany);
-//		}catch (EmptyResultDataAccessException e) {
-//			logger.debug(e.getMessage());
-//			company = null;
-//		}
-		
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			company = (Company) session.createQuery(MyConstants.SQL_QUERY_COMPANY_SELECT_WHERE_ID, Company.class)
+					.setParameter("idCompany", id)
+					.getSingleResult();
+			tx.commit();
+		}
+		catch(HibernateException | NoResultException e)
+		{
+			tx.rollback();
+			logger.debug(e.getMessage());
+		}		
 		return Optional.ofNullable(company);
 	}
 
 	@Override
 	public long getNumberElement() {
-//		return jdbcTemplate.queryForObject(MyConstants.SQL_QUERY_COMPANY_COUNT, Long.class);
-		return 0;
+		Long nb = 0L;
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPANY_COUNT).getSingleResult();
+			tx.commit();
+		}
+		catch(HibernateException | NoResultException e)
+		{
+			tx.rollback();
+			logger.debug(e.getMessage());
+		}		
+		return nb;
 	}
 	
 	@Override
-	@Transactional(rollbackFor= {Throwable.class}, noRollbackFor= {CompanyDoesNotExistException.class})
 	public boolean deleteCompany(long id) throws CompanyDoesNotExistException {
 		boolean isDelete = false;
-//		if(getCompany(id).isPresent())
-//		{
-//			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY,id);
-//			jdbcTemplate.update(MyConstants.SQL_QUERY_COMPANY_DELETE,id);
-//			isDelete = true;
-//		}
-//		else
-//			throw new CompanyDoesNotExistException();
+		if(getCompany(id).isPresent())
+		{
+			Session session = getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			try {
+				session.createQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY)
+				.setParameter("idCompany", id)
+				.executeUpdate();
+				
+				session.createQuery(MyConstants.SQL_QUERY_COMPANY_DELETE)
+				.setParameter("idCompany", id)
+				.executeUpdate();
+				
+				tx.commit();
+				isDelete = true;
+			}catch(HibernateException | NoResultException e)
+			{
+				tx.rollback();
+				logger.debug(e.getMessage());
+			}	
+		}
+		else
+			throw new CompanyDoesNotExistException();
 		return isDelete;
 	}
 }

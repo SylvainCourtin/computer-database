@@ -17,7 +17,7 @@
        
        <property name="hibernate.current_session_context_class">thread</property>
        
-       <mapping class ="com.excilys.computerdatabase.models.Company" />
-       <mapping class ="com.excilys.computerdatabase.models.Computer" /> 
+       <mapping class="com.excilys.computerdatabase.models.Company" />
+       <mapping class="com.excilys.computerdatabase.models.Computer" /> 
       </session-factory>
 </hibernate-configuration>

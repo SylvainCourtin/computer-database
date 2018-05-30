@@ -9,23 +9,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.excilys.computerdatabase.utils.MyUtils;
 
-@Entity
+@Entity(name="Computer")
+@Table(name="computer")
 public class Computer {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	private long id;
-	@Column
+	@Column(nullable=false)
 	private String name;
-	@Column(name="introduced")
+	@Column(name="introduced", nullable=true)
 	private LocalDate dateIntroduced;
-	@Column(name="discontinued")
+	@Column(name="discontinued", nullable=true)
 	private LocalDate dateDiscontinued;
-	@ManyToOne
-	@JoinColumn(name="company_id")
+	@ManyToOne(optional=true)
+	@JoinColumn(name="company_id", nullable=true)
 	private Company manufacturerCompany;
 	
 	

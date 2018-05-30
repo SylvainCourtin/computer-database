@@ -6,12 +6,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.sql.DataSource;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.excilys.computerdatabase.configuration.Application;
 
 /**
@@ -22,12 +21,12 @@ import com.excilys.computerdatabase.configuration.Application;
  *	User with all privilige : admincdb, qwerty1234
  */
 public class MyBDDTest {
-    private static final String DROP_COMPUTER = "DROP TABLE computer;";
-    private static final String DROP_COMPANY = "DROP TABLE company;";
+    private static final String DROP_COMPUTER = "DROP TABLE computer";
+    private static final String DROP_COMPANY = "DROP TABLE company";
     
     private ApplicationContext context = 
 	          new AnnotationConfigApplicationContext(Application.class);
-    private JdbcTemplate jdbcTemplate = new JdbcTemplate((DataSource) context.getBean("dataSource"));
+    private SessionFactory session = (SessionFactory) context.getBean("sessionFactory");
     
     private static MyBDDTest instance;
     
@@ -42,21 +41,26 @@ public class MyBDDTest {
      * Initializes the Database with tables and entries
      */
     public void init() {
- 
         String[] tablesStrings = transferDataFromFile("bdd/1-SCHEMA.sql");
         String[] entriesStrings = transferDataFromFile("bdd/3-ENTRIES.sql");
-
+        
         executeScript(tablesStrings);
         executeScript(entriesStrings);
-
     }
     
     /**
      * Destroys the tables previously added
      */
     public void destroy() {
-            jdbcTemplate.update(DROP_COMPUTER);
-            jdbcTemplate.update(DROP_COMPANY);
+    	Transaction tx = session.getCurrentSession().beginTransaction();
+    	try {
+    		session.getCurrentSession().createQuery(DROP_COMPUTER).executeUpdate();
+    		session.getCurrentSession().createQuery(DROP_COMPANY).executeUpdate();
+    		tx.commit();   
+       	}catch (Exception e) {
+   			tx.rollback();
+   			e.printStackTrace();
+   		}
     }
     
     /**
@@ -93,9 +97,19 @@ public class MyBDDTest {
      * @throws SQLException
      */
     private void executeScript(String[] sqlLines) {
-        for (int i = 0; i < sqlLines.length; i++)
-            if (!sqlLines[i].trim().equals("")) {
-                jdbcTemplate.update(sqlLines[i] + ";");
-            }
+    	Transaction tx = session.getCurrentSession().beginTransaction();
+    	try {
+    		 for (int i = 0; i < sqlLines.length; i++)
+    		 {
+    			 if (!sqlLines[i].trim().equals("")) {
+    				 session.getCurrentSession().createQuery(sqlLines[i]).executeUpdate();
+ 	            } 
+    		 }
+    	     tx.commit();      
+    	}catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}
+       
     }
 }

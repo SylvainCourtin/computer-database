@@ -13,9 +13,11 @@
        <property name="hibernate.connection.password">qwerty1234</property>
        <property name="hibernate.connection.pool_size">10</property>
 
-       <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-       
+       <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
        <property name="hibernate.current_session_context_class">thread</property>
+       
+       <property name="hibernate.hbm2ddl.auto">create-drop</property>
+       <property name="hibernate.hbm2ddl.import_files">bdd/3-ENTRIES.sql</property>
        
        <mapping class ="com.excilys.computerdatabase.models.Company" />
        <mapping class ="com.excilys.computerdatabase.models.Computer" />

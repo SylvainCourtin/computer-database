@@ -7,8 +7,6 @@ import static org.junit.Assert.fail;
 
 import java.time.format.DateTimeParseException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -34,17 +31,6 @@ public class DeleteComputer {
 	private ComputerDao computerDao;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());;
-	
-	@BeforeClass
-	public static void initBDD() {
-		MyBDDTest.getInstance().init();
-	}
-	
-	@AfterClass
-	public static void destroyTest()
-	{
-		MyBDDTest.getInstance().destroy();
-	}
 	
 	@Test
 	public void verifyBeans()

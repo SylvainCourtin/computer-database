@@ -17,6 +17,7 @@ import com.excilys.computerdatabase.exception.DateDiscontinuedIntroducedExceptio
 import com.excilys.computerdatabase.exception.NoNameComputerException;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.utils.MyConstants;
+import com.excilys.computerdatabase.utils.MyUtils;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
 
 @Repository
@@ -53,10 +54,11 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			computers = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_ORDERBY, Computer.class)
+			session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_ORDERBY, Computer.class)
 					.setMaxResults(limite)
 					.setFirstResult(offset)
-					.getResultList();
+					.getResultList()
+					.forEach(computer -> computers.add(fix(computer)));
 			tx.commit();
 		}catch (HibernateException e) {
 			logger.debug(e.getMessage());
@@ -71,11 +73,12 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			computers = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_ORDERBY, Computer.class)
-					.setMaxResults(limite)
-					.setFirstResult(offset)
-					.setParameter("like","%"+sLike+"%")
-					.getResultList();
+			session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_ORDERBY, Computer.class)
+				.setMaxResults(limite)
+				.setFirstResult(offset)
+				.setParameter("like","%"+sLike+"%")
+				.getResultList()
+				.forEach(computer -> computers.add(fix(computer)));
 			tx.commit();
 		}catch (HibernateException e) {
 			logger.debug(e.getMessage());
@@ -90,7 +93,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			computer = session.get(Computer.class, id);
+			computer = fix(session.get(Computer.class, id));
 			tx.commit();
 		}catch (HibernateException e) {
 			logger.debug(e.getMessage());
@@ -188,5 +191,17 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 			tx.rollback();
 		}
 		return nb;
+	}
+	
+	/**
+	 * Fix error date one days (ugly)
+	 * @param computer
+	 * @return
+	 */
+	private Computer fix(Computer computer)
+	{
+		computer.setDateIntroduced(MyUtils.plusDays(computer.getDateIntroduced()));
+		computer.setDateDiscontinued(MyUtils.plusDays(computer.getDateDiscontinued()));
+		return computer;
 	}
 }

@@ -1,23 +1,18 @@
 package com.excilys.computerdatabase.myTest.dao;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.time.format.DateTimeParseException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -32,18 +27,6 @@ public class UpdateComputer {
 	
 	@Autowired
 	private ComputerDao computerDao;
-	
-	@BeforeClass
-	public static void initBDD()
-	{
-		MyBDDTest.getInstance().init();
-	}
-	
-	@AfterClass
-	public static void destroyTest()
-	{
-		MyBDDTest.getInstance().destroy();
-	}
 	
 	@Test
 	public void verifyBeans()

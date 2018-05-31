@@ -3,8 +3,6 @@ package com.excilys.computerdatabase.myTest.dao;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -25,18 +22,6 @@ public class DeleteCompany {
 	private Logger logger = LoggerFactory.getLogger(getClass());;
 	@Autowired
 	private CompanyDao companyDao;
-	
-	@BeforeClass
-	public static void initBDD() {
-		MyBDDTest.getInstance().init();
-		
-	}
-	
-	@AfterClass
-	public static void destroyTest()
-	{
-		MyBDDTest.getInstance().destroy();
-	}
 	
 	@Test
 	public void verifyBeans()

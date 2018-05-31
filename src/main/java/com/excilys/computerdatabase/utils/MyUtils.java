@@ -139,5 +139,18 @@ public class MyUtils {
 		}
 		return date;
 	}
+	
+	public static LocalDate plusDays(LocalDate date)
+	{
+		if(date != null)
+			return date.plusDays(1);
+		 return null;
+	}
+	public static LocalDate minusDays(LocalDate date)
+	{
+		if(date != null)
+			return date.minusDays(1);
+		return null;
+	}
 
 }

@@ -7,15 +7,12 @@ import static org.junit.Assert.*;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.configuration.Application;
 import com.excilys.computerdatabase.dao.ComputerDao;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
@@ -34,18 +31,6 @@ public class FindComputer {
 	private ComputerDao computerDao;
 	@Autowired
 	private ServiceComputer serviceComputer;
-	
-	@BeforeClass
-	public static void initBDD()
-	{
-		MyBDDTest.getInstance().init();		
-	}
-	
-	@AfterClass
-	public static void destroyTest()
-	{
-		MyBDDTest.getInstance().destroy();
-	}
 	
 	@Test
 	public void verifyBeans()
@@ -149,5 +134,4 @@ public class FindComputer {
 	{
 		assertEquals(computerDao.getList(10, 0).size(), 10);
 	}
-
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,7 +19,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.computerdatabase.bddTest.MyBDDTest;
 import com.excilys.computerdatabase.utils.MyUtils;
 
 
@@ -31,15 +29,8 @@ public class ManagementComputer {
 	@BeforeClass
 	public static void init()
 	{
-		MyBDDTest.getInstance().init();
 		//If of executable => chmod 777 on this driver (yes in target)
 		System.setProperty("webdriver.gecko.driver", ClassLoader.getSystemClassLoader().getResource("selenium/geckodriver").getFile());
-	}
-	
-	@AfterClass
-	public static void destroy()
-	{
-		MyBDDTest.getInstance().destroy();
 	}
 	
 	@Before

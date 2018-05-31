@@ -15,19 +15,19 @@ public class MyConstants {
 	public static final String SQL_QUERY_COMPUTER_SELECT_ORDERBY = "FROM Computer "
 			+ "ORDER BY name ";
 	public static final String SQL_QUERY_COMPUTER_SELECT_LIKE_ORDERBY = "FROM Computer "
-			+ "WHERE Computer.name LIKE :like "
-			+ "ORDER BY Computer.name ";
+			+ "WHERE name LIKE :like "
+			+ "ORDER BY name ";
 	public static final String SQL_QUERY_COMPUTER_SELECT_WHERE = "FROM Computer WHERE Computer.id= :idComputer";
 	public static final String SQL_QUERY_COMPUTER_INSERT = "INSERT INTO Computer (name,introduced,discontinued,company_id) VALUES (:name,:introduced,:discontinued,:idCompany)";
 	public static final String SQL_QUERY_COMPUTER_DELETE = "DELETE FROM Computer WHERE id= :idComputer";
 	public static final String SQL_QUERY_COMPUTER_UPDATE = "UPDATE Computer SET name=:name, introduced=:introduced, discontinued=:discontinued, company_id=:idCompany WHERE id=:idCompany";
 	public static final String SQL_QUERY_COMPUTER_COUNT = "SELECT COUNT(c.id) FROM Computer c";
-	public static final String SQL_QUERY_COMPUTER_COUNT_LIKE = "SELECT COUNT(c.id) FROM Computer c WHERE name LIKE :like";
+	public static final String SQL_QUERY_COMPUTER_COUNT_LIKE = "SELECT COUNT(c.id) FROM Computer c WHERE c.name LIKE :like";
 	
 	public static final String SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY = "SELECT COUNT(c.id) FROM Computer c "
 			+ "INNER JOIN Company ON c.id = c.company_id "
 			+ "WHERE c.company_id=:idCompany; ";
-	public static final String SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY = "DELETE FROM Computer WHERE Computer.company_id=:idCompany";
+	public static final String SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY = "DELETE FROM Computer WHERE company_id=:idCompany";
 	
 	//------------------------------------------------------------------------------------------
 	

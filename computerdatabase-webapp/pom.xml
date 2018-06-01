@@ -24,6 +24,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
   		</plugin>
+  		<plugin>
+         <artifactId>maven-war-plugin</artifactId>
+         <version>3.1.0</version>
+     </plugin>
   	</plugins>
   </build>
 </project>

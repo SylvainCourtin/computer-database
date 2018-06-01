@@ -8,10 +8,10 @@ import java.util.Scanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.computerdatabase.configuration.ApplicationService;
 import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
-import com.excilys.computerdatabase.ui.config.CliConfig;
 
 public final class Cli {
 	
@@ -19,9 +19,9 @@ public final class Cli {
 	private ViewCompany company;
 	private ViewComputer computer;
 	
-	private Cli(ViewCompany vCompany, ViewComputer vComputer) {
-		company = vCompany;
-		computer = vComputer;
+	private Cli(ApplicationContext context) {
+		company = new ViewCompany(context);
+		computer = new ViewComputer(context);
 	}
 	
 	
@@ -236,10 +236,9 @@ public final class Cli {
 	}
 
 	public static void main(String... args) {
-		@SuppressWarnings("resource")
 		ApplicationContext context = 
-		          new AnnotationConfigApplicationContext(CliConfig.class);
-		Cli cli = context.getBean(Cli.class);
+		          new AnnotationConfigApplicationContext(ApplicationService.class);
+		Cli cli = new Cli(context);
 		System.out.println("---------Welcome on computer-database---------");
 		do {
 			

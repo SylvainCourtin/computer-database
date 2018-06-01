@@ -3,12 +3,14 @@ package com.excilys.computerdatabase.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.mappers.MapperComputer;
 
 @Configuration
 @ComponentScan(basePackages = { "com.excilys.computerdatabase.mappers"})
+@Import({Application.class})
 public class ApplicationBinding {
 	@Bean
 	@Scope("singleton")

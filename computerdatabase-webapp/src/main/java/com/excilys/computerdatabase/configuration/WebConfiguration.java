@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configurable
 @ComponentScan(basePackages="com.excilys.computerdatabase.controller")
+@Import({ApplicationService.class})
 public class WebConfiguration implements WebMvcConfigurer {
 	@Bean
 	public InternalResourceViewResolver viewResolver() {

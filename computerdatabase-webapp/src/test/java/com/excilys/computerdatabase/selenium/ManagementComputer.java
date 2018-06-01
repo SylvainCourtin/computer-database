@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.myTest.selenium;
+package com.excilys.computerdatabase.selenium;
 
 import static org.junit.Assert.fail;
 
@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.computerdatabase.utils.MyUtils;
+import com.excilys.computerdatabase.utils.DateUtil;
 
 
 public class ManagementComputer {
@@ -72,8 +72,8 @@ public class ManagementComputer {
 		
 		Thread.sleep(500L);
 		WebElement line = search(nameTestComputer, 
-				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateIntroduced)), 
-				MyUtils.formatDateToString(MyUtils.stringToDateInv(dateDiscontinued)),
+				DateUtil.formatDateToString(DateUtil.stringToDateInv(dateIntroduced)), 
+				DateUtil.formatDateToString(DateUtil.stringToDateInv(dateDiscontinued)),
 				nameEntreprise);
 		
 		delete(line);
@@ -167,7 +167,7 @@ public class ManagementComputer {
 				logger.debug(driver.findElement(By.className("alert-success")).getText());
 				fail("Fail updated");
 			}
-			line = search(computer, MyUtils.formatDateToString(MyUtils.stringToDateInv(introduced)), MyUtils.formatDateToString(MyUtils.stringToDateInv(discontinued)));
+			line = search(computer, DateUtil.formatDateToString(DateUtil.stringToDateInv(introduced)), DateUtil.formatDateToString(DateUtil.stringToDateInv(discontinued)));
 
 		}catch (Exception e) {
 			logger.warn("We catch the exception expected : " + e.getMessage());

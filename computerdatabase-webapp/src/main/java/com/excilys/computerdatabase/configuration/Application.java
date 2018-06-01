@@ -16,9 +16,7 @@ import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
-import com.excilys.computerdatabase.utils.ReadPropertiesFile;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
-import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {"com.excilys.computerdatabase.dao", 
@@ -53,20 +51,6 @@ public class Application {
 	public ServiceCompany getServiceCompany()
 	{
 		return new ServiceCompany(getCompanyDao());
-	}
-	
-	@Bean("dataSource")
-	@Scope("singleton")
-	public DataSource getDataSource()
-	{
-		ReadPropertiesFile propertiesFile = ReadPropertiesFile.getInstance();
-		HikariDataSource dataSource = new HikariDataSource();
-		dataSource.setJdbcUrl(propertiesFile.getUrl());
-		dataSource.setUsername(propertiesFile.getLogin());
-		dataSource.setPassword(propertiesFile.getPassword());
-		dataSource.setDriverClassName(propertiesFile.getDriver());
-		
-		return dataSource;
 	}
 	
 	@Bean

@@ -104,8 +104,7 @@ public class ServiceComputer {
 	 * @throws NoNameComputerException 
 	 */
 	public long addComputer(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException {
-		validatorComputer.dateDiscontinuedGreaterThanIntroduced(computer.getDateIntroduced(), computer.getDateDiscontinued());
-		validatorComputer.companyExist(computer.getManufacturerCompany());
+		validatorComputer.validInsertComputer(computer);
 		return computerDao.add(computer);
 	}
 	
@@ -150,8 +149,7 @@ public class ServiceComputer {
 	 * @throws NoNameComputerException 
 	 */
 	public boolean updateComputer(Computer oldComputer, Computer newComputer) throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException, NoNameComputerException {
-		validatorComputer.dateDiscontinuedGreaterThanIntroduced(newComputer.getDateIntroduced(), newComputer.getDateDiscontinued());
-		validatorComputer.companyExist(newComputer.getManufacturerCompany());
+		validatorComputer.validInsertComputer(newComputer);
 		newComputer.setId(oldComputer.getId());
 		return computerDao.update(newComputer);
 	}
@@ -169,14 +167,14 @@ public class ServiceComputer {
 	 * @throws NoNameComputerException 
 	 */
 	public boolean updateComputer(long id, String name, LocalDate introduced,LocalDate discontinued, CompanyDTO manufacturerCompany)throws DateDiscontinuedIntroducedException, CompanyDoesNotExistException, NoNameComputerException {
-		validatorComputer.dateDiscontinuedGreaterThanIntroduced(introduced, discontinued);
 		Company company = null;
 		if(manufacturerCompany != null)
 		{
-			validatorComputer.companyExist(manufacturerCompany.getCompanyBasicView().getId());
 			company = new Company(manufacturerCompany.getCompanyBasicView().getId(), manufacturerCompany.getCompanyBasicView().getName());
 		}
-		return computerDao.update((new Computer(id,name, introduced, discontinued, company)));
+		Computer computer = new Computer(id,name, introduced, discontinued, company);
+		validatorComputer.validInsertComputer(computer);
+		return computerDao.update(computer);
 	}
 	
 	

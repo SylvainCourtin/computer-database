@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import com.excilys.computerdatabase.dao.CompanyDao;
 import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.models.Company;
-import com.excilys.computerdatabase.service.ServiceCompany;
 
 @Component
 public class MapperCompany implements RowMapper<Company> {
 	
 	@Autowired
-	private ServiceCompany serviceCompany;
+	private CompanyDao companyDao;
 
 	public Company fromParameters(long id, String name)
 	{
@@ -35,7 +35,7 @@ public class MapperCompany implements RowMapper<Company> {
 	{
 		if(id > 0)
 		{
-			return serviceCompany.getCompany(id);
+			return companyDao.getCompany(id);
 		}
 		return Optional.empty();
 	}
@@ -44,7 +44,7 @@ public class MapperCompany implements RowMapper<Company> {
 	{
 		if(id > 0)
 		{
-			Optional<Company> company = serviceCompany.getCompany(id);
+			Optional<Company> company = companyDao.getCompany(id);
 			if(company.isPresent())
 				return Optional.ofNullable(companyToDTO(company.get()));
 		}

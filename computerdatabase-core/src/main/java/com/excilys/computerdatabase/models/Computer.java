@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.excilys.computerdatabase.utils.MyUtils;
+import com.excilys.computerdatabase.utils.DateUtil;
 
 @Entity(name="Computer")
 @Table(name="computer")
@@ -143,10 +143,10 @@ public class Computer {
 		String company = "null";
 		
 		if(dateDiscontinued != null)
-			dateDisc = MyUtils.formatDateToString(dateDiscontinued);
+			dateDisc = DateUtil.formatDateToString(dateDiscontinued);
 		
 		if(dateIntroduced != null)
-			dateIntro = MyUtils.formatDateToString(dateIntroduced);
+			dateIntro = DateUtil.formatDateToString(dateIntroduced);
 		
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.getName();
@@ -162,10 +162,10 @@ public class Computer {
 		String company = "empty";
 		
 		if(dateDiscontinued != null)
-			dateDisc = MyUtils.formatDateToString(dateDiscontinued);
+			dateDisc = DateUtil.formatDateToString(dateDiscontinued);
 		
 		if(dateIntroduced != null)
-			dateIntro = MyUtils.formatDateToString(dateIntroduced);
+			dateIntro = DateUtil.formatDateToString(dateIntroduced);
 		
 		if(manufacturerCompany != null)
 			company =  manufacturerCompany.toString();

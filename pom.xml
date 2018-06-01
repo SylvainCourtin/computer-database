@@ -11,6 +11,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <url>https://github.com/SylvainCourtin/computer-database</url>
 
 <properties>
+	<parent.version>0.3.3-SNAPSHOT</parent.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     
@@ -171,6 +172,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     </plugins>
   </build>
   
+  <modules>
+  	<module>computerdatabase-binding</module>
+  	<module>computerdatabase-console</module>
+  	<module>computerdatabase-core</module>
+  	<module>computerdatabase-persistence</module>
+  	<module>computerdatabase-service</module>
+  	<module>computerdatabase-webapp</module>
+  </modules>
   
 
 </project>

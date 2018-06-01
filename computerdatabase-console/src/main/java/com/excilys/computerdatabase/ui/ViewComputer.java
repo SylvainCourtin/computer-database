@@ -15,7 +15,7 @@ import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceComputer;
 import com.excilys.computerdatabase.ui.page.PageComputer;
-import com.excilys.computerdatabase.utils.MyUtils;
+import com.excilys.computerdatabase.utils.DateUtil;
 
 public class ViewComputer {
 	
@@ -73,14 +73,14 @@ public class ViewComputer {
 	 */
 	public LocalDate showRequestDateIntroduced()
 	{
-		return MyUtils.requestOkDate();
+		return DateUtil.requestOkDate();
 	}
 	/**
 	 * demande d'une date ou null (format exigeant !)
 	 */
 	public LocalDate showRequestDateDiscontinued()
 	{
-		return  MyUtils.requestOkDate();
+		return  DateUtil.requestOkDate();
 		
 	}
 	/**

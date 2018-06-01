@@ -9,6 +9,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <artifactId>computerdatabase-core</artifactId>
   <packaging>jar</packaging>
   <name>computer-database-core</name>
+  <dependencies>
+  	<dependency>
+	    <groupId>javax.persistence</groupId>
+	    <artifactId>persistence-api</artifactId>
+	    <version>1.0.2</version>
+	</dependency>
+  </dependencies>
   <build>
   	<plugins>
   		<plugin>

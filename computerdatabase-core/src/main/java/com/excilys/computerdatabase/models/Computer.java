@@ -52,26 +52,6 @@ public class Computer {
 		this.dateDiscontinued = dateDiscontinued;
 		this.manufacturerCompany = manufacturerCompany;
 	}
-
-	public LocalDate getDateDiscontinued() {
-		return dateDiscontinued;
-	}
-	public String getName() {
-		return name;
-	}
-	public LocalDate getDateIntroduced() {
-		return dateIntroduced;
-	}
-	
-	public void setDateDiscontinued(LocalDate dateDiscontinued){
-		this.dateDiscontinued = dateDiscontinued;
-	}
-	public void setDateIntroduced(LocalDate dateIntroduced){
-		this.dateIntroduced = dateIntroduced;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	public long getId() {
 		return id;
@@ -79,6 +59,30 @@ public class Computer {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDateIntroduced() {
+		return dateIntroduced;
+	}
+
+	public void setDateIntroduced(LocalDate dateIntroduced) {
+		this.dateIntroduced = dateIntroduced;
+	}
+
+	public LocalDate getDateDiscontinued() {
+		return dateDiscontinued;
+	}
+
+	public void setDateDiscontinued(LocalDate dateDiscontinued) {
+		this.dateDiscontinued = dateDiscontinued;
 	}
 
 	public Company getManufacturerCompany() {

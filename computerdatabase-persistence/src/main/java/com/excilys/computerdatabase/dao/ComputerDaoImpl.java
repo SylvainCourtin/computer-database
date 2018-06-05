@@ -200,8 +200,11 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	 */
 	private Computer fix(Computer computer)
 	{
-		computer.setDateIntroduced(DateUtil.plusDays(computer.getDateIntroduced()));
-		computer.setDateDiscontinued(DateUtil.plusDays(computer.getDateDiscontinued()));
+		if(computer != null)
+		{
+			computer.setDateIntroduced(DateUtil.plusDays(computer.getDateIntroduced()));
+			computer.setDateDiscontinued(DateUtil.plusDays(computer.getDateDiscontinued()));
+		}
 		return computer;
 	}
 }

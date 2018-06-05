@@ -25,6 +25,7 @@ import com.excilys.computerdatabase.utils.DateUtil;
 public class ManagementComputer {
 	private WebDriver driver;
 	private Logger logger = LoggerFactory.getLogger(ManagementComputer.class);
+	private final String url = "http://localhost:8080/computerdatabase-webapp/";
 	
 	@BeforeClass
 	public static void init()
@@ -48,7 +49,7 @@ public class ManagementComputer {
 	@Test
 	public void addComputer() throws InterruptedException
 	{
-		driver.get("http://localhost:8080/computerdatabase/");
+		driver.get(url);
 		List<WebElement> webElements = driver.findElements(By.tagName("a"));
 		for (WebElement element : webElements) {
 			if(element.getText().contains("Add"))
@@ -82,7 +83,7 @@ public class ManagementComputer {
 	@Test
 	public void failAddComputerNoName() throws InterruptedException
 	{
-		driver.get("http://localhost:8080/computerdatabase/");
+		driver.get(url);
 		List<WebElement> webElements = driver.findElements(By.tagName("a"));
 		for (WebElement element : webElements) {
 			if(element.getText().contains("Add"))
@@ -107,7 +108,7 @@ public class ManagementComputer {
 	@Test
 	public void failAddComputerWrongDate () throws InterruptedException
 	{
-		driver.get("http://localhost:8080/computerdatabase/");
+		driver.get(url);
 		List<WebElement> webElements = driver.findElements(By.tagName("a"));
 		for (WebElement element : webElements) {
 			if(element.getText().contains("Add"))
@@ -143,7 +144,7 @@ public class ManagementComputer {
 	{
 		//Try edit the computer "ACE"
 		String computer = "ACE";
-		driver.get("http://localhost:8080/computerdatabase/");
+		driver.get(url);
 		List<WebElement> webElements = driver.findElements(By.tagName("a"));
 		for (WebElement element : webElements) {
 			if(element.getText().contains("computers"))
@@ -183,7 +184,7 @@ public class ManagementComputer {
 	//@Test
 	public void testChargeManySearch() throws InterruptedException
 	{
-		driver.get("http://localhost:8080/computerdatabase/");
+		driver.get(url);
 		List<WebElement> webElements = driver.findElements(By.tagName("a"));
 		for (WebElement element : webElements) {
 			if(element.getText().contains("computers"))

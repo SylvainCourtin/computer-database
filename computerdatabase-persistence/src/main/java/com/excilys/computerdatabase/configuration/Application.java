@@ -13,7 +13,9 @@ import com.excilys.computerdatabase.dao.ComputerDaoImpl;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
 
 @Configuration
-@ComponentScan(basePackages = {"com.excilys.computerdatabase.dao", "com.excilys.computerdatabase.validators"})
+@ComponentScan(basePackages = {
+		"com.excilys.computerdatabase.dao", 
+		"com.excilys.computerdatabase.validators"})
 public class Application {
 	
 	@Bean("companyDao")
@@ -30,18 +32,18 @@ public class Application {
 		return new ComputerDaoImpl();
 	}
 	
-	@Bean("sessionFactory")
-	@Scope("singleton")
-	public SessionFactory getSessionFactory()
-	{
-		return getConfigurationHibernate().getFactory();
-	}
-	
 	@Bean
 	@Scope("singleton")
 	public ConfigurationHibernate getConfigurationHibernate()
 	{
 		return new ConfigurationHibernate();
+	}
+	
+	@Bean("sessionFactory")
+	@Scope("singleton")
+	public SessionFactory getSessionFactory()
+	{
+		return getConfigurationHibernate().getFactory();
 	}
 	
 	@Bean

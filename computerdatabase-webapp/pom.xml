@@ -10,11 +10,38 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <packaging>war</packaging>
   <name>computer-database-webapp</name>
   
+  <build>
+  	<plugins>
+		<plugin>
+			<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+		</plugin>
+  		<plugin>
+         	<artifactId>maven-war-plugin</artifactId>
+         	<version>3.1.0</version>
+     	</plugin>
+  	</plugins>
+  </build>
+  
   <dependencies>
    <dependency>
 			<groupId>com.excilys.computerdatabase</groupId>
 			<artifactId>computerdatabase-service</artifactId>
 			<version>${parent.version}</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-web</artifactId>
+	    <version>${springframework}</version>
+	</dependency>
+	
+	
+	<dependency>
+		<groupId>org.seleniumhq.selenium</groupId>
+		<artifactId>selenium-java</artifactId>
+		<version>${org.seleniumhq.selenium}</version>
+		<scope>test</scope>
 	</dependency>
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -22,39 +49,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	    <version>${javax.servlet.api}</version>
 	</dependency>
 	<dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${springframework}</version>
-    </dependency>
-    <dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-web</artifactId>
-		<version>${springframework}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.seleniumhq.selenium</groupId>
-		<artifactId>selenium-java</artifactId>
-		<version>${org.seleniumhq.selenium}</version>
-		<scope>test</scope>
-	</dependency>
-		<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>jsp-api</artifactId>
 	    <version>${jsp-api}</version>
 	    <scope>provided</scope>
-	</dependency> 
+	</dependency>
+     <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId>
+         <version>${javax.servlet.jstl}</version>
+     </dependency>
   </dependencies>
   
-  <build>
-  	<plugins>
-  		<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-  		</plugin>
-  		<plugin>
-         <artifactId>maven-war-plugin</artifactId>
-         <version>3.1.0</version>
-     </plugin>
-  	</plugins>
-  </build>
+
 </project>

@@ -3,7 +3,6 @@ package com.excilys.computerdatabase.configuration;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-
 class ConfigurationHibernate {
 	
 	private final SessionFactory factory;

@@ -1,11 +1,7 @@
 package com.excilys.computerdatabase.mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computerdatabase.dao.CompanyDao;
@@ -13,10 +9,13 @@ import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.models.Company;
 
 @Component
-public class MapperCompany implements RowMapper<Company> {
+public class MapperCompany{
 	
-	@Autowired
 	private CompanyDao companyDao;
+
+	public MapperCompany(CompanyDao companyDao) {
+		this.companyDao = companyDao;
+	}
 
 	public Company fromParameters(long id, String name)
 	{
@@ -49,11 +48,5 @@ public class MapperCompany implements RowMapper<Company> {
 				return Optional.ofNullable(companyToDTO(company.get()));
 		}
 		return Optional.empty();
-	}
-
-	@Override
-	public Company mapRow(ResultSet resultSet, int rownum) throws SQLException {
-		return fromParameters(resultSet.getLong("id"), resultSet.getString("name"));
-	}
-	
+	}	
 }

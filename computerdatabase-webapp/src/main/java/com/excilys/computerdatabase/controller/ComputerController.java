@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,16 +37,20 @@ import com.excilys.computerdatabase.utils.MyConstants;
 @RequestMapping("/computer")
 public class ComputerController implements WebMvcConfigurer {
 	
-	@Autowired
 	private ServiceComputer facade;
-	@Autowired
 	private ServiceCompany serviceCompany;
-	@Autowired
 	private MapperCompany mapperCompany;
-	@Autowired
 	private MapperComputer mapperComputer;
 	private Logger logger = LoggerFactory.getLogger(ComputerController.class);
-
+	
+	public ComputerController(ServiceComputer facade, ServiceCompany serviceCompany, MapperCompany mapperCompany,
+			MapperComputer mapperComputer) {
+		super();
+		this.facade = facade;
+		this.serviceCompany = serviceCompany;
+		this.mapperCompany = mapperCompany;
+		this.mapperComputer = mapperComputer;
+	}
 	/**
 	 * 
 	 * @param model

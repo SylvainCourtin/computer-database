@@ -1,12 +1,8 @@
 package com.excilys.computerdatabase.mappers;
 
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computerdatabase.dtos.ComputerDTO;
@@ -14,10 +10,14 @@ import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.models.Computer;
 
 @Component
-public class MapperComputer implements RowMapper<Computer> {
+public class MapperComputer{
 	
-	@Autowired
-	MapperCompany mapperCompany;
+	private MapperCompany mapperCompany;
+
+	public MapperComputer(MapperCompany mapperCompany) {
+		super();
+		this.mapperCompany = mapperCompany;
+	}
 	
 	public static Computer fromParameters(long id, String name, LocalDate introduced, LocalDate discontinued, Company company)
 	{
@@ -72,15 +72,5 @@ public class MapperComputer implements RowMapper<Computer> {
 		LocalDate localDateIntroduced = (introduced == null ? null : LocalDate.parse(introduced));
 		LocalDate localDateDiscontinued = (discontinued == null ? null : LocalDate.parse(discontinued));
 		return new Computer(id, name, localDateIntroduced, localDateDiscontinued,company);
-	}
-
-	@Override
-	public Computer mapRow(ResultSet result, int numrow) throws SQLException {
-		Company company = mapperCompany.fromParameters(result.getLong("company.id"), result.getString("company.name"));
-		return fromParameters(result.getLong("computer.id"),
-				result.getString("computer.name"),
-				result.getDate("computer.introduced"),
-				result.getDate("computer.discontinued"),
-				company);
 	}
 }

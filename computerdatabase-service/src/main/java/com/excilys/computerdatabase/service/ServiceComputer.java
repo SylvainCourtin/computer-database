@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.computerdatabase.dao.ComputerDao;
@@ -21,14 +20,13 @@ import com.excilys.computerdatabase.validators.ValidatorComputer;
 @Service
 public class ServiceComputer {
 	
-	@Autowired
 	private ComputerDao computerDao;
-	@Autowired 
 	private ValidatorComputer validatorComputer;
 	
-	public ServiceComputer(ComputerDao computerDao)
+	public ServiceComputer(ComputerDao computerDao, ValidatorComputer validatorComputer)
 	{
 		this.computerDao = computerDao;
+		this.validatorComputer = validatorComputer;
 	}
 	
 	/**

@@ -3,7 +3,6 @@ package com.excilys.computerdatabase.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +19,15 @@ import com.excilys.computerdatabase.utils.MyConstants;
 @RequestMapping("/companies")
 public class CompanyController {
 	
-	@Autowired
 	private ServiceCompany facadeCompany;
-	@Autowired
 	private MapperCompany mapperCompany;
 	
+	public CompanyController(ServiceCompany facadeCompany, MapperCompany mapperCompany) {
+		super();
+		this.facadeCompany = facadeCompany;
+		this.mapperCompany = mapperCompany;
+	}
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCompanies(ModelMap model)
 	{

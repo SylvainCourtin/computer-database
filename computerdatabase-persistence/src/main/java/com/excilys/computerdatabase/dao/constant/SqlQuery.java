@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.dao.constant;
 
-public class MyConstants {
+public class SqlQuery {
 	public static final String SQL_QUERY_COMPANY_SELECT_ORDERBY = "FROM Company "
 			+ "ORDER BY name ";
 	public static final String SQL_QUERY_COMPANY_SELECT = "FROM Company ";

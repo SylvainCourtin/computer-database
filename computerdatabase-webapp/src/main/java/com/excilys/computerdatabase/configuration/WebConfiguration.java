@@ -2,10 +2,10 @@ package com.excilys.computerdatabase.configuration;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
@@ -19,10 +19,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@Configurable
+@Configuration
 @ComponentScan(basePackages="com.excilys.computerdatabase.controller")
-@Import({ApplicationService.class})
+@Import(ApplicationService.class)
 public class WebConfiguration implements WebMvcConfigurer {
+	
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -65,6 +66,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry)
 	{
-		registry.addResourceHandler("**").addResourceLocations("/");
+		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 	}
 }

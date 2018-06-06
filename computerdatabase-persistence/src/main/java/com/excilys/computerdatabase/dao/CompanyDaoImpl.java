@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +19,20 @@ import com.excilys.computerdatabase.exception.CompanyDoesNotExistException;
 import com.excilys.computerdatabase.models.Company;
 
 @Repository
-public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
+public class CompanyDaoImpl implements CompanyDao {
 	
 	private Logger logger = LoggerFactory.getLogger(CompanyDaoImpl.class);
+	private SessionFactory sessionFactory;
 	
-	public CompanyDaoImpl() {
-		super();
+	public CompanyDaoImpl(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
 	public List<Company> getList(int limite, int offset) {
 		List<Company> companies = new ArrayList<>();
 		
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			companies = session.createQuery(MyConstants.SQL_QUERY_COMPANY_SELECT_ORDERBY, Company.class)
@@ -51,7 +53,7 @@ public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
 	public Optional<Company> getCompany(long id)
 	{
 		Company company = null;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			company = (Company) session.createQuery(MyConstants.SQL_QUERY_COMPANY_SELECT_WHERE_ID, Company.class)
@@ -70,7 +72,7 @@ public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
 	@Override
 	public long getNumberElement() {
 		Long nb = 0L;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPANY_COUNT).getSingleResult();
@@ -89,7 +91,7 @@ public class CompanyDaoImpl extends HibernateDAO implements CompanyDao {
 		boolean isDelete = false;
 		if(getCompany(id).isPresent())
 		{
-			Session session = getCurrentSession();
+			Session session = sessionFactory.getCurrentSession();
 			Transaction tx = session.beginTransaction();
 			try {
 				session.createQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE_RELATED_COMPANY)

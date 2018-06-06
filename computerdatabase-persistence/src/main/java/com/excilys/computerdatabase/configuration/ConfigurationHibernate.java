@@ -3,16 +3,17 @@ package com.excilys.computerdatabase.configuration;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-class ConfigurationHibernate {
+public class ConfigurationHibernate {
 	
-	private final SessionFactory factory;
+	private final SessionFactory sessionFactory;
 	
 	public ConfigurationHibernate() {
-		factory = new Configuration().configure().buildSessionFactory();
-		factory.openSession();
+		sessionFactory = new Configuration().configure().buildSessionFactory();
+		sessionFactory.openSession();
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
 	}
 	
-	public SessionFactory getFactory() {
-		return factory;
-	}
 }

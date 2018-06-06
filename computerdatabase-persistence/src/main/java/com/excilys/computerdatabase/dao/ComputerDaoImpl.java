@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,22 +22,24 @@ import com.excilys.computerdatabase.utils.DateUtil;
 import com.excilys.computerdatabase.validators.ValidatorComputer;
 
 @Repository
-public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
+public class ComputerDaoImpl implements ComputerDao {
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
 	@Autowired
 	private ValidatorComputer validatorComputer;
 	
-	public ComputerDaoImpl() {
-		super();
+	private SessionFactory sessionFactory;
+	
+	public ComputerDaoImpl(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
 	public long add(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException{
 		long id = -1;
 		validatorComputer.validInsertComputer(computer);
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			id = (Long) session.save(computer); //throws HibernateException
@@ -51,7 +54,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	@Override
 	public List<Computer> getList(int limite, int offset) {
 		List<Computer> computers = new ArrayList<>();
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_ORDERBY, Computer.class)
@@ -70,7 +73,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	@Override
 	public List<Computer> getListLike(int limite, int offset, String sLike) {
 		List<Computer> computers = new ArrayList<>();
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.createQuery(MyConstants.SQL_QUERY_COMPUTER_SELECT_LIKE_ORDERBY, Computer.class)
@@ -90,7 +93,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	@Override
 	public Optional<Computer> getComputer(long id) {
 		Computer computer = null;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			computer = fix(session.get(Computer.class, id));
@@ -111,7 +114,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	public boolean delete(long id)
 	{
 		boolean isDelete = false;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			isDelete = session.createQuery(MyConstants.SQL_QUERY_COMPUTER_DELETE)
@@ -129,7 +132,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	public boolean update(Computer computer) throws CompanyDoesNotExistException, DateDiscontinuedIntroducedException, NoNameComputerException {
 		boolean isUpdate = false;
 		validatorComputer.validInsertComputer(computer);
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.saveOrUpdate(computer); //throws HibernateException
@@ -147,7 +150,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	@Override
 	public long getNumberElement() {
 		long nb = 0;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT).getSingleResult();
@@ -162,7 +165,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	@Override
 	public long getNumberElementLike(String sLike) {
 		long nb = 0;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT_LIKE)
@@ -179,7 +182,7 @@ public class ComputerDaoImpl extends HibernateDAO implements ComputerDao {
 	@Override
 	public long getNumberComputerRelatedToThisCompany(long idCompany) {
 		long nb = 0;
-		Session session = getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			nb = (Long) session.createQuery(MyConstants.SQL_QUERY_COMPUTER_COUNT_RELATED_COMPANY)

@@ -11,11 +11,10 @@ import org.springframework.context.annotation.Scope;
 		"com.excilys.computerdatabase.dao", 
 		"com.excilys.computerdatabase.validators"})
 public class Application {
-	
-	@Bean
-	@Scope("singleton")
+	@Bean("sessionFactory")
+	@Scope
 	public SessionFactory sessionFactory()
 	{
-		return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+		return new HibernateConfiguration().getSessionFactory();
 	}
 }

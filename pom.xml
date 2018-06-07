@@ -170,6 +170,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   	<module>computerdatabase-persistence</module>
   	<module>computerdatabase-service</module>
   	<module>computerdatabase-webapp</module>
+	<module>computerdatabase-webservices</module>
   </modules>
   
 

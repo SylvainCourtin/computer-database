@@ -32,6 +32,13 @@ public class ServiceCompany{
 	}
 	
 	/**
+	 * @return return the list of all companies in the bdd
+	 */
+	public List<Company> getCompanies(long limite, long offset) {
+		return companyDao.getList((int)limite,(int)offset);
+	}
+	
+	/**
 	 * @param id company id
 	 * @return return true if this id company exist in the bdd
 	 */

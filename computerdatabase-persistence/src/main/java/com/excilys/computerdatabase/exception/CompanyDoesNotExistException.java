@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.exception;
 
-public class CompanyDoesNotExistException extends Exception {
+public class CompanyDoesNotExistException extends ValidationException {
 
 	/**
 	 * 

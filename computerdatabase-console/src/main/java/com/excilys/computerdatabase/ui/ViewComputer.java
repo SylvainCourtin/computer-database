@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.ui;
 
-import static com.excilys.computerdatabase.utils.MyConstants.NUMBER_LIST_PER_PAGE;
+import static com.excilys.computerdatabase.utils.Utils.NUMBER_LIST_PER_PAGE;
 
 import java.time.LocalDate;
 import java.util.Optional;

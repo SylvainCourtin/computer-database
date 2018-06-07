@@ -31,7 +31,7 @@ import com.excilys.computerdatabase.mappers.MapperComputer;
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.service.ServiceCompany;
 import com.excilys.computerdatabase.service.ServiceComputer;
-import com.excilys.computerdatabase.utils.MyConstants;
+import com.excilys.computerdatabase.utils.Utils;
 
 @Controller
 @RequestMapping("/computer")
@@ -300,9 +300,9 @@ public class ComputerController implements WebMvcConfigurer {
 			filter = search.trim();
 		long numberOfComputer = facade.getNumberRowComputerLike(filter);
 		int res = 0;
-		if(numberOfComputer%MyConstants.NUMBER_LIST_PER_PAGE > 0)
+		if(numberOfComputer%Utils.NUMBER_LIST_PER_PAGE > 0)
 			res=1;
-		int numberOfPages=(int) numberOfComputer/MyConstants.NUMBER_LIST_PER_PAGE + res;
+		int numberOfPages=(int) numberOfComputer/Utils.NUMBER_LIST_PER_PAGE + res;
 		
 		List<ComputerDTO> computers = new ArrayList<>();
 		int page=1;
@@ -311,12 +311,12 @@ public class ComputerController implements WebMvcConfigurer {
 		{
 			page = nextPage;
 			//On redirige a la derniere page si le choix de la page dépasse le nombre de pages
-			if(MyConstants.NUMBER_LIST_PER_PAGE*(page-1) > numberOfComputer)
+			if(Utils.NUMBER_LIST_PER_PAGE*(page-1) > numberOfComputer)
 				page =  numberOfPages;
 				
 		}
 		
-		for(Computer computer : facade.getComputers(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(page-1), filter))
+		for(Computer computer : facade.getComputers(Utils.NUMBER_LIST_PER_PAGE, Utils.NUMBER_LIST_PER_PAGE*(page-1), filter))
 		{
 			computers.add(MapperComputer.computerToDTO(computer));
 		}

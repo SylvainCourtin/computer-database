@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.exception;
 
-public class DateDiscontinuedIntroducedException extends Exception {
+public class DateDiscontinuedIntroducedException extends ValidationException {
 
 	/**
 	 * 

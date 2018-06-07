@@ -13,7 +13,7 @@ import com.excilys.computerdatabase.dtos.CompanyDTO;
 import com.excilys.computerdatabase.mappers.MapperCompany;
 import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
-import com.excilys.computerdatabase.utils.MyConstants;
+import com.excilys.computerdatabase.utils.Utils;
 
 @Controller
 @RequestMapping("/companies")
@@ -48,9 +48,9 @@ public class CompanyController {
 		long numberOfCompanies = facadeCompany.getNumberRowComputer();
 
 		int res = 0;
-		if(numberOfCompanies%MyConstants.NUMBER_LIST_PER_PAGE > 0)
+		if(numberOfCompanies%Utils.NUMBER_LIST_PER_PAGE > 0)
 			res=1;
-		int numberOfPages=(int) numberOfCompanies/MyConstants.NUMBER_LIST_PER_PAGE + res;
+		int numberOfPages=(int) numberOfCompanies/Utils.NUMBER_LIST_PER_PAGE + res;
 		
 		List<CompanyDTO> companies = new ArrayList<>();
 		int newPage = 1;
@@ -58,11 +58,11 @@ public class CompanyController {
 		{
 			newPage=page;
 			//On redirige a la derniere page si le choix de la page dépasse le nombre de pages
-			if(MyConstants.NUMBER_LIST_PER_PAGE*(newPage-1) > numberOfCompanies)
+			if(Utils.NUMBER_LIST_PER_PAGE*(newPage-1) > numberOfCompanies)
 				newPage = numberOfPages;
 				
 		}
-		for(Company company : facadeCompany.getCompanies(MyConstants.NUMBER_LIST_PER_PAGE, MyConstants.NUMBER_LIST_PER_PAGE*(newPage-1)))
+		for(Company company : facadeCompany.getCompanies(Utils.NUMBER_LIST_PER_PAGE, Utils.NUMBER_LIST_PER_PAGE*(newPage-1)))
 		{
 			companies.add(mapperCompany.companyToDTO(company));
 		}

@@ -1,6 +1,6 @@
 package com.excilys.computerdatabase.exception;
 
-public class NoNameComputerException extends Exception {
+public class NoNameComputerException extends ValidationException {
 
 	private static final long serialVersionUID = 1L;
 	

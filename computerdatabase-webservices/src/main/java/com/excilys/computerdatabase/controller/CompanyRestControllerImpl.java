@@ -51,7 +51,10 @@ public class CompanyRestControllerImpl implements CompanyRestController {
 				throw new CompanyDoesNotExistException();
 		}catch (ServiceException | CompanyDoesNotExistException e) {
 			logger.debug(e.getMessage());
-			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if(e instanceof CompanyDoesNotExistException)
+				response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			else
+				response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
 	}
@@ -60,7 +63,7 @@ public class CompanyRestControllerImpl implements CompanyRestController {
 	@GetMapping
 	public ResponseEntity<List<CompanyDTO>> getCompanies() {
 		try {
-			return new ResponseEntity<List<CompanyDTO>>(serviceCompany
+			return new ResponseEntity<List<CompanyDTO> >(serviceCompany
 					.getCompanies(serviceCompany.getNumberRowComputer(),0)
 					.stream()
 					.map(company -> mapperCompany.companyToDTO(company) )

@@ -32,6 +32,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <hibernate.core>5.3.1.Final</hibernate.core>
     <hibernate.hql>1.5.0.Final</hibernate.hql>
     <jackson>2.9.5</jackson>
+    <jersey>1.19.4</jersey>
 </properties>
 
 <dependencyManagement>

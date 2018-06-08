@@ -21,7 +21,7 @@ import com.excilys.computerdatabase.models.Company;
 import com.excilys.computerdatabase.service.ServiceCompany;
 
 @RestController
-@RequestMapping(value="/companies")
+@RequestMapping(value="/company")
 public class CompanyRestControllerImpl implements CompanyRestController {
 	
 	private static final Logger logger = LoggerFactory

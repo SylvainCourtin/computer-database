@@ -25,6 +25,14 @@ public class MapperCompany{
 		return company;
 	}
 	
+	public static Company fromParameters(CompanyDTO companyDTO)
+	{
+		Company company = null;
+		if(companyDTO.getCompanyBasicView().getId() > 0)
+			company = new Company(companyDTO.getCompanyBasicView().getId(),companyDTO.getCompanyBasicView().getName());
+		return company;
+	}
+	
 	public CompanyDTO companyToDTO(Company company)
 	{
 		return new CompanyDTO(company);

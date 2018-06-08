@@ -60,11 +60,11 @@ public class ComputerRestControllerImpl implements ComputerRestController {
 		return response;
 	}
 	@Override
-	@GetMapping(params= {"page", "search", "limit"})
+	@GetMapping
 	public ResponseEntity<List<ComputerDTO> > getComputers(
-			@RequestParam(defaultValue="1") int page,
-			@RequestParam(defaultValue=Utils.NUMBER_LIST_PER_PAGE+"") int limit,
-			@RequestParam(defaultValue="") String search) {
+			@RequestParam(name="page",defaultValue="1", required=false) int page,
+			@RequestParam(name="search",defaultValue="", required=false) String search,
+			@RequestParam(name="limit",defaultValue=Utils.NUMBER_LIST_PER_PAGE+"", required=false) int limit) {
 		try {
 			return new ResponseEntity<List<ComputerDTO> >(serviceComputer
 					.getComputers(limit, pageManager(search,page,limit), search)
@@ -98,14 +98,14 @@ public class ComputerRestControllerImpl implements ComputerRestController {
 	}
 	@Override
 	@PutMapping("/{id}")
-	public ResponseEntity<String> updateComputer(@PathVariable long id, @RequestBody ComputerDTO computerDTO) {
-		ResponseEntity<String> response;
+	public ResponseEntity<ComputerDTO> updateComputer(@PathVariable long id, @RequestBody ComputerDTO computerDTO) {
+		ResponseEntity<ComputerDTO> response;
 		try {
 			Optional<ComputerDTO> oldComputerDTO = serviceComputer.getComputerDTO(id);
 			if(oldComputerDTO.isPresent())
 			{
 				if( serviceComputer.updateComputer(mapperComputer.fromParameters(oldComputerDTO.get()), mapperComputer.fromParameters(computerDTO)) )
-					response = new ResponseEntity<>(HttpStatus.OK);
+					response = new ResponseEntity<>(serviceComputer.getComputerDTO(id).get(),HttpStatus.OK);
 				else
 					throw new ServiceException("Error while updating the computer");
 			}

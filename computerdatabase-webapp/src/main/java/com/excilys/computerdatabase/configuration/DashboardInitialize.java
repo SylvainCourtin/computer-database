@@ -8,7 +8,7 @@ public class DashboardInitialize extends AbstractAnnotationConfigDispatcherServl
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { Application.class };
+		return new Class[] { ApplicationService.class };
 	}
 
 	@Override

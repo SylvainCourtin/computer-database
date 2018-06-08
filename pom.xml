@@ -114,6 +114,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <artifactId>jackson-databind</artifactId>
         <version>${jackson}</version>
     </dependency>
+     <dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
+    	<version>${jackson}</version>
+	</dependency>
 	</dependencies>
 </dependencyManagement>
   

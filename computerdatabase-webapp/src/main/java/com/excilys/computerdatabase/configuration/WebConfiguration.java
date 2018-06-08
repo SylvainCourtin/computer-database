@@ -21,7 +21,6 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages="com.excilys.computerdatabase.controller")
-@Import(ApplicationService.class)
 public class WebConfiguration implements WebMvcConfigurer {
 	
 	@Bean

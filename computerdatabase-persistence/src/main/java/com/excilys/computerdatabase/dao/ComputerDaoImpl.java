@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -114,8 +115,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		boolean isUpdate = false;
 		validatorComputer.validInsertComputer(computer);
 		try(Session session = sessionFactory.getCurrentSession();) {
-			session.beginTransaction();
-			session.saveOrUpdate(computer); //throws HibernateException
+			Transaction tx = session.beginTransaction();
+			session.update(computer);
+			tx.commit();
 			isUpdate = true;
 		}catch (HibernateException e) {
 			isUpdate = false;

@@ -50,6 +50,8 @@ public class UpdateComputer {
 			assertThat(computerDao.update(computer), 
 					is(true));
 			
+			assertThat(computerDao.getComputer(id).get(), equalTo(computer));
+			
 		} catch (DateDiscontinuedIntroducedException | DateTimeParseException | CompanyDoesNotExistException | NoNameComputerException e) {
 			fail("No exception expected");
 		}

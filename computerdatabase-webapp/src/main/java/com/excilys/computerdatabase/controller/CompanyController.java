@@ -19,12 +19,11 @@ import com.excilys.computerdatabase.utils.Utils;
 @RequestMapping("/companies")
 public class CompanyController {
 	
-	private ServiceCompany facadeCompany;
+	private ServiceCompany serviceCompany;
 	private MapperCompany mapperCompany;
 	
-	public CompanyController(ServiceCompany facadeCompany, MapperCompany mapperCompany) {
-		super();
-		this.facadeCompany = facadeCompany;
+	public CompanyController(ServiceCompany serviceCompany, MapperCompany mapperCompany) {
+		this.serviceCompany = serviceCompany;
 		this.mapperCompany = mapperCompany;
 	}
 
@@ -45,7 +44,7 @@ public class CompanyController {
 	 */
 	private String dispatchGetCompanies(ModelMap model, int page)
 	{
-		long numberOfCompanies = facadeCompany.getNumberRowComputer();
+		long numberOfCompanies = serviceCompany.getNumberRowComputer();
 
 		int res = 0;
 		if(numberOfCompanies%Utils.NUMBER_LIST_PER_PAGE > 0)
@@ -62,7 +61,7 @@ public class CompanyController {
 				newPage = numberOfPages;
 				
 		}
-		for(Company company : facadeCompany.getCompanies(Utils.NUMBER_LIST_PER_PAGE, Utils.NUMBER_LIST_PER_PAGE*(newPage-1)))
+		for(Company company : serviceCompany.getCompanies(Utils.NUMBER_LIST_PER_PAGE, Utils.NUMBER_LIST_PER_PAGE*(newPage-1)))
 		{
 			companies.add(mapperCompany.companyToDTO(company));
 		}

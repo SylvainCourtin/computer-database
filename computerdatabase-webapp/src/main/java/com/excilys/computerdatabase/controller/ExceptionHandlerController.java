@@ -15,7 +15,7 @@ import com.excilys.computerdatabase.exception.NoNameComputerException;
 @ControllerAdvice
 public class ExceptionHandlerController {
 	
-	private Logger logger = LoggerFactory.getLogger(ExceptionHandlerController.class);
+	private final static Logger logger = LoggerFactory.getLogger(ExceptionHandlerController.class);
 	
 	@ExceptionHandler(Throwable.class)
 	public ModelAndView handleThrowable(Throwable e)

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import com.excilys.computerdatabase.dtos.CompanyDTO;
@@ -35,18 +34,17 @@ import com.excilys.computerdatabase.utils.Utils;
 
 @Controller
 @RequestMapping("/computer")
-public class ComputerController implements WebMvcConfigurer {
+public class ComputerController{
 	
-	private ServiceComputer facade;
+	private ServiceComputer serviceComputer;
 	private ServiceCompany serviceCompany;
 	private MapperCompany mapperCompany;
 	private MapperComputer mapperComputer;
-	private Logger logger = LoggerFactory.getLogger(ComputerController.class);
+	private final static Logger logger = LoggerFactory.getLogger(ComputerController.class);
 	
-	public ComputerController(ServiceComputer facade, ServiceCompany serviceCompany, MapperCompany mapperCompany,
+	public ComputerController(ServiceComputer serviceComputer, ServiceCompany serviceCompany, MapperCompany mapperCompany,
 			MapperComputer mapperComputer) {
-		super();
-		this.facade = facade;
+		this.serviceComputer = serviceComputer;
 		this.serviceCompany = serviceCompany;
 		this.mapperCompany = mapperCompany;
 		this.mapperComputer = mapperComputer;
@@ -185,7 +183,7 @@ public class ComputerController implements WebMvcConfigurer {
 		if(computerDTO.getCompanyBasicView().getId() == 0)
 			computerDTO.setCompanyBasicView(null);
 
-		if(facade.addComputer(mapperComputer.fromParameters(computerDTO)) > 0)
+		if(serviceComputer.addComputer(mapperComputer.fromParameters(computerDTO)) > 0)
 		{
 			logger.debug("Success added");
 			redirectAttributesModelMap.addFlashAttribute("result", "Success added.");
@@ -223,7 +221,7 @@ public class ComputerController implements WebMvcConfigurer {
 		CompanyDTO company = null;
 		if(optCompany.isPresent())
 			company = optCompany.get();
-		if(facade.updateComputer(
+		if(serviceComputer.updateComputer(
 				idComputer,
 				computerDTO.getComputerBasicView().getName(), 
 				computerDTO.getComputerBasicView().getIntroduced(), 
@@ -255,7 +253,7 @@ public class ComputerController implements WebMvcConfigurer {
 			int idComputer = Integer.parseInt(sId);
 			
 
-			if(facade.deleteComputer(idComputer))
+			if(serviceComputer.deleteComputer(idComputer))
 				nbSuccess++;
 			else
 				nbFail++;
@@ -298,7 +296,7 @@ public class ComputerController implements WebMvcConfigurer {
 		String filter = "";
 		if(search != null)
 			filter = search.trim();
-		long numberOfComputer = facade.getNumberRowComputerLike(filter);
+		long numberOfComputer = serviceComputer.getNumberRowComputerLike(filter);
 		int res = 0;
 		if(numberOfComputer%Utils.NUMBER_LIST_PER_PAGE > 0)
 			res=1;
@@ -316,7 +314,7 @@ public class ComputerController implements WebMvcConfigurer {
 				
 		}
 		
-		for(Computer computer : facade.getComputers(Utils.NUMBER_LIST_PER_PAGE, Utils.NUMBER_LIST_PER_PAGE*(page-1), filter))
+		for(Computer computer : serviceComputer.getComputers(Utils.NUMBER_LIST_PER_PAGE, Utils.NUMBER_LIST_PER_PAGE*(page-1), filter))
 		{
 			computers.add(MapperComputer.computerToDTO(computer));
 		}
@@ -356,7 +354,7 @@ public class ComputerController implements WebMvcConfigurer {
 			List<CompanyDTO> companiesDTO = new ArrayList<>();
 			serviceCompany.getCompanies(100, 0).forEach(company -> companiesDTO.add(mapperCompany.companyToDTO(company)));
 			
-			Optional<ComputerDTO> computer = facade.getComputerDTO(idComputer);
+			Optional<ComputerDTO> computer = serviceComputer.getComputerDTO(idComputer);
 			if(computer.isPresent())
 			{
 				ModelAndView modelAndView =  new ModelAndView(RefPage.PAGE_EDITCOMPUTER,"computer", new ComputerDTO());

@@ -8,6 +8,9 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.excilys.computerdatabase.models.Computer;
+import com.excilys.computerdatabase.serializer.LocalDateDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class ComputerBasicView {
 	
@@ -15,9 +18,15 @@ public class ComputerBasicView {
 	@NotBlank
 	@Size(min=2, max=60)
 	private String name;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate introduced;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate discontinued;
 	
 	public ComputerBasicView() {

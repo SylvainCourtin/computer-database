@@ -24,6 +24,10 @@ public class CompanyDTO {
 		companyBasicView = new CompanyBasicView(id,name);
 	}
 	
+	public CompanyDTO()
+	{
+		companyBasicView = new CompanyBasicView();
+	}
 	
 	/**
 	 * @return retourne la view de la company

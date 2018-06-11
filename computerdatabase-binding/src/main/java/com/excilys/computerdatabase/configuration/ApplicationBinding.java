@@ -8,5 +8,4 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = { "com.excilys.computerdatabase.mappers"})
 @Import({Application.class})
 public class ApplicationBinding {
-
 }

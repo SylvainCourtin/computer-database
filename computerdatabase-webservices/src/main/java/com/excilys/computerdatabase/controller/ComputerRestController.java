@@ -12,7 +12,7 @@ public interface ComputerRestController {
     public ResponseEntity<List<ComputerDTO> > getComputers(int page, String search, int limit);
 
     public ResponseEntity<String> createComputer(ComputerDTO computerDTO);
-    public ResponseEntity<ComputerDTO> updateComputer(long id, ComputerDTO computerDTO);
+    public ResponseEntity<String> updateComputer(long id, ComputerDTO computerDTO);
     public ResponseEntity<String> deleteComputer(long id);
     public ResponseEntity<Long> getCountComputers(String search);
 }

@@ -131,7 +131,7 @@ public class DateUtil {
 			try {
 				date = stringToDate(scanner.nextLine().trim());
 				isValid = true;
-			} catch (DateTimeParseException e) {
+			} catch (DateTimeException e) {
 				System.out.println("Unvalidate format, try again or write null");
 				isValid	= false;
 			}

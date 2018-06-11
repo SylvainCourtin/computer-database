@@ -9,8 +9,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.excilys.computerdatabase.models.Computer;
 import com.excilys.computerdatabase.serializer.LocalDateDeserializer;
+import com.excilys.computerdatabase.serializer.LocalDateSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class ComputerBasicView {
 	
@@ -22,11 +24,13 @@ public class ComputerBasicView {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using=LocalDateSerializer.class)
 	private LocalDate introduced;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using=LocalDateSerializer.class)
 	private LocalDate discontinued;
 	
 	public ComputerBasicView() {

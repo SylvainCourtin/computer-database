@@ -90,22 +90,22 @@ public class ComputerRestControllerImpl implements ComputerRestController {
 		}catch (ValidationException | ServiceException e) {
 			logger.debug(e.getMessage());
 			if(e instanceof ValidationException)
-				response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				response = new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 			else
-				response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				response = new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
 	}
 	@Override
 	@PutMapping("/{id}")
-	public ResponseEntity<ComputerDTO> updateComputer(@PathVariable long id, @RequestBody ComputerDTO computerDTO) {
-		ResponseEntity<ComputerDTO> response;
+	public ResponseEntity<String> updateComputer(@PathVariable long id, @RequestBody ComputerDTO computerDTO) {
+		ResponseEntity<String> response;
 		try {
 			Optional<ComputerDTO> oldComputerDTO = serviceComputer.getComputerDTO(id);
 			if(oldComputerDTO.isPresent())
 			{
 				if( serviceComputer.updateComputer(mapperComputer.fromParameters(oldComputerDTO.get()), mapperComputer.fromParameters(computerDTO)) )
-					response = new ResponseEntity<>(serviceComputer.getComputerDTO(id).get(),HttpStatus.OK);
+					response = new ResponseEntity<>(serviceComputer.getComputerDTO(id).get().getComputerBasicView().getId()+"",HttpStatus.OK);
 				else
 					throw new ServiceException("Error while updating the computer");
 			}
@@ -113,11 +113,11 @@ public class ComputerRestControllerImpl implements ComputerRestController {
 				throw new ValidationException("ID computer not found");
 			
 		}catch (ValidationException | ServiceException e) {
-			logger.debug(e.getMessage());
+			logger.info(e.getMessage());
 			if(e instanceof ValidationException)
-				response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				response = new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 			else
-				response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				response = new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;
 	}
